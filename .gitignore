@@ -1,0 +1,5 @@
+# Ignore video files
+object_detection/videos/?*
+
+# Ignore video frames
+object_detection/frames/?*
