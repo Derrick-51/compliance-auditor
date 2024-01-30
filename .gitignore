@@ -1,0 +1,5 @@
+#macOS specific file
+.DS_Store
+
+#personal vscode settings
+/.vscode
