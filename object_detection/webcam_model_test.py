@@ -4,8 +4,8 @@ from ultralytics import YOLO
 capture = cv2.VideoCapture(0)
 
 # YOLOv8 accepted input size
-# capture.set(3, 640)
-# capture.set(4, 480)
+capture.set(3, 640)
+capture.set(4, 480)
 
 model = YOLO("custom_model.pt")
 
