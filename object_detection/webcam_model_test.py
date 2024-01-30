@@ -1,6 +1,8 @@
 import cv2
 from ultralytics import YOLO
 
+confidenceThreshold = 0.4
+
 capture = cv2.VideoCapture(0)
 
 # YOLOv8 accepted input size
@@ -25,23 +27,24 @@ while True:
             x0, y0, x1, y1 = int(x0), int(y0), int(x1), int(y1)
 
             className = classes[int(box.cls[0])]
-            #confidence = box.conf[0]
-            text = f"{className} {box.conf[0]:.2f}"
+            confidence = box.conf[0]
+            text = f"{className} {confidence:.2f}"
             fontFace = cv2.FONT_HERSHEY_PLAIN
             fontColor = (255, 255, 255)
             fontScale = 1
             fontThickness = 1
 
-            # Bounding box
-            cv2.rectangle(frame, (x0, y0), (x1, y1), (0, 0, 255), thickness=2)
+            if confidence > confidenceThreshold:
+                # Bounding box
+                cv2.rectangle(frame, (x0, y0), (x1, y1), (0, 0, 255), thickness=2)
 
-            # Text box
-            textSize, _ = cv2.getTextSize(className, fontFace, fontScale, fontThickness)
-            text_x, text_y = textSize
-            text_x += 4
-            text_y += 4
-            cv2.rectangle(frame, (x0, y0), (x0 + text_x, y0 + text_y), (0, 0, 255), thickness=-1)
-            cv2.putText(frame, className, (x0 + 2, y0 + text_y + fontScale - 1), fontFace, fontScale, fontColor, fontThickness)
+                # Text box
+                textSize, _ = cv2.getTextSize(text, fontFace, fontScale, fontThickness)
+                text_x, text_y = textSize
+                text_x += 4
+                text_y += 4
+                cv2.rectangle(frame, (x0, y0), (x0 + text_x, y0 + text_y), (0, 0, 255), thickness=-1)
+                cv2.putText(frame, text, (x0 + 2, y0 + text_y + fontScale - 1), fontFace, fontScale, fontColor, fontThickness)
             
             
     cv2.imshow("Capture", frame)
