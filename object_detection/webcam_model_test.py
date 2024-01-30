@@ -32,7 +32,10 @@ while True:
             fontScale = 1
             fontThickness = 1
 
+            # Bounding box
             cv2.rectangle(frame, (x0, y0), (x1, y1), (0, 0, 255), thickness=2)
+
+            # Text box
             textSize, _ = cv2.getTextSize(className, fontFace, fontScale, fontThickness)
             text_x, text_y = textSize
             text_x += 4
