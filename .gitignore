@@ -5,3 +5,6 @@ object_detection/data/val
 
 # Ignore model training output
 object_detection/runs
+
+# Ignore Default models
+*.pt
