@@ -3,6 +3,7 @@ import os
 
 videosPath = './videos'
 videoNames = os.listdir(videosPath)
+videoNames.remove('.gitignore')
 
 for videoName in videoNames:
     print(f"Extracting frames: {videoName}")
@@ -18,7 +19,7 @@ for videoName in videoNames:
         if((frameCount % frameInterval) == 0):
             frameName = os.path.basename(videoName)
             frameName = os.path.splitext(frameName)[0]
-            cv2.imwrite(f"frames/{frameName}_frame{frameCount:05d}.jpg", frame)
+            cv2.imwrite(f"unsorted/images/{frameName}_frame{frameCount:05d}.jpg", frame)
             print(f"Saving frame: {frameCount}")
         active,frame = capture.read()
         frameCount += 1

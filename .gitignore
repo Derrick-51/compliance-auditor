@@ -1,5 +1,4 @@
-# Ignore video files
-object_detection/videos/?*
-
-# Ignore video frames
-object_detection/frames/?*
+# Ignore dataset categories
+object_detection/data/train
+object_detection/data/test
+object_detection/data/val
