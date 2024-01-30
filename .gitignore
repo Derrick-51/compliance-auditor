@@ -2,3 +2,6 @@
 object_detection/data/train
 object_detection/data/test
 object_detection/data/val
+
+# Ignore model training output
+object_detection/runs
