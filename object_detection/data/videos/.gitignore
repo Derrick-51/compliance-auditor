@@ -1,0 +1,5 @@
+# Ignore contents of this directory
+*
+# Exclude this file and ReadMe
+!.gitignore
+!ReadMe.txt
