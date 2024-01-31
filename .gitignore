@@ -8,3 +8,9 @@ object_detection/runs
 
 # Ignore Default models
 *.pt
+
+#macOS specific file
+.DS_Store
+
+#personal vscode settings
+/.vscode
