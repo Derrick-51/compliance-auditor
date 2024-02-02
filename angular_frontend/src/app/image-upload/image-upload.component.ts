@@ -1,11 +1,6 @@
 import { Component } from '@angular/core';
-
 import { CommonModule } from '@angular/common';
-
-  
-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 
@@ -18,76 +13,34 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 })
 
 export class ImageUploadComponent {
-  imageSrc: string = '';
-  /*------------------------------------------
-
-  --------------------------------------------
-
-  Declare form
-
-  --------------------------------------------
-
-  --------------------------------------------*/
-
+  images : any = [];
   myForm = new FormGroup({
-    name: new FormControl('', [Validators.required, Validators.minLength(3)]),
     file: new FormControl('', [Validators.required]),
     fileSource: new FormControl('', [Validators.required])
   });
-
   constructor(private http: HttpClient) { }
-  /**
-
-   * Write code on Method
-
-   *
-
-   * @return response()
-
-   */
 
   get f(){
     return this.myForm.controls;
   }
 
-    
-
-  /**
-
-   * Write code on Method
-
-   *
-
-   * @return response()
-
-   */
-
   onFileChange(event:any) {
-    const reader = new FileReader();
-    if(event.target.files && event.target.files.length) {
-      const [file] = event.target.files;
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        this.imageSrc = reader.result as string;
-        this.myForm.patchValue({
-          fileSource: reader.result as string
-        });
-      };
+    if (event.target.files && event.target.files[0]) {
+        var filesAmount = event.target.files.length;
+        for (let i = 0; i < filesAmount; i++) {
+                var reader = new FileReader();
+                reader.onload = (event:any) => {
+                  console.log(event.target.result);
+                   this.images.push(event.target.result); 
+                   this.myForm.patchValue({
+
+                      fileSource: this.images
+                   });
+                }
+                reader.readAsDataURL(event.target.files[i]);
+        }
     }
-
   }
-
-    
-
-  /**
-
-   * Write code on Method
-
-   *
-
-   * @return response()
-
-   */
 
   submit(){
     console.log(this.myForm.value);
