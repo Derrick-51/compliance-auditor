@@ -14,7 +14,7 @@ export class UploadController {
         storage: diskStorage({
             destination: 'photos',
             filename: (req, file, callback) => {
-                const uniqueName = 'placeholder'
+                const uniqueName = `${Date.now()}` // DATE.NOW IS A PLACEHOLDER
                 const extension = extname(file.originalname)
                 const filename = `${uniqueName}${extension}`
 
@@ -22,7 +22,8 @@ export class UploadController {
             }
         })
     }))
-    uploadPhoto(@UploadedFile() photo: Express.Multer.File) {
-        console.log('photo upload', photo)
+    uploadFile(@UploadedFile() file: Express.Multer.File) {
+        console.log(file)
+        this.uploadService.uploadFile("12345", file.filename)
     }
 }
