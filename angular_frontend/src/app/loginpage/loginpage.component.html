@@ -1,7 +1,19 @@
 <div class="bg-violet-500 h-screen flex items-center justify-center">
   <mat-card class="h-96 w-96">
+
     <div>
       <h1 class="text-center bg-red-50">Login</h1>
     </div>
+
+    <div class="example-container">
+      <mat-form-field>
+        <mat-label>Enter your email</mat-label>
+        <input matInput placeholder="pat@example.com" [formControl]="email" required>
+        @if (email.invalid) {
+        <mat-error>{{getErrorMessage()}}</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
   </mat-card>
 </div>
