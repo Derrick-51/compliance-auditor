@@ -4,7 +4,7 @@ import { diskStorage } from 'multer';
 import { extname } from 'path'
 
 @Controller('')
-export class uploadController {
+export class UploadController {
 
     // Files will be named with dealer id with sequential numbering
     @Post('upload')
