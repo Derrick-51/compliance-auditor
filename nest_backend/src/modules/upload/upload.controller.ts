@@ -4,13 +4,13 @@ import { diskStorage } from 'multer';
 import { extname } from 'path'
 
 @Controller('')
-export class PhotoController {
+export class uploadController {
 
     // Files will be named with dealer id with sequential numbering
-    @Post('dealer/:id/upload-photo')
+    @Post('upload')
     @UseInterceptors(FileInterceptor('photo', {
         storage: diskStorage({
-            destination: './uploaded-photos',
+            destination: 'photos',
             filename: (req, file, callback) => {
                 const uniqueName = 'placeholder'
                 const extension = extname(file.originalname)
