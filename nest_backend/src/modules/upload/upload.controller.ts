@@ -2,9 +2,11 @@ import { Controller, Post, UploadedFile, UseInterceptors } from '@nestjs/common'
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path'
+import { UploadService } from './upload.service';
 
 @Controller('')
 export class UploadController {
+    constructor(private uploadService: UploadService) {}
 
     // Files will be named with dealer id with sequential numbering
     @Post('upload')
