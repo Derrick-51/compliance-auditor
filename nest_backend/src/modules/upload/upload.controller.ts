@@ -4,12 +4,12 @@ import { diskStorage } from 'multer';
 import { extname } from 'path'
 import { UploadService } from './upload.service';
 
-@Controller('')
+@Controller('api')
 export class UploadController {
     constructor(private uploadService: UploadService) {}
 
     // Files will be named with dealer id with sequential numbering
-    @Post('api/upload')
+    @Post('upload')
     @UseInterceptors(FileInterceptor('photo', {
         storage: diskStorage({
             destination: 'photos',
@@ -24,6 +24,6 @@ export class UploadController {
     }))
     uploadFile(@UploadedFile() file: Express.Multer.File) {
         console.log(file)
-        this.uploadService.uploadFile("12345", file.filename)
+        this.uploadService.uploadFile("12345", file.filename) // PLACEHOLDER ID
     }
 }
