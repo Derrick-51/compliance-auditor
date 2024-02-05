@@ -3,11 +3,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { MatButtonModule } from '@angular/material/button';
+import {MatListModule} from '@angular/material/list';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-image-upload',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, HttpClientModule],
+  imports: [CommonModule, RouterLink, FormsModule, ReactiveFormsModule, HttpClientModule, MatButtonModule, MatListModule],
   templateUrl: './image-upload.component.html',
   styleUrl: './image-upload.component.css'
 })
