@@ -1,0 +1,10 @@
+<div class="flex items-center justify-center">
+  <div class="bg-yellow-300 w-2/3 my-3">
+    <mat-form-field [style.width.px]=327 appearance="outline">
+      <input matInput placeholder="example@email.com" [formControl]="email" required id="email" formControlName="email">
+      @if (email.invalid) {
+      <mat-error>{{getErrorMessage()}}</mat-error>
+      }
+    </mat-form-field>
+  </div>
+</div>
