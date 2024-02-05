@@ -10,5 +10,13 @@ import { RouterOutlet } from '@angular/router';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
+<<<<<<< HEAD
   title = 'Dealership A';
+=======
+  title = 'angular_frontend';
+
+  submitForm(email:string, password: string){
+    console.log(email, password);
+  }
+>>>>>>> origin/development
 }
