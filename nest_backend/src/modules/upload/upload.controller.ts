@@ -9,7 +9,7 @@ export class UploadController {
     constructor(private uploadService: UploadService) {}
 
     // Files will be named with dealer id with sequential numbering
-    @Post('upload')
+    @Post('api/upload')
     @UseInterceptors(FileInterceptor('photo', {
         storage: diskStorage({
             destination: 'photos',
