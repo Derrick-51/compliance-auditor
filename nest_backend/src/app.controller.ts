@@ -1,23 +1,31 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { AppService } from './app.service';
 import * as bcrypt from 'bcrypt';
+import { LocalAuthGuard } from './auth/local-auth.guard';
+import { AuthService } from './auth/auth.service';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
 
-@Controller('api')
+@Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private authService: AuthService) {}
 
-  @Post('register')
-  async register(
-    @Body('email') email: string,
-    @Body('username') username: string,
-    @Body('password') password: string,
-  ) {
-    const hashedPassword = await bcrypt.hash(password, 12);
+  //login route
+  @UseGuards(LocalAuthGuard)
+  @Post('auth/login')
+  login(@Request() req) {
+    return req.user;
+  }
 
-    return this.appService.create({
-      email,
-      username,
-      password: hashedPassword,
-    });
+  @UseGuards(JwtAuthGuard)
+  @Get('profile')
+  getProfile(@Request() req) {
+    return req.user;
   }
 }
