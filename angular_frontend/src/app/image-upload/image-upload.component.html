@@ -1,23 +1,44 @@
 <h3>Directions for submitting an Audit:</h3>
 <mat-list>
-    <mat-list-item> 1. Upload images </mat-list-item>
-    <mat-list-item> 2. Wait for auditer to confirm audit results from AI</mat-list-item>
-    <mat-list-item> 3. Verdicts will be displayed on the status page </mat-list-item>
+  <mat-list-item> 1. Upload images </mat-list-item>
+  <mat-list-item>
+    2. Wait for auditer to confirm audit results from AI</mat-list-item
+  >
+  <mat-list-item>
+    3. Verdicts will be displayed on the status page
+  </mat-list-item>
 </mat-list>
 <form [formGroup]="myForm" (ngSubmit)="submit()">
-    <div>
-        <label for="file">File:</label>
-        <input 
-            formControlName="file"
-            id="file" 
-            type="file" 
-            class="form-control"
-            multiple="" 
-            (change)="onFileChange($event)">
-        <div *ngIf="f['file'].touched && f['file'].invalid">
-            <div *ngIf="f['file'].errors && f['file'].errors['required']">File is required.</div>
-        </div>
+  <div>
+    <label for="file">File:</label>
+    <input
+      formControlName="file"
+      id="photo"
+      type="file"
+      class="form-control"
+      multiple=""
+      (change)="onFileChange($event)"
+    />
+    <div *ngIf="f['file'].touched && f['file'].invalid">
+      <div *ngIf="f['file'].errors && f['file'].errors['required']">
+        File is required.
+      </div>
     </div>
-    <img *ngFor='let url of images'  [src]="url" height="150" width="200px" style="margin: 3px;"> <br/>
-    <button mat-raised-button routerLink="/status" [disabled]="myForm.invalid" type="submit">Submit</button>
+  </div>
+  <img
+    *ngFor="let url of images"
+    [src]="url"
+    height="150"
+    width="200px"
+    style="margin: 3px"
+  />
+  <br />
+  <button
+    mat-raised-button
+    routerLink="/status"
+    [disabled]="myForm.invalid"
+    type="submit"
+  >
+    Submit
+  </button>
 </form>
