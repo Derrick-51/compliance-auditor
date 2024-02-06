@@ -17,7 +17,7 @@ image = cv2.imread(imagePath)
 
 # Find posters in image
 model = YOLO("custom_model.pt")
-results = model.predict(image)
+results = model.predict(image, verbose=False)
 
 # Determine if poster exists in image
 posterFound = len(results[0].boxes) > 0
