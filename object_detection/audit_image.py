@@ -28,3 +28,4 @@ else:
     print("Fail")
 
 sys.stdout.flush()
+sys.exit(0)
