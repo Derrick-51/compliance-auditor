@@ -9,7 +9,7 @@ export class UploadService {
 
         // Call audit script with image path
         const auditScript = spawn("py", ["-3.11", "../object_detection/audit_image.py", filePath])
-        // const auditScript = exec(`py -3.11 ../object_detection/audit_image.py ${filePath}`)
+
         var auditResult: String = ""
         var exitCode: Number = -1
 
