@@ -17,17 +17,13 @@ image = cv2.imread(imagePath)
 
 # Find posters in image
 model = YOLO("custom_model.pt")
-results = model.predict(image, verbose=False)
+results = model.predict(image, verbose=False, conf=confidenceThreshold)
 
 # Determine if poster exists in image
 posterFound = len(results[0].boxes) > 0
 
 if posterFound:
-    # Determine if confidence is above threshold
-    if results[0].boxes[0].conf[0] > confidenceThreshold:
-        print("Pass")
-    else:
-        print("Fail")
+    print("Pass")
 else:
     print("Fail")
 
