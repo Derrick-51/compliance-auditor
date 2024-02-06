@@ -16,7 +16,8 @@ imagePath = sys.argv[1]
 image = cv2.imread(imagePath)
 
 # Find posters in image
-model = YOLO("custom_model.pt")
+model = YOLO("../object_detection/custom_model.pt")
+
 results = model.predict(image, verbose=False, conf=confidenceThreshold)
 
 # Determine if poster exists in image
