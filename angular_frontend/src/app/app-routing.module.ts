@@ -20,9 +20,8 @@ const routes: Routes = [
   {
     path: '', redirectTo: 'home', pathMatch: 'full'
   },
-  //this will be a 404 page, when the user tries to go to a page that doesnt exist
   {
-    path: '**', redirectTo: 'home', pathMatch: 'full'
+    path: '**', redirectTo: 'home', pathMatch: 'full'   //this will be a 404 page, when the user tries to go to a page that doesnt exist
   }
 ];
 
