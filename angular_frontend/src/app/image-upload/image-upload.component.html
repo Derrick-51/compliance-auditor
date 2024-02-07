@@ -1,44 +1,41 @@
-<h3>Directions for submitting an Audit:</h3>
-<mat-list>
-  <mat-list-item> 1. Upload images </mat-list-item>
-  <mat-list-item>
-    2. Wait for auditer to confirm audit results from AI</mat-list-item
-  >
-  <mat-list-item>
-    3. Verdicts will be displayed on the status page
-  </mat-list-item>
-</mat-list>
-<form [formGroup]="myForm" (ngSubmit)="submit()">
-  <div>
-    <label for="file">File:</label>
-    <input
-      formControlName="file"
-      id="photo"
-      type="file"
-      class="form-control"
-      multiple=""
-      (change)="onFileChange($event)"
-    />
-    <div *ngIf="f['file'].touched && f['file'].invalid">
-      <div *ngIf="f['file'].errors && f['file'].errors['required']">
-        File is required.
-      </div>
-    </div>
+<div class="row">
+  <div class="col-8">
+    <label class="btn btn-default p-0">
+      <input type="file" accept="image/*" (change)="selectFile($event)" />
+    </label>
   </div>
-  <img
-    *ngFor="let url of images"
-    [src]="url"
-    height="150"
-    width="200px"
-    style="margin: 3px"
-  />
-  <br />
-  <button
-    mat-raised-button
-    routerLink="/status"
-    [disabled]="myForm.invalid"
-    type="submit"
-  >
-    Submit
-  </button>
-</form>
+
+  <div class="col-4">
+    <button
+      class="btn btn-success btn-sm float-right"
+      [disabled]="!currentFile"
+      (click)="upload()"
+    >
+      Upload
+    </button>
+  </div>
+</div>
+
+<div>
+  <img [src]="preview" class="preview" />
+</div>
+
+@if (message) {
+<div class="alert alert-secondary" role="alert">
+  {{ message }}
+</div>
+}
+
+<div class="card">
+  <div class="card-header">List of Images</div>
+  <ul class="list-group list-group-flush">
+    @for (image of imageInfos | async; track image.name) {
+    <li class="list-group-item">
+      <p>
+        <a href="{{ image.url }}">{{ image.name }}</a>
+      </p>
+      <img src="{{ image.url }}" alt="{{ image.name }}" height="80px" />
+    </li>
+    }
+  </ul>
+</div>
