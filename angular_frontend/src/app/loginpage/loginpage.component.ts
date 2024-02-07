@@ -14,7 +14,7 @@ import { EmailfieldComponent } from '../emailfield/emailfield.component';
 import { PasswordfieldComponent } from '../passwordfield/passwordfield.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { LoginpageService } from './loginpage.service';
+//import { LoginpageService } from './loginpage.service';
 import { Inject } from '@nestjs/common';
 
 @Component({
@@ -31,9 +31,9 @@ import { Inject } from '@nestjs/common';
     MatButtonModule,
     MatIconModule,
     MatButtonModule,
-    LoginpageService,
+    //LoginpageService,
   ],
-  providers: [LoginpageService],
+  //providers: [LoginpageService],
   templateUrl: './loginpage.component.html',
   styleUrl: './loginpage.component.css',
 })
@@ -47,7 +47,7 @@ export class LoginpageComponent {
     return this.email.hasError('email') ? 'Not a valid email' : '';
   }
 
-  loginpageService = Inject(LoginpageService);
+  //loginpageService = Inject(LoginpageService);
 
   loginForm = new FormGroup({
     email: new FormControl(''),
@@ -55,10 +55,9 @@ export class LoginpageComponent {
   });
 
   submitForm() {
-    this.loginpageService.submitForm(
-      this.loginForm.value.email ?? '',
-      this.loginForm.value.password ?? ''
-    );
+    //this.loginpageService.submitForm(
+    this.loginForm.value.email ?? '', this.loginForm.value.password ?? '';
+    //);
   }
 
   hide = true;
