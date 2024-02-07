@@ -53,7 +53,8 @@ export class LoginpageComponent {
     if (this.password.hasError('required')) {
       return 'Password field is empty'
     }
-    return;
+    else
+      return '';
   }
 
   submitLogin() {
