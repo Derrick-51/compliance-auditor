@@ -1,7 +1,7 @@
-<form [formGroup]="loginForm" (ngSubmit)="submitLogin()">
+<form [formGroup]="loginForm">
   <div class="h-lvh w-lvw flex justify-center items-center">
     <mat-card>
-      <mat-card-content>Login</mat-card-content>
+      <mat-card-content>Simple card</mat-card-content>
       <div class="email-container">
         <mat-form-field>
           <mat-label for="email">Enter your email</mat-label>
@@ -13,9 +13,6 @@
             name="email"
             placeholder="example@email.com"
           />
-          @if (email.invalid && email.dirty || email.touched) {
-          <mat-error>{{ getEmailErrorMessage() }}</mat-error>
-          }
         </mat-form-field>
       </div>
       <div class="password-container">
@@ -25,8 +22,8 @@
             matInput
             [type]="hide ? 'password' : 'text'"
             class="w-full"
-            formControlName="password"
             name="password"
+            formControlName="password"
           />
           <button
             mat-icon-button
@@ -37,26 +34,11 @@
           >
             <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
           </button>
-          @if (password.invalid && password.dirty || password.touched) {
-          <mat-error>{{ getEmailErrorMessage() }}</mat-error>
-          }
         </mat-form-field>
       </div>
-      <button
-        mat-raised-button
-        label="sign in"
-        type="submit"
-        styleClass="w-full"
-        color="primary"
-        [disabled]="loginForm.invalid"
-      >
-        Sign in
-      </button>
+      <button mat-raised-button label="sign in" styleClass="w-full" color="primary">Sign in</button>
       <div class="mt-2">
-        <p>
-          Create an account
-          <a routerLink="/register" routerLinkActive="active">here</a>
-        </p>
+        <p>Not a member? <a routerLink="/register" routerLinkActive="active">Register</a></p>
       </div>
     </mat-card>
   </div>

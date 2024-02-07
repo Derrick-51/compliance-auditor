@@ -1,17 +1,16 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormControl, Validators, FormsModule, ReactiveFormsModule, EmailValidator, FormGroup, FormBuilder } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { HttpClientModule } from '@angular/common/http';
+import {RouterModule} from '@angular/router';
+import {MatCardModule} from '@angular/material/card';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {FormControl, Validators, FormsModule, ReactiveFormsModule, EmailValidator, FormGroup, FormBuilder} from '@angular/forms';
+import {MatInputModule} from '@angular/material/input';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
 
 @Component({
   selector: 'app-loginpage',
   standalone: true,
-  imports: [
+  imports: [ 
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
@@ -21,7 +20,6 @@ import { HttpClientModule } from '@angular/common/http';
     MatIconModule,
     MatButtonModule,
     RouterModule,
-    HttpClientModule,
   ],
   templateUrl: './loginpage.component.html',
   styleUrl: './loginpage.component.css'
@@ -33,7 +31,7 @@ export class LoginpageComponent {
     password: ['', [Validators.required]]
   })
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder) {}
 
   get email() {
     return this.loginForm.controls['email'];
