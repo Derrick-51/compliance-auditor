@@ -1,4 +1,4 @@
-<form [formGroup]="loginForm">
+<form [formGroup]="loginForm" (ngSubmit)="submitLogin()">
   <div class="h-lvh w-lvw flex justify-center items-center">
     <mat-card>
       <mat-card-content>Simple card</mat-card-content>
@@ -36,9 +36,20 @@
           </button>
         </mat-form-field>
       </div>
-      <button mat-raised-button label="sign in" styleClass="w-full" color="primary">Sign in</button>
+      <button
+        mat-raised-button
+        label="sign in"
+        styleClass="w-full"
+        color="primary"
+        type="submit"
+      >
+        Sign in
+      </button>
       <div class="mt-2">
-        <p>Not a member? <a routerLink="/register" routerLinkActive="active">Register</a></p>
+        <p>
+          Not a member?
+          <a routerLink="/register" routerLinkActive="active">Register</a>
+        </p>
       </div>
     </mat-card>
   </div>
