@@ -3,7 +3,7 @@
     <mat-card>
       <mat-card-content>Simple card</mat-card-content>
       <div class="email-container">
-        <mat-form-field>
+        <mat-form-field class="w-full">
           <mat-label for="email">Enter your email</mat-label>
           <input
             type="text"
@@ -16,7 +16,7 @@
         </mat-form-field>
       </div>
       <div class="password-container">
-        <mat-form-field>
+        <mat-form-field class="w-full">
           <mat-label for="email">Enter your password</mat-label>
           <input
             matInput
@@ -36,9 +36,20 @@
           </button>
         </mat-form-field>
       </div>
-      <button mat-raised-button label="sign in" styleClass="w-full" color="primary" type="submit">Sign in</button>
+      <button
+        mat-raised-button
+        label="sign in"
+        styleClass="w-full"
+        color="primary"
+        type="submit"
+      >
+        Sign in
+      </button>
       <div class="mt-2">
-        <p>Not a member? <a routerLink="/register" routerLinkActive="active">Register</a></p>
+        <p>
+          Not a member?
+          <a routerLink="/register" routerLinkActive="active">Register</a>
+        </p>
       </div>
     </mat-card>
   </div>
