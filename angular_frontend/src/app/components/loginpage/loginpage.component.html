@@ -1,14 +1,14 @@
 <form [formGroup]="loginForm" (ngSubmit)="submitLogin()">
   <div class="h-lvh w-lvw flex justify-center items-center">
     <mat-card>
-      <mat-card-content>Simple card</mat-card-content>
+      <mat-card-content>Login</mat-card-content>
       <div class="email-container">
-        <mat-form-field>
+        <mat-form-field class="w-full">
           <mat-label for="email">Enter your email</mat-label>
           <input
             type="text"
             matInput
-            formControlName="email"
+            formControlName="username"
             class="w-full"
             name="email"
             placeholder="example@email.com"
@@ -16,7 +16,7 @@
         </mat-form-field>
       </div>
       <div class="password-container">
-        <mat-form-field>
+        <mat-form-field class="w-full">
           <mat-label for="email">Enter your password</mat-label>
           <input
             matInput
@@ -26,6 +26,7 @@
             formControlName="password"
           />
           <button
+            type="button"
             mat-icon-button
             matSuffix
             (click)="hide = !hide"

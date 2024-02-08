@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {
@@ -15,7 +15,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-loginpage',
@@ -36,13 +35,17 @@ import { Observable } from 'rxjs';
 })
 export class LoginpageComponent {
   loginForm = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
+    username: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
   });
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {}
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private router: Router
+  ) {}
 
-  get email() {
+  get username() {
     return this.loginForm.controls['email'];
   }
   get password() {
@@ -51,12 +54,13 @@ export class LoginpageComponent {
 
   submitLogin() {
     if (this.loginForm.valid) {
-      const { email, password } = this.loginForm.value;
+      const { username, password } = this.loginForm.value;
       this.http
-        .post<any>('http://localhost:3000/auth/login', { email, password })
+        .post<any>('http://localhost:3000/auth/login', { username, password })
         .subscribe(
           (response) => {
             console.log('Login successful', response);
+            this.router.navigate(['/status']);
           },
           (error) => {
             console.error('Login failed', error);

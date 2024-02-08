@@ -14,7 +14,12 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
 
 @Controller()
 export class AppController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) {
+    ({
+      usernameField: 'email',
+      passwordField: 'password',
+    });
+  }
 
   //login route
   @UseGuards(LocalAuthGuard)

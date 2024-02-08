@@ -2,13 +2,13 @@ import { Routes } from '@angular/router';
 import { LoginpageComponent } from './components/loginpage/loginpage.component';
 import { ImageUploadComponent } from './image-upload/image-upload.component';
 import { StatusComponent } from './status/status.component';
-import { OverrideComponent } from './override/override.component';
+import { AuditReviewComponent } from './audit_review/audit_review.component';
 import { RegisterpageComponent } from './components/registerpage/registerpage.component';
 
 export const routes: Routes = [
   { path: 'status', component: StatusComponent },
   { path: 'image-upload', component: ImageUploadComponent },
-  { path: 'override', component: OverrideComponent },
+  { path: 'override', component: AuditReviewComponent },
   {
     path: 'login',
     component: LoginpageComponent,

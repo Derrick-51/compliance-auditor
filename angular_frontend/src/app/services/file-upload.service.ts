@@ -12,11 +12,16 @@ export class FileUploadService {
   upload(file: File): Observable<HttpEvent<any>> {
     const formData: FormData = new FormData();
 
-    formData.append('file', file);
-    console.log("works");
-    const req = new HttpRequest('POST', `${this.baseUrl}/api/upload`, formData, {
-      responseType: 'json'
-    });
+    formData.append('photo', file);
+    console.log('works');
+    const req = new HttpRequest(
+      'POST',
+      `${this.baseUrl}/api/upload`,
+      formData,
+      {
+        responseType: 'json',
+      }
+    );
 
     return this.http.request(req);
   }
