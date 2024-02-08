@@ -40,7 +40,7 @@ export class LoginpageComponent {
     password: ['', [Validators.required]],
   });
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private http: HttpClient) {}
 
   get email() {
     return this.loginForm.controls['email'];
@@ -49,21 +49,36 @@ export class LoginpageComponent {
     return this.loginForm.controls['password'];
   }
 
+  submitLogin() {
+    if (this.loginForm.valid) {
+      const { email, password } = this.loginForm.value;
+      this.http
+        .post<any>('http://localhost:3000/auth/login', { email, password })
+        .subscribe(
+          (response) => {
+            console.log('Login successful', response);
+          },
+          (error) => {
+            console.error('Login failed', error);
+          }
+        );
+    }
+    console.log(this.loginForm.value);
+  }
+
   getEmailErrorMessage() {
-    if (this.email.hasError('required')) {
+    const emailControl = this.loginForm.get('email');
+    if (emailControl.hasError('required')) {
       return 'Email field is empty';
     }
-    return this.email.hasError('email') ? 'Please enter a valid email' : '';
+    return emailControl.hasError('email') ? 'Please enter a valid email' : '';
   }
 
   getPassErrorMessage() {
-    if (this.password.hasError('required')) {
+    const passControl = this.loginForm.get('password');
+    if (passControl.hasError('required')) {
       return 'Password field is empty';
     } else return '';
-  }
-
-  submitLogin() {
-    console.log(this.loginForm.value);
   }
 
   hide = true;
