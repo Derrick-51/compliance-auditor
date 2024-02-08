@@ -8,7 +8,7 @@ import { RegisterpageComponent } from './components/registerpage/registerpage.co
 export const routes: Routes = [
   { path: 'status', component: StatusComponent },
   { path: 'image-upload', component: ImageUploadComponent },
-  { path: 'override', component: AuditReviewComponent },
+  { path: 'audit_review', component: AuditReviewComponent },
   {
     path: 'login',
     component: LoginpageComponent,

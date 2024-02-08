@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -12,42 +13,65 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './image-upload.component.html',
   styleUrl: './image-upload.component.css',
 })
-export class ImageUploadComponent {
-  images: any = [];
-  myForm = new FormGroup({
-    file: new FormControl('', [Validators.required]),
-    fileSource: new FormControl('', [Validators.required]),
-  });
-  constructor(private http: HttpClient) {}
+export class ImageUploadComponent implements OnInit {
+  currentFile?: File;
+  message = '';
+  preview = '';
 
-  get f() {
-    return this.myForm.controls;
+  imageInfos?: Observable<any>;
+
+  constructor(private uploadService: FileUploadService) {}
+
+  ngOnInit(): void {
+    this.imageInfos = this.uploadService.getFiles();
   }
 
-  onFileChange(event: any) {
-    if (event.target.files && event.target.files[0]) {
-      var filesAmount = event.target.files.length;
-      for (let i = 0; i < filesAmount; i++) {
-        var reader = new FileReader();
-        reader.onload = (event: any) => {
-          console.log(event.target.result);
-          this.images.push(event.target.result);
-          this.myForm.patchValue({
-            fileSource: this.images,
-          });
+  selectFile(event: any): void {
+    this.message = '';
+    this.preview = '';
+    const selectedFiles = event.target.files;
+
+    if (selectedFiles) {
+      const file: File | null = selectedFiles.item(0);
+
+      if (file) {
+        this.preview = '';
+        this.currentFile = file;
+
+        const reader = new FileReader();
+
+        reader.onload = (e: any) => {
+          console.log(e.target.result);
+          this.preview = e.target.result;
         };
-        reader.readAsDataURL(event.target.files[i]);
+
+        reader.readAsDataURL(this.currentFile);
       }
     }
   }
 
-  submit() {
-    console.log(this.myForm.value);
-    this.http
-      .post('http://localhost:3000/api/upload.php', this.myForm.value)
-      .subscribe((res) => {
-        console.log(res);
-        alert('Uploaded Successfully.');
+  upload(): void {
+    if (this.currentFile) {
+      this.uploadService.upload(this.currentFile).subscribe({
+        next: (event: any) => {
+          if (event instanceof HttpResponse) {
+            this.message = event.body.message;
+            this.imageInfos = this.uploadService.getFiles();
+          }
+        },
+        error: (err: any) => {
+          console.log(err);
+
+          if (err.error && err.error.message) {
+            this.message = err.error.message;
+          } else {
+            this.message = 'Could not upload the image!';
+          }
+        },
+        complete: () => {
+          this.currentFile = undefined;
+        },
       });
+    }
   }
 }
