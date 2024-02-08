@@ -1,24 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { FileUploadService } from '../services/file-upload.service';
 import { MatButtonModule } from '@angular/material/button';
-import { MatListModule } from '@angular/material/list';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-image-upload',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterLink,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    MatButtonModule,
-    MatListModule,
-  ],
+  imports: [CommonModule, RouterLink, MatButtonModule],
   templateUrl: './image-upload.component.html',
   styleUrl: './image-upload.component.css',
 })
