@@ -1,18 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OverrideComponent } from './override.component';
+import { AuditReviewComponent } from './audit_review.component';
 
 describe('OverrideComponent', () => {
-  let component: OverrideComponent;
-  let fixture: ComponentFixture<OverrideComponent>;
+  let component: AuditReviewComponent;
+  let fixture: ComponentFixture<AuditReviewComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [OverrideComponent]
-    })
-    .compileComponents();
-    
-    fixture = TestBed.createComponent(OverrideComponent);
+      imports: [AuditReviewComponent],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(AuditReviewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
