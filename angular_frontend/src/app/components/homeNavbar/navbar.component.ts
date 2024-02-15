@@ -5,7 +5,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-navbar',
+  selector: 'app-homeNavbar',
   standalone: true,
   imports: [MatIconModule, MatButtonModule, MatToolbarModule, RouterModule],
   templateUrl: './navbar.component.html',
