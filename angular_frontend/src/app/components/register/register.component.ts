@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
+import { passwordMatchValidator } from './password-match.directive';
 
 @Component({
   selector: 'app-register',
@@ -32,6 +33,8 @@ export class RegisterComponent {
     email:['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]],
     confirmPassword: ['', [Validators.required]],
+  }, {
+    validators: passwordMatchValidator
   })
 
   constructor(private fb: FormBuilder) { }
@@ -60,7 +63,7 @@ export class RegisterComponent {
     return;
   }
   getConfirmPassErrorMessage() {
-    if (this.password.hasError('required')) {
+    if (this.confirmPassword.hasError('required')) {
       return 'Password does not match';
     }
     return;
