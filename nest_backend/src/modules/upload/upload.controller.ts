@@ -1,8 +1,9 @@
 import { Controller, Post, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { extname } from 'path'
+import { extname } from 'path';
 import { UploadService } from './upload.service';
+import {v4 as uuidv4} from "uuid";
 
 @Controller('api')
 export class UploadController {
@@ -14,7 +15,7 @@ export class UploadController {
         storage: diskStorage({
             destination: 'photos',
             filename: (req, file, callback) => {
-                const uniqueName = `${Date.now()}` // DATE.NOW IS A PLACEHOLDER
+                const uniqueName = uuidv4()
                 const extension = extname(file.originalname)
                 const filename = `${uniqueName}${extension}`
 
