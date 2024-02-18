@@ -1,0 +1,45 @@
+<div class="bg-gray-300 h-screen flex items-center justify-center">
+    <div class="p-5 h-screen w-3/5 bg-white">
+        <mat-card class="m-5 h-2/5">
+          <div class = "p-5 flex justify-between">
+            <div><h2>Instuctions for submitting an audit:</h2></div>
+            <div>
+            <ul>
+              <li>1. Take pictures of brand signage</li>
+              <li>2. Upload images</li>
+              <li>3. Wait for verdict from auditer</li>
+            </ul> 
+          </div>
+          </div>
+        </mat-card>
+        <mat-card class="m-5 h-3/6">
+          <div class="p-5 flex justify-between">
+            <!--Browse button and file explorer-->
+            <div>
+              <label for="browse-button">Choose images to upload (PNG, JPG)</label>
+              <input type="file" id="browse-button" accept=".jpg, .jpeg, .png" multiple="" (change)="selectFiles($event)" />
+            </div>
+  
+            <!--Upload button-->
+            <button
+            routerLink="/status"
+            mat-raised-button
+            color="primary"
+            [disabled]="!currentFiles"
+            (click)="uploadFiles()"
+            >
+              Upload
+            </button>
+          </div>
+          <!--previews-->
+          <div class="p-5 overflow-scroll grid grid-cols-4 gap-5">
+              @for (preview of previews; track $index) {
+              <div class="flex items-center justify-center">
+                <img [src]="preview"/>
+              </div>
+              }
+          </div>
+        </mat-card>
+    </div>
+  </div>
+  
