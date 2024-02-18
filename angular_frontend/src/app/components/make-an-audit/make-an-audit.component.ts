@@ -7,13 +7,13 @@ import { MatCardModule } from '@angular/material/card';
 import { FileUploadService } from '../../services/file-upload.service';
 
 @Component({
-  selector: 'app-image-upload',
+  selector: 'app-make-an-audit',
   standalone: true,
   imports: [CommonModule, RouterLink, MatButtonModule, MatCardModule],
-  templateUrl: './image-upload.component.html',
-  styleUrl: './image-upload.component.scss',
+  templateUrl: './make-an-audit.component.html',
+  styleUrl: './make-an-audit.component.scss',
 })
-export class ImageUploadComponent {
+export class MakeAnAuditComponent {
   currentFiles?: FileList;
   messages: string[] = [];
   previews: string[] = [];
