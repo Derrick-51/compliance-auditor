@@ -12,7 +12,7 @@ export class FileUploadService {
   upload(file: File): Observable<HttpEvent<any>> {
     const formData: FormData = new FormData();
 
-    formData.append('photo', file);
+    formData.append('photos', file);
     // For testing purposes
     console.log("works");
     const req = new HttpRequest('POST', `${this.baseUrl}/api/upload`, formData, {
