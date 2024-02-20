@@ -1,0 +1,107 @@
+<app-homeNavbar></app-homeNavbar>
+<form [formGroup]="registerForm">
+  <div class="min-h-screen flex justify-center items-center">
+    <div class="bg-red-300">
+      <mat-card class="mx-96 my-10">
+        <mat-card-header class="text-3xl flex justify-center mb-3 -mt-3">
+          <mat-card-header>Register</mat-card-header>
+        </mat-card-header>
+        <mat-card-content>
+          <label for="email">Email</label>
+          <div class="email-container mb-1">
+            <mat-form-field class="w-full">
+              <mat-label>Enter your email</mat-label>
+              <input
+                type="text"
+                matInput
+                formControlName="email"
+                name="email"
+                placeholder="example@email.com"
+              />
+              @if (email.invalid && email.dirty || email.touched) {
+              <mat-error>{{ getEmailErrorMessage() }}</mat-error>
+              }
+            </mat-form-field>
+          </div>
+          <label for="password">Password</label>
+          <div class="password-container">
+            <mat-form-field class="w-full">
+              <mat-label>Enter your password</mat-label>
+              <input
+                [type]="hide ? 'password' : 'text'"
+                matInput
+                formControlName="password"
+                name="password"
+                placeholder="Type your password"
+              />
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="hide = !hide"
+                [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide"
+              >
+                <mat-icon class="mr-4">{{
+                  hide ? "visibility_off" : "visibility"
+                }}</mat-icon>
+              </button>
+              @if (password.invalid && password.dirty || password.touched) {
+              <mat-error>{{ getPassErrorMessage() }}</mat-error>
+              }
+            </mat-form-field>
+          </div>
+          <label for="confirmPassword">Confirm Password</label>
+          <div class="confirm-password-container">
+            <mat-form-field class="w-full">
+              <mat-label>Confirm password</mat-label>
+              <input
+                [type]="hide ? 'password' : 'text'"
+                matInput
+                formControlName="confirmPassword"
+                name="confirmPassword"
+                placeholder="Confirm password"
+              />
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="hide = !hide"
+                [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hide"
+              >
+                <mat-icon class="mr-4">{{
+                  hide ? "visibility_off" : "visibility"
+                }}</mat-icon>
+              </button>
+              @if (confirmPassword.invalid && confirmPassword.dirty ||
+              confirmPassword.touched) {
+              <mat-error>{{ getConfirmPassErrorMessage() }}</mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </mat-card-content>
+        <mat-card-actions>
+          <button
+            label="register"
+            mat-flat-button
+            class="w-full"
+            color="primary"
+            [disabled]="registerForm.invalid"
+          >
+            Create Account
+          </button>
+        </mat-card-actions>
+        <mat-card-actions>
+          <div>
+            Already have an account? Click
+            <a
+              class="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
+              routerLink="/login"
+              >here</a
+            >
+            to login!
+          </div>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</form>
