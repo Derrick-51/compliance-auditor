@@ -5,11 +5,12 @@ import { HttpResponse } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { FileUploadService } from '../../services/file-upload.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-make-an-audit',
   standalone: true,
-  imports: [CommonModule, RouterLink, MatButtonModule, MatCardModule],
+  imports: [CommonModule, RouterLink, MatButtonModule, MatCardModule, MatIconModule],
   templateUrl: './make-an-audit.component.html',
   styleUrl: './make-an-audit.component.scss',
 })
@@ -75,8 +76,21 @@ export class MakeAnAuditComponent {
     }
   }
 
-/*  removeSelectedFile(index) {
-    delete file from FileList
-    this.currentFiles.splice(index, 1);
-   } */
+  // Helper function to convert array of files into a FileList
+  // Used in the deleteImage function
+  private createFileList(files: File[]): FileList {
+    const fileList = new ClipboardEvent('').clipboardData || new DataTransfer();
+    files.forEach(file => fileList.items.add(file));
+    return fileList.files;
+  }
+
+  // Deletes images
+  deleteImage(index: number): void {
+    this.previews.splice(index, 1);
+    if (this.currentFiles) {
+        const fileListArray = Array.from(this.currentFiles);
+        fileListArray.splice(index, 1);
+        this.currentFiles = this.createFileList(fileListArray);
+    }
+  }
 } 
