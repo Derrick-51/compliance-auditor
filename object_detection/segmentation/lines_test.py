@@ -7,6 +7,7 @@ ref_img = cv2.imread("ref_img.png")
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 edges = cv2.Canny(gray, 100, 100, apertureSize=3)
 
+cv2.imshow("Original", orig_img)
 cv2.imshow("edges", edges)
 
 # Corner Detection
@@ -49,14 +50,18 @@ else:
 
 # Prepare transformation points
 origPoints = (orig_img.shape[0], orig_img.shape[1])
-perspectivePoints = [tl_corner, bl_corner, tr_corner, br_corner]
-referencePoints = [(0, 0), (0, origPoints[1]), (origPoints[0], 0), (origPoints[0], origPoints[1])]
+perspectivePoints = np.float32([tl_corner, bl_corner, tr_corner, br_corner])
+referencePoints = np.float32([(0, 0), (0, origPoints[1]), (origPoints[0], 0), (origPoints[0], origPoints[1])])
 
 # Transform perspective using points
+perspectiveMat = cv2.getPerspectiveTransform(perspectivePoints, referencePoints)
+transformedImage = cv2.warpPerspective(orig_img, perspectiveMat, origPoints)
+cv2.imshow("Transformation", transformedImage)
+
 
 cornerColors = [(0, 255, 0), (0, 255, 255), (255, 0, 255), (255, 255, 0)]
-
-for count, corner in enumerate(perspectivePoints):
+colorPoints = [tl_corner, bl_corner, tr_corner, br_corner]
+for count, corner in enumerate(colorPoints):
     x, y = corner
     cv2.circle(image, (x, y), radius=10, color=cornerColors[count], thickness=-1)
 
@@ -79,7 +84,9 @@ for count, corner in enumerate(perspectivePoints):
 
 cv2.imshow("lines", image)
 
-cv2.imwrite("lines_test_sample.png", image)
+cv2.imwrite("lines_test_edges.png", edges)
+cv2.imwrite("lines_test_points.png", image)
+cv2.imwrite("lines_test_transform.png", transformedImage)
 
 cv2.waitKey(0)
 cv2.destroyAllWindows()
