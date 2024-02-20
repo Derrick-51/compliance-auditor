@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Audit } from 'src/audit/entities/audit.entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 @Entity()
 export class Users {
@@ -6,11 +7,32 @@ export class Users {
   id: number;
 
   @Column()
-  name: string;
+  dealershipName: string;
 
   @Column({ unique: true })
   email: string;
 
   @Column()
   password: string;
+
+  @Column()
+  usertype: string;
+
+  @Column({ nullable: true })
+  firstName: string;
+
+  @Column({ nullable: true })
+  lastName: string;
+
+  @Column({ nullable: true })
+  state: string;
+
+  @Column({ nullable: true })
+  city: string;
+
+  @Column({ nullable: true })
+  address: string;
+
+  @OneToMany(() => Audit, (audit) => audit.user)
+  audit: Audit;
 }
