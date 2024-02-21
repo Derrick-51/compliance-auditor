@@ -49,13 +49,13 @@ else:
     tl_corner, bl_corner = (leftCorners[0], leftCorners[1])
 
 # Prepare transformation points
-origPoints = (orig_img.shape[0], orig_img.shape[1])
+refPoints = (ref_img.shape[1], ref_img.shape[0])
 perspectivePoints = np.float32([tl_corner, bl_corner, tr_corner, br_corner])
-referencePoints = np.float32([(0, 0), (0, origPoints[1]), (origPoints[0], 0), (origPoints[0], origPoints[1])])
+referencePoints = np.float32([(0, 0), (0, refPoints[1]), (refPoints[0], 0), (refPoints[0], refPoints[1])])
 
 # Transform perspective using points
 perspectiveMat = cv2.getPerspectiveTransform(perspectivePoints, referencePoints)
-transformedImage = cv2.warpPerspective(orig_img, perspectiveMat, origPoints)
+transformedImage = cv2.warpPerspective(orig_img, perspectiveMat, refPoints)
 cv2.imshow("Transformation", transformedImage)
 
 
