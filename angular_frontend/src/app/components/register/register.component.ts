@@ -3,7 +3,13 @@ import { CommonModule } from '@angular/common';
 import { homeNavbarComponent } from '../homeNavbar/navbar.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormControl, Validators, FormsModule, ReactiveFormsModule, FormBuilder } from '@angular/forms';
+import {
+  FormControl,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+  FormBuilder,
+} from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,7 +19,8 @@ import { passwordMatchValidator } from './password-match.directive';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [homeNavbarComponent, 
+  imports: [
+    homeNavbarComponent,
     CommonModule,
     MatCardModule,
     MatFormFieldModule,
@@ -23,21 +30,29 @@ import { passwordMatchValidator } from './password-match.directive';
     MatInputModule,
     MatIconModule,
     MatButtonModule,
-    RouterModule],
+    RouterModule,
+  ],
   templateUrl: './register.component.html',
-  styleUrl: './register.component.scss'
+  styleUrl: './register.component.scss',
 })
 export class RegisterComponent {
+  registerForm = this.fb.group(
+    {
+      dealership: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]],
+      confirmPassword: ['', [Validators.required]],
+    },
+    {
+      validators: passwordMatchValidator,
+    }
+  );
 
-  registerForm = this.fb.group({
-    email:['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required]],
-    confirmPassword: ['', [Validators.required]],
-  }, {
-    validators: passwordMatchValidator
-  })
+  constructor(private fb: FormBuilder) {}
 
-  constructor(private fb: FormBuilder) { }
+  get dealership() {
+    return this.registerForm.controls['dealership'];
+  }
 
   get email() {
     return this.registerForm.controls['email'];
@@ -50,9 +65,16 @@ export class RegisterComponent {
     return this.registerForm.controls['confirmPassword'];
   }
 
+  getDealerErrorMessage() {
+    if (this.dealership.hasError('required')) {
+      return 'Please enter the name of your dealership';
+    }
+    return;
+  }
+
   getEmailErrorMessage() {
     if (this.email.hasError('required')) {
-      return 'Email field is empty'
+      return 'Email field is empty';
     }
     return this.email.hasError('email') ? 'Please enter a valid email' : '';
   }
@@ -70,5 +92,4 @@ export class RegisterComponent {
   }
 
   hide = true;
-
 }

@@ -7,6 +7,23 @@
           <mat-card-header>Register</mat-card-header>
         </mat-card-header>
         <mat-card-content>
+          <label for="dealership">Dealership Name</label>
+          <div class="dealership-container">
+            <mat-form-field class="w-full">
+              <mat-label>Enter your dealership name</mat-label>
+              <input
+                type="text"
+                matInput
+                formControlName="dealership"
+                name="dealership"
+                placeholder="Dealership A"
+              />
+              @if (dealership.invalid && dealership.dirty || dealership.touched)
+              {
+              <mat-error>{{ getDealerErrorMessage() }}</mat-error>
+              }
+            </mat-form-field>
+          </div>
           <label for="email">Email</label>
           <div class="email-container mb-1">
             <mat-form-field class="w-full">
