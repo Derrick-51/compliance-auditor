@@ -11,19 +11,43 @@ ref_gray = cv2.cvtColor(ref_img, cv2.COLOR_BGR2GRAY)
 # ORB Keypoints
 ###########################################################
 
-# Generate ORB keypoints
-orb = cv2.ORB.create()
-trans_keypoints, trans_descriptors = orb.detectAndCompute(orig_gray, None)
-ref_keypoints, ref_descriptors = orb.detectAndCompute(ref_gray, None)
+# # Generate ORB keypoints
+# orb = cv2.ORB.create()
+# trans_keypoints, trans_descriptors = orb.detectAndCompute(orig_gray, None)
+# ref_keypoints, ref_descriptors = orb.detectAndCompute(ref_gray, None)
+
+# # Match keypoints
+# matcher = cv2.BFMatcher(cv2.NORM_HAMMING2, crossCheck=True)
+# matches = matcher.match(trans_descriptors, ref_descriptors)
+# matches = sorted(matches,key=lambda x:x.distance)
+
+# match_img = cv2.drawMatches(orig_img, trans_keypoints, ref_img, ref_keypoints, matches[:10], None)
+# match_img = cv2.resize(match_img, (1600, 1000))
+# cv2.imshow("Matches", match_img)
+###########################################################
+
+
+# SIFT Keypoints
+###########################################################
+
+# Generate keypoints
+sift = cv2.SIFT_create()
+orig_keypoints, orig_descriptors = sift.detectAndCompute(orig_gray, None)
+ref_keypoints, ref_descriptors = sift.detectAndCompute(ref_gray, None)
+
+print(orig_keypoints)
+print("///////////////////////////////")
+print(orig_descriptors)
 
 # Match keypoints
-matcher = cv2.BFMatcher(cv2.NORM_HAMMING2, crossCheck=True)
-matches = matcher.match(trans_descriptors, ref_descriptors)
+matcher = cv2.BFMatcher()
+matches = matcher.match(orig_descriptors, ref_descriptors)
 matches = sorted(matches,key=lambda x:x.distance)
 
-match_img = cv2.drawMatches(orig_img, trans_keypoints, ref_img, ref_keypoints, matches[:10], None)
-match_img = cv2.resize(match_img, (1600, 1000))
-cv2.imshow("Matches", match_img)
+# Display matches
+match_img = cv2.drawMatches(orig_img, orig_keypoints, ref_img, ref_keypoints, matches[:20], None)
+match_img = cv2.resize(match_img, (1400, 1000))
+cv2.imshow("SIFT Kyepoints", match_img)
 ###########################################################
 
 
