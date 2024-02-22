@@ -15,7 +15,7 @@ export class Users {
   @Column()
   password: string;
 
-  @Column()
+  @Column({ default: 'Dealership' })
   usertype: string;
 
   @Column({ nullable: true })
