@@ -1,11 +1,13 @@
 <div class="flex justify-center items-center w-full h-full">
-  <div class="w-[500px] bg-red-200 mr-2">
-    <img class="mb-2" src="/assets/UrbanScience40.png" alt="Urban Science Logo" />
-    <p class="text-5xl">
-      Dealership Compliance Auditor
-    </p>
+  <div class="w-[500px] mr-2">
+    <img
+      class="mb-2"
+      src="/assets/UrbanScienceHomepage.png"
+      alt="Urban Science Logo"
+    />
+    <p class="text-5xl">Dealership Compliance Auditor</p>
   </div>
-  <div class= "ml-2 shadow-lg">
+  <div class="ml-2 shadow-lg">
     <form [formGroup]="loginForm">
       <div>
         <mat-card class="w-[500px]">
@@ -15,7 +17,7 @@
           <mat-card-content>
             <label for="email">Email</label>
             <div class="email-container mb-2">
-              <mat-form-field class="w-full">
+              <mat-form-field hideRequiredMarker class="w-full">
                 <mat-label>Enter your email</mat-label>
                 <input
                   type="text"
@@ -31,7 +33,7 @@
             </div>
             <label for="password">Password</label>
             <div class="password-container mb-32">
-              <mat-form-field class="w-full">
+              <mat-form-field hideRequiredMarker class="w-full">
                 <mat-label>Enter your password</mat-label>
                 <input
                   [type]="hide ? 'password' : 'text'"
