@@ -11,6 +11,8 @@ import { AuditModule } from './audit/audit.module';
 import { Audit } from './audit/entities/audit.entity';
 import { ImageModule } from './image/image.module';
 import { Image } from './image/entities/image.entity';
+import { JwtModule } from '@nestjs/jwt';
+import { jwtConstants } from './auth/constants';
 
 @Module({
   imports: [

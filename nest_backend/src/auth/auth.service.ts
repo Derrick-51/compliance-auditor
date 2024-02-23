@@ -4,14 +4,18 @@ import {
   Injectable,
   Res,
   Req,
+  UnauthorizedException,
+  Query,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserService } from 'src/user/user.service';
-import { Repository } from 'typeorm';
+import { QueryFailedError, Repository } from 'typeorm';
 import { Users } from 'src/user/entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { Response, Request } from 'express';
+import { access } from 'fs';
+import { error } from 'console';
 
 @Injectable()
 export class AuthService {
@@ -33,19 +37,47 @@ export class AuthService {
   }
 
   async login(user: any, @Res({ passthrough: true }) response: Response) {
-    const payload = { email: user.email, sub: user.userId };
-    response.cookie('jwt', payload, { httpOnly: true });
+    const payload = { id: user.id, email: user.email, sub: user.userId };
+
+    const accessToken = this.jwtService.sign(payload);
+
+    response.cookie('jwt', accessToken, { httpOnly: true });
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: accessToken,
     };
   }
 
   async create(data: any): Promise<Users> {
-    return this.userRepository.save(data);
+    try {
+      return await this.userRepository.save(data);
+    } catch (e) {
+      if (e instanceof QueryFailedError) {
+        if (e.message.includes('unique constraint')) {
+          throw new Error('Email address is already in use.');
+        } else {
+          const failedEntry = {
+            query: e.query,
+            parameters: e.parameters,
+          };
+
+          throw new Error('Failed to save user data.');
+        }
+      } else {
+        throw new Error('Unexpected error has occurred.');
+      }
+    }
+  }
+
+  async logout(@Res({ passthrough: true }) response: Response) {
+    response.clearCookie('jwt');
+
+    return {
+      message: 'logout successful',
+    };
   }
 
   async profile(@Req() request: Request) {
-    // there are two different requests imports, use Request is from express, while there is also Req from Nest.js, do not import Request from Nest.js or there will be duplicate imports
+    // there are two different request imports, Request is from express, while there is also Req from Nest.js, do not import Request from Nest.js or there will be duplicate imports
     try {
       const cookie = request.cookies['jwt'];
 
@@ -54,8 +86,17 @@ export class AuthService {
       }
 
       const data = await this.jwtService.verifyAsync(cookie);
+      console.log(data);
 
-      return data;
+      if (!data) {
+        throw new UnauthorizedException();
+      }
+
+      const user = await this.usersService.findID(Number(data['id']));
+
+      const { password, usertype, state, city, address, ...result } = user;
+
+      return result;
     } catch (e) {
       console.error('JWT verification error:', e.message);
       throw new Error('Invalid JWT token');
