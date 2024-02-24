@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { homeNavbarComponent } from '../homeNavbar/navbar.component';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {
@@ -20,11 +19,9 @@ import { passwordMatchValidator } from './password-match.directive';
   selector: 'app-register',
   standalone: true,
   imports: [
-    homeNavbarComponent,
     CommonModule,
     MatCardModule,
     MatFormFieldModule,
-    homeNavbarComponent,
     ReactiveFormsModule,
     FormsModule,
     MatInputModule,
