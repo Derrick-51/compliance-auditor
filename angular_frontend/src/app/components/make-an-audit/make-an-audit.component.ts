@@ -5,11 +5,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { FileUploadService } from '../../services/file-upload.service';
 import { MatIconModule } from '@angular/material/icon';
+import { navbarComponent } from '../navbar/navbar.component';
 
 @Component({
   selector: 'app-make-an-audit',
   standalone: true,
-  imports: [CommonModule, RouterLink, MatButtonModule, MatCardModule, MatIconModule],
+  imports: [CommonModule, RouterLink, MatButtonModule, MatCardModule, MatIconModule, navbarComponent],
   templateUrl: './make-an-audit.component.html',
   styleUrl: './make-an-audit.component.scss',
 })

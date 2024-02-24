@@ -7,7 +7,7 @@ import { MatMenuModule } from '@angular/material/menu';
 
 
 @Component({
-  selector: 'app-homeNavbar',
+  selector: 'app-navbar',
   standalone: true,
   imports: [MatIconModule, MatButtonModule, MatToolbarModule, RouterModule, MatMenuModule],
   templateUrl: './navbar.component.html',
