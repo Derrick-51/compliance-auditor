@@ -86,7 +86,6 @@ export class AuthService {
       }
 
       const data = await this.jwtService.verifyAsync(cookie);
-      console.log(data);
 
       if (!data) {
         throw new UnauthorizedException();
