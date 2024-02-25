@@ -1,0 +1,42 @@
+<header>
+  <mat-toolbar class="flex justify-between items-center">
+    <div>
+      <a routerLink="/login">
+        <img
+          class="w-64"
+          src="/assets/UrbanScience Original.png"
+          alt="Urban Science Logo"
+        />
+      </a>
+    </div>
+    <div class="">
+      <ul class="flex items-center gap-[3vw] mr-52">
+        <li>
+          <a class="hover:text-red-300" routerLink="/status">Audit Status</a>
+        </li>
+        <li>
+          <a class="hover:text-red-300" routerLink="/make-an-audit">Audit Upload</a>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <button
+        mat-icon-button
+        [matMenuTriggerFor]="menu"
+        aria-label="Example icon-button with a menu"
+      >
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+          <mat-icon>dialpad</mat-icon>
+          <span>Profile</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>voicemail</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+    </div>
+  </mat-toolbar>
+</header>
