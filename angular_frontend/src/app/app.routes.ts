@@ -5,6 +5,7 @@ import { MakeAnAuditComponent } from './components/make-an-audit/make-an-audit.c
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { navbarComponent } from './components/navbar/navbar.component';
+import { ProfilePageComponent } from './components/profile-page/profile-page.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -13,6 +14,7 @@ export const routes: Routes = [
   { path: 'review-audit', component: ReviewAuditComponent },
   { path: 'status', component: StatusComponent },
   { path: 'make-an-audit', component: MakeAnAuditComponent },
+  { path: 'profile-page', component: ProfilePageComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '**', redirectTo: 'login', pathMatch: 'full' }, //this will be a 404 page, when the user tries to go to a page that doesnt exist }
 ];
