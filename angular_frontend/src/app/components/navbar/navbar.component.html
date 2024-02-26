@@ -12,10 +12,12 @@
     <div class="">
       <ul class="flex items-center gap-[3vw] mr-52">
         <li>
-          <a class="hover:text-red-300" routerLink="/status">Audit Status</a>
+          <a class="hover:text-gray-400" routerLink="/status">Audit Status</a>
         </li>
         <li>
-          <a class="hover:text-red-300" routerLink="/make-an-audit">Audit Upload</a>
+          <a class="hover:text-gray-400" routerLink="/make-an-audit"
+            >Audit Upload</a
+          >
         </li>
       </ul>
     </div>
@@ -23,9 +25,9 @@
       <button
         mat-icon-button
         [matMenuTriggerFor]="menu"
-        aria-label="Example icon-button with a menu"
+        aria-label="menu button"
       >
-        <mat-icon>more_vert</mat-icon>
+        <mat-icon>menu</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
         <button mat-menu-item>
