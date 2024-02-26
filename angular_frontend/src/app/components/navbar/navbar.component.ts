@@ -7,7 +7,11 @@ import { MatMenuModule } from '@angular/material/menu';
 
 
 @Component({
+<<<<<<< HEAD
   selector: 'app-navbar',
+=======
+  selector: 'app-homeNavbar',
+>>>>>>> parent of b3da9aff (Deleting angular front-end (re merging to get new one))
   standalone: true,
   imports: [MatIconModule, MatButtonModule, MatToolbarModule, RouterModule, MatMenuModule],
   templateUrl: './navbar.component.html',
