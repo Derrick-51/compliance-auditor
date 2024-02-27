@@ -30,24 +30,24 @@ ref_gray = cv2.cvtColor(ref_img, cv2.COLOR_BGR2GRAY)
 # SIFT Keypoints
 ###########################################################
 
-# Generate keypoints
-sift = cv2.SIFT_create()
-orig_keypoints, orig_descriptors = sift.detectAndCompute(orig_gray, None)
-ref_keypoints, ref_descriptors = sift.detectAndCompute(ref_gray, None)
+# # Generate keypoints
+# sift = cv2.SIFT_create()
+# orig_keypoints, orig_descriptors = sift.detectAndCompute(orig_gray, None)
+# ref_keypoints, ref_descriptors = sift.detectAndCompute(ref_gray, None)
 
-print(orig_keypoints)
-print("///////////////////////////////")
-print(orig_descriptors)
+# print(orig_keypoints)
+# print("///////////////////////////////")
+# print(orig_descriptors)
 
-# Match keypoints
-matcher = cv2.BFMatcher()
-matches = matcher.match(orig_descriptors, ref_descriptors)
-matches = sorted(matches,key=lambda x:x.distance)
+# # Match keypoints
+# matcher = cv2.BFMatcher()
+# matches = matcher.match(orig_descriptors, ref_descriptors)
+# matches = sorted(matches,key=lambda x:x.distance)
 
-# Display matches
-match_img = cv2.drawMatches(orig_img, orig_keypoints, ref_img, ref_keypoints, matches[:20], None)
-match_img = cv2.resize(match_img, (1400, 1000))
-cv2.imshow("SIFT Kyepoints", match_img)
+# # Display matches
+# match_img = cv2.drawMatches(orig_img, orig_keypoints, ref_img, ref_keypoints, matches[:5], None)
+# match_img = cv2.resize(match_img, (1400, 1000))
+# cv2.imshow("SIFT Kyepoints", match_img)
 ###########################################################
 
 
@@ -55,9 +55,9 @@ cv2.imshow("SIFT Kyepoints", match_img)
 ###########################################################
 
 # # Prepare images for DCT
-# transformed_8 = cv2.resize(transformedImage, (8, 8), interpolation=cv2.INTER_AREA)
+# transformed_8 = cv2.resize(orig_img, (8, 8), interpolation=cv2.INTER_AREA)
 # reference_8 = cv2.resize(ref_gray, (8, 8), interpolation=cv2.INTER_AREA)
-# transformed_32 = cv2.resize(transformedImage, (32, 32), interpolation=cv2.INTER_AREA)
+# transformed_32 = cv2.resize(orig_img, (32, 32), interpolation=cv2.INTER_AREA)
 # reference_32 = cv2.resize(ref_gray, (32, 32), interpolation=cv2.INTER_AREA)
 # transformed_8 = cv2.cvtColor(transformed_8, cv2.COLOR_BGR2GRAY)
 # transformed_32 = cv2.cvtColor(transformed_32, cv2.COLOR_BGR2GRAY)
