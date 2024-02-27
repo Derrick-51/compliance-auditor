@@ -8,7 +8,7 @@
     <p class="text-5xl">Dealership Compliance Auditor</p>
   </div>
   <div class="ml-2 shadow-lg">
-    <form [formGroup]="loginForm">
+    <form [formGroup]="loginForm" (ngSubmit)="submitLogin()">
       <div>
         <mat-card class="w-[500px]">
           <mat-card-header class="text-3xl flex justify-center mb-3 -mt-3">
@@ -22,7 +22,7 @@
                 <input
                   type="text"
                   matInput
-                  formControlName="email"
+                  formControlName="username"
                   name="email"
                   placeholder="example@email.com"
                 />
@@ -66,6 +66,7 @@
               class="w-full"
               color="primary"
               [disabled]="loginForm.invalid"
+              type="submit"
             >
               Sign in
             </button>

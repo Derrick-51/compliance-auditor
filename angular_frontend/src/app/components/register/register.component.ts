@@ -14,6 +14,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import { passwordMatchValidator } from './password-match.directive';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -45,7 +47,11 @@ export class RegisterComponent {
     }
   );
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private router: Router
+  ) {}
 
   get dealership() {
     return this.registerForm.controls['dealership'];
@@ -60,6 +66,17 @@ export class RegisterComponent {
 
   get confirmPassword() {
     return this.registerForm.controls['confirmPassword'];
+  }
+
+  submitDetails() {
+    const postData = { ...this.registerForm.value };
+    delete postData.confirmPassword;
+    this.http
+      .post('http://localhost:3000/auth/register', postData)
+      .subscribe((response) => {
+        console.log(response);
+        this.router.navigate(['login']);
+      });
   }
 
   getDealerErrorMessage() {

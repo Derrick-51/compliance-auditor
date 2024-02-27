@@ -7,13 +7,10 @@ import {
   Res,
   Req,
 } from '@nestjs/common';
-import { AppService } from './app.service';
 import * as bcrypt from 'bcrypt';
 import { LocalAuthGuard } from './auth/local-auth.guard';
 import { AuthService } from './auth/auth.service';
-import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { Response, Request } from 'express';
-import { QueryFailedError } from 'typeorm';
 
 @Controller('auth')
 export class AppController {
