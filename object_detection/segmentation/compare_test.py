@@ -1,5 +1,7 @@
 import cv2
 import numpy as np
+import dhash
+from PIL import Image
 
 
 orig_img = cv2.imread("lines_test_transform_jpg.jpg")
@@ -7,6 +9,22 @@ ref_img = cv2.imread("ref_img.png")
 orig_gray = cv2.cvtColor(orig_img, cv2.COLOR_BGR2GRAY)
 ref_gray = cv2.cvtColor(ref_img, cv2.COLOR_BGR2GRAY)
 
+# dHash
+###########################################################
+dhash.force_pil()
+hash_size = 8
+orig_gray_small = Image.open("lines_test_transform_jpg.jpg").convert('L').resize((hash_size+1, hash_size+1))
+ref_gray_small = Image.open("ref_img_jpg.jpg").convert('L').convert('L').resize((hash_size+1, hash_size+1))
+
+orig_row, orig_col = dhash.dhash_row_col(orig_gray_small, size=hash_size)
+ref_row, ref_col = dhash.dhash_row_col(ref_gray_small, size=hash_size)
+orig_hash = int(dhash.format_hex(orig_row, orig_col), 16)
+ref_hash = int(dhash.format_hex(ref_row, ref_col), 16)
+
+hamming_distance = dhash.get_num_bits_different(orig_hash, ref_hash)
+
+print(f'Hamming distance: {hamming_distance}')
+###########################################################
 
 # ORB Keypoints
 ###########################################################
