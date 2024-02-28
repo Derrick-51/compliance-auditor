@@ -18,7 +18,7 @@ export class EditAuditSubmissionGuidelinesComponent implements OnInit {
   editedGuidelines: string = '';
 
   // Path to Markdown file with guidelines
-  markdownFilePath: string = '/audit-submission-guidelines.md';
+  markdownFilePath: string = '../../../../angular_frontend/audit-submission-guidelines.md';
 
   // Inject markdown file service
   constructor(private markdownService: MarkdownFileService) { }
@@ -29,7 +29,14 @@ export class EditAuditSubmissionGuidelinesComponent implements OnInit {
       .subscribe(async (markdownContent: string) => {
         this.guidelines = markdownContent;
         this.editedGuidelines = await this.renderMarkdown(markdownContent);
-      });
+      },
+      (error) => {
+        console.error('Error reading markdown file:', error);
+        // Set default guidelines here
+        this.guidelines = 'Default guidelines';
+        this.editedGuidelines = this.guidelines;
+      }
+    );
   }
 
   // Update Markdown file with edited guidlines
