@@ -2,16 +2,25 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormControl, Validators, FormsModule, ReactiveFormsModule, FormBuilder } from '@angular/forms';
+import {
+  FormControl,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+  FormBuilder,
+} from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule,
+  imports: [
+    CommonModule,
     MatCardModule,
     MatFormFieldModule,
     ReactiveFormsModule,
@@ -19,31 +28,43 @@ import { RouterModule } from '@angular/router';
     MatInputModule,
     MatIconModule,
     MatButtonModule,
-    RouterModule],
+    RouterModule,
+  ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrl: './login.component.scss',
 })
 export class LoginComponent {
-
   loginForm = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required]]
-  })
+    username: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required]],
+  });
 
-  constructor(private fb: FormBuilder) {
-
-  }
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private router: Router
+  ) {}
 
   get email() {
-    return this.loginForm.controls['email'];
+    return this.loginForm.controls['username'];
   }
   get password() {
     return this.loginForm.controls['password'];
   }
-  
+
+  submitLogin() {
+    const postData = { ...this.loginForm.value };
+    this.http
+      .post('http://localhost:3000/auth/login', postData)
+      .subscribe((response) => {
+        console.log(response);
+        this.router.navigate(['status']);
+      });
+  }
+
   getEmailErrorMessage() {
     if (this.email.hasError('required')) {
-      return 'Email field is empty'
+      return 'Email field is empty';
     }
     return this.email.hasError('email') ? 'Please enter a valid email' : '';
   }
@@ -55,5 +76,4 @@ export class LoginComponent {
   }
 
   hide = true;
-
 }
