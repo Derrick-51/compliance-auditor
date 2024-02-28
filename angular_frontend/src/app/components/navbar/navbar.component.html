@@ -1,7 +1,7 @@
 <header>
   <mat-toolbar class="flex justify-between items-center">
     <div>
-      <a routerLink="/login">
+      <a routerLink="/status">
         <img
           class="w-64"
           src="/assets/UrbanScience Original.png"
@@ -9,36 +9,62 @@
         />
       </a>
     </div>
-    <div class="">
-      <ul class="flex items-center gap-[3vw] mr-52">
+    <div
+      class="lg:static absolute md:min-h-fit min-h-[30vh] left-0 top-[-100%] md:w-auto w-full flex items-center px-5"
+    >
+      <ul
+        class="flex md:flex-row flex-col md:items-center md:gap-[3vw] gap-6 md:mr-20"
+      >
         <li>
-          <a class="hover:text-red-300" routerLink="/status">Audit Status</a>
+          <a class="hover:text-[#66CC33] text-[#414551]" routerLink="/status">Audit Status</a>
         </li>
         <li>
-          <a class="hover:text-red-300" routerLink="/make-an-audit"
+          <a class="hover:text-[#66CC33] text-[#414551]" routerLink="/make-an-audit"
             >Audit Upload</a
           >
         </li>
       </ul>
     </div>
     <div>
-      <button
-        mat-icon-button
-        [matMenuTriggerFor]="menu"
-        aria-label="Example icon-button with a menu"
-      >
-        <mat-icon>more_vert</mat-icon>
-      </button>
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item>
-          <mat-icon>dialpad</mat-icon>
-          <span>Profile</span>
+      <div class="hidden lg:block">
+        <a routerLink="/profile-page">
+            <button mat-flat-button>Profile</button>
+          </a>
+        <button class="ml-2" mat-flat-button>Logout</button>
+      </div>
+      <div class="lg:hidden">
+        <button
+          mat-icon-button
+          [matMenuTriggerFor]="menu"
+          aria-label="menu button"
+        >
+          <mat-icon>menu</mat-icon>
         </button>
-        <button mat-menu-item>
-          <mat-icon>voicemail</mat-icon>
-          <span>Logout</span>
-        </button>
-      </mat-menu>
+        <mat-menu #menu="matMenu">
+          <a routerLink="/status">
+            <button mat-menu-item>
+              <mat-icon>check_circle</mat-icon>
+              <span>Status</span>
+            </button>
+          </a>
+          <a routerLink="/make-an-audit">
+            <button mat-menu-item>
+              <mat-icon>create</mat-icon>
+              <span>Make an Audit</span>
+            </button>
+          </a>
+          <a routerLink="/profile-page">
+            <button mat-menu-item>
+              <mat-icon>person_pin</mat-icon>
+              <span>Profile</span>
+            </button>
+          </a>
+          <button mat-menu-item>
+            <mat-icon>exit_to_app</mat-icon>
+            <span>Logout</span>
+          </button>
+        </mat-menu>
+      </div>
     </div>
   </mat-toolbar>
 </header>
