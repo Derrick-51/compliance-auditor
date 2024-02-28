@@ -9,7 +9,7 @@ export class Image {
   @Column({ unique: true })
   fileName: string;
 
-  @Column({ type: 'datetime' })
+  @Column({ type: "timestamptz", default: () => "CURRENT_TIMESTAMP" }) //for mssql { type: 'datetime' }
   update: Date;
 
   @Column()

@@ -16,3 +16,5 @@ object_detection/runs
 /.vscode
 
 node_modules/
+
+.angular/

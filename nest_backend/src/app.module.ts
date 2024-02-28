@@ -17,7 +17,7 @@ import { jwtConstants } from './auth/constants';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'mssql',
+      type: 'postgres',
       host: 'localhost',
       port: 1433,
       username: 'admin',
@@ -25,7 +25,7 @@ import { jwtConstants } from './auth/constants';
       database: 'compliance-auditor',
       synchronize: true, //REMOVE THIS IN PRODUCTION
       entities: [Users, Audit, Image],
-      options: { encrypt: false }, //bypasses self-signed certificate, may need to change this later since this can be exploited in a cyber attack
+      //options: { encrypt: false }, //bypasses self-signed certificate, may need to change this later since this can be exploited in a cyber attack
     }),
     UploadModule,
     AuthModule,
