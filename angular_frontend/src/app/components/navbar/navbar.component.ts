@@ -8,10 +8,14 @@ import { MatMenuModule } from '@angular/material/menu';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [MatIconModule, MatButtonModule, MatToolbarModule, RouterModule, MatMenuModule],
+  imports: [
+    MatIconModule,
+    MatButtonModule,
+    MatToolbarModule,
+    RouterModule,
+    MatMenuModule,
+  ],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.scss'
+  styleUrl: './navbar.component.scss',
 })
-export class navbarComponent {
-
-}
+export class navbarComponent {}

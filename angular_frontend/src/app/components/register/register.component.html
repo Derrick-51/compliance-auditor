@@ -9,13 +9,30 @@
   </div>
   <div class="ml-4 shadow-lg">
     <div>
-      <form [formGroup]="registerForm">
+      <form [formGroup]="registerForm" (ngSubmit)="submitDetails()">
         <mat-card class="w-[350px] p-2">
           <mat-card-header class="text-3xl flex justify-center mb-3 -mt-3">
             <mat-card-header>Register</mat-card-header>
           </mat-card-header>
           <mat-card-content>
-            <label for="email" class="ml-2">Email</label>
+            <label for="dealership">Email</label>
+            <div class="email-container">
+              <mat-form-field class="w-full">
+                <mat-label>Enter your Dealership</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  formControlName="dealership"
+                  name="dealership"
+                  placeholder="Dealership A"
+                />
+                @if (dealership.invalid && dealership.dirty ||
+                dealership.touched) {
+                <mat-error>{{ getDealerErrorMessage() }}</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <label for="email">Email</label>
             <div class="email-container">
               <mat-form-field hideRequiredMarker class="w-full">
                 <mat-label>Enter your email</mat-label>
@@ -94,6 +111,7 @@
               class="w-1/2 mx-auto"
               color="primary"
               [disabled]="registerForm.invalid"
+              type="submit"
             >
               Create Account
             </button>
