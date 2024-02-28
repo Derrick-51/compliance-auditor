@@ -1,19 +1,11 @@
 <div class="bg-gray-300 h-screen flex items-center justify-center">
   <div class="h-screen w-3/5 bg-white">
     <mat-card class="m-5 h-1/5">
-      <div class="p-5">
-        <div><h2>Instructions for submitting an audit:</h2></div>
-        <div>
-          <ul>
-            <li>1. Take pictures of brand signage</li>
-            <li>2. Upload images</li>
-            <li>3. Wait for verdict from auditor</li>
-          </ul> 
-        </div>
-      </div>
+      <!--Audit Submission Guidelines-->
+      <div [innerHTML]="guidelines"></div>
     </mat-card>
     <mat-card class="m-5 h-4/6">
-      <!--previews-->
+      <!--Previews-->
       <div class="h-3/4 p-5 overflow-scroll grid grid-cols-4 gap-5">
         <div *ngFor="let preview of previews; let i = index" class="relative">
           <img [src]="preview" (error)="displayImageUrl($event, i)"/>
@@ -26,18 +18,18 @@
         <div class="flex justify-between">
         <!--Browse button and file explorer-->
         <div>
-          <label for="photos">Choose images to upload (PNG or JPG)</label>
-          <input type="file" id="photos" accept=".jpg, .jpeg, .png" multiple="" (change)="selectFiles($event)" />
+          <label for="images">Choose images to upload (PNG or JPG)</label>
+          <input type="file" id="images" accept=".jpg, .jpeg, .png" multiple="" (change)="selectImages($event)" />
         </div>
-        <!--Upload button-->
+        <!--Submit button-->
         <button
           mat-raised-button
           color="primary"
           routerLink="/status"
           [disabled]="!previews.length"
-          (click)="uploadFiles()"
+          (click)="submitAudit()"
         >
-          Upload
+          Submit
         </button>
       </div>
       <!-- Error message -->

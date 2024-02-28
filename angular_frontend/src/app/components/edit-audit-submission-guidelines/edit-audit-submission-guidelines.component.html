@@ -1,0 +1,14 @@
+<div class="container flex">
+    <div class="w-1/2 p-4">
+      <!-- Markdown editor -->
+      <mat-form-field appearance="fill" class="w-full">
+        <textarea matInput [(ngModel)]="editedGuidelines"></textarea>
+      </mat-form-field>
+      <!-- Submit button-->
+      <button mat-raised-button color="primary" class="mt-4" (click)="onSubmit()">Submit</button>
+    </div>
+    <div class="w-1/2 p-4">
+      <!-- Markdown preview -->
+      <div [innerHTML]="renderMarkdown(guidelines)"></div>
+    </div>
+  </div>  
