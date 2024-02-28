@@ -1,16 +1,16 @@
-<div class="flex justify-center items-center w-full h-full">
-  <div class="w-[500px] mr-2">
+<div class="flex justify-center items-center w-full h-full bg-[#ebebeb]">
+  <div class="w-[500px] mr-4">
     <img
       class="mb-2"
       src="/assets/UrbanScienceHomepage.png"
       alt="Urban Science Logo"
     />
-    <p class="text-5xl">Dealership Compliance Auditor</p>
+    <p class="text-xl">Please create an account to access our automated auditing system.</p>
   </div>
-  <div class="ml-2 shadow-lg">
+  <div class="ml-4 shadow-lg">
     <div>
       <form [formGroup]="registerForm" (ngSubmit)="submitDetails()">
-        <mat-card class="w-[500px]">
+        <mat-card class="w-[350px] p-2">
           <mat-card-header class="text-3xl flex justify-center mb-3 -mt-3">
             <mat-card-header>Register</mat-card-header>
           </mat-card-header>
@@ -34,7 +34,7 @@
             </div>
             <label for="email">Email</label>
             <div class="email-container">
-              <mat-form-field class="w-full">
+              <mat-form-field hideRequiredMarker class="w-full">
                 <mat-label>Enter your email</mat-label>
                 <input
                   type="text"
@@ -48,9 +48,9 @@
                 }
               </mat-form-field>
             </div>
-            <label for="password">Password</label>
+            <label for="password" class="ml-2">Password</label>
             <div class="password-container">
-              <mat-form-field class="w-full">
+              <mat-form-field hideRequiredMarker class="w-full">
                 <mat-label>Enter your password</mat-label>
                 <input
                   [type]="hide ? 'password' : 'text'"
@@ -75,9 +75,9 @@
                 }
               </mat-form-field>
             </div>
-            <label for="confirmPassword">Confirm Password</label>
+            <label for="confirmPassword" class="ml-2">Confirm Password</label>
             <div class="confirm-password-container">
-              <mat-form-field class="w-full">
+              <mat-form-field hideRequiredMarker class="w-full">
                 <mat-label>Confirm password</mat-label>
                 <input
                   [type]="hide ? 'password' : 'text'"
@@ -108,7 +108,7 @@
             <button
               label="register"
               mat-flat-button
-              class="w-full"
+              class="w-1/2 mx-auto"
               color="primary"
               [disabled]="registerForm.invalid"
               type="submit"
