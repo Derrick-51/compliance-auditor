@@ -14,7 +14,7 @@ export const routes: Routes = [
   { path: 'review-audit', component: ReviewAuditComponent },
   { path: 'status', component: StatusComponent },
   { path: 'make-an-audit', component: MakeAnAuditComponent },
-  { path: 'profile-page', component: ProfilePageComponent },
+  { path: 'profile', component: ProfilePageComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '**', redirectTo: 'login', pathMatch: 'full' }, //this will be a 404 page, when the user tries to go to a page that doesnt exist }
 ];
