@@ -117,10 +117,10 @@ export class MakeAnAuditComponent implements OnInit{
   guidelines: string = '';
   ngOnInit(): void {
     // Path to Markdown file with guidelines
-    const markdownFilePath = '../../../../angular_frontend/audit-submission-guidelines.md';
+    const markdownFilePath = '/assets/audit-submission-guidelines.md';
     this.markdownService.readMarkdownFile(markdownFilePath)
       .subscribe((markdownContent: string) => {
        this.guidelines = markdownContent;
-      });
+    });
   }
 } 

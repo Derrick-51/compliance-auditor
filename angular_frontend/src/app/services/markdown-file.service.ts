@@ -21,9 +21,4 @@ export class MarkdownFileService {
         })
       );
   }
-
-  // Update Markdown file
-  updateMarkdownFile(filePath: string, content: string): Observable<any> {
-    return this.http.put(filePath, content, { responseType: 'text' });
-  }
 }

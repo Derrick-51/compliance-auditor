@@ -7,7 +7,7 @@ import {
   ManyToMany,
 } from 'typeorm';
 import { Users } from 'src/user/entities/user.entity';
-import { Image } from 'src/image/entities/image.entity';
+import { Images } from 'src/image/entities/image.entity';
 
 @Entity()
 export class Audit {
@@ -29,6 +29,6 @@ export class Audit {
   @ManyToMany((type) => Users, (user) => user.audit)
   user: Users;
 
-  @OneToMany((type) => Image, (image) => image.audit)
-  image: Image;
+  @OneToMany((type) => Images, (image) => image.audit)
+  image: Images;
 }

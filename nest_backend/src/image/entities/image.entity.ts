@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { Audit } from 'src/audit/entities/audit.entity';
 
 @Entity()
-export class Image {
+export class Images {
   @PrimaryGeneratedColumn()
   id: number;
 
