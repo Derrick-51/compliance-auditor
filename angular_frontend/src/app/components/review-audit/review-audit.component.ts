@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { navbarComponent } from '../navbar/navbar.component';
+import { MessageBundle } from '@angular/compiler';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MessageService } from '../../messages/message.service';
 
 @Component({
   selector: 'app-review-audit',
   standalone: true,
-  imports: [navbarComponent],
+  imports: [navbarComponent, HttpClient],
   templateUrl: './review-audit.component.html',
   styleUrl: './review-audit.component.scss',
 })
