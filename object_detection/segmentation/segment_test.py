@@ -4,15 +4,42 @@ from pathlib import Path
 import numpy as np
 import cv2
 
-paths = ["img0.jpg", "img1.jpg", "img2.jpg", "img3.jpg", "img4.jpg"]
-# images = ["img0.jpg"]
+# paths = ["img0.jpg", "img1.jpg", "img2.jpg", "img3.jpg", "img4.jpg"]
+paths = ["img0.jpg", "img1.jpg", "img2.jpg", "img3.jpg"]
 
 images = []
 for pathNum, path in enumerate(paths):
-    images.append(cv2.imread(path, cv2.IMREAD_GRAYSCALE))
-    images[pathNum] = cv2.bilateralFilter(images[pathNum], 7, sigmaColor=5, sigmaSpace=10)
-    images[pathNum] = cv2.Canny(images[pathNum], 15, 15, apertureSize=3)
-    images[pathNum] = cv2.cvtColor(images[pathNum], cv2.COLOR_GRAY2BGR)
+    image = cv2.imread(path, cv2.IMREAD_GRAYSCALE)
+
+    # Resize based on ratio
+    widthRatio = image.shape[1] / image.shape[0]
+    distanceFromOne = 1 - widthRatio
+    
+    if (distanceFromOne < 0.0):
+        print("negative")
+        distanceFromOne *= -1.0
+    print(f'Image: {pathNum}')
+    print(f'Width Ratio: {widthRatio}')
+    print(f'Distance From One: {distanceFromOne}')
+
+    if (distanceFromOne < 0.3): # 4:3 Ratio
+        image = cv2.resize(image, (1600, 1200), cv2.INTER_AREA)
+        print("4:3")
+    elif (widthRatio > 1.0): # 16:9 Ratio
+        print("16:9")
+        image = cv2.resize(image, (1080, 1920), cv2.INTER_AREA)
+    elif (widthRatio < 1.0): # 9:16 Ratio
+        print("9:16")
+        image = cv2.resize(image, (1920, 1080), cv2.INTER_AREA)
+
+    # Preprocess for better segmentation
+    image = cv2.bilateralFilter(image, 7, sigmaColor=5, sigmaSpace=10)
+    image = cv2.Canny(image, 15, 15, apertureSize=3)
+    image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
+    cv2.imshow(f'Image {pathNum}', image)
+
+    images.append(image)
+    
 
 model = FastSAM("FastSAM-s.pt")
 
@@ -59,6 +86,13 @@ for imgNum, image in enumerate(images):
         contour = contour.astype(np.int32)
         contour = contour.reshape(-1, 1, 2)
 
+        if(not contour.shape[0]):
+            continue
+
+        # print(f'Contour: {contour}')
+        # print(f'Contour Shape: {contour.shape}')
+        # print(f'Mask Shape: {bMask[maskNum].shape}')
+
         cv2.drawContours(bMask[maskNum], [contour], -1, (255, 255, 255), cv2.FILLED)
 
         # Remove boundary touching masks
@@ -88,6 +122,9 @@ for imgNum, image in enumerate(images):
         corners = np.int64(corners)
 
         if(len(corners) >= 4):
-            cv2.imshow(f'Image: {imgNum} Contour: {maskNum}', bMask[maskNum])
+            smallWidth = int(bMask[maskNum].shape[1]/2)
+            smallHeight = int(bMask[maskNum].shape[0]/2)
+            smallMask = cv2.resize(bMask[maskNum], (smallHeight, smallWidth), interpolation=cv2.INTER_AREA)
+            cv2.imshow(f'Image: {imgNum} Contour: {maskNum}', smallMask)
     
 cv2.waitKey(0)
