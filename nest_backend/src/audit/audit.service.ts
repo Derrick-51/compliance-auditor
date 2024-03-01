@@ -1,15 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAuditDto } from './dto/create-audit.dto';
 import { UpdateAuditDto } from './dto/update-audit.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Audit } from './entities/audit.entity';
 
 @Injectable()
 export class AuditService {
+  constructor(
+    @InjectRepository(Audit)
+    private auditRepository: Repository<Audit>,
+  ) {}
+
   create(createAuditDto: CreateAuditDto) {
     return 'This action adds a new audit';
   }
 
   findAll() {
-    return `This action returns all audit`;
+    return this.auditRepository.find();
   }
 
   findOne(id: number) {
