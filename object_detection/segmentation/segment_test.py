@@ -4,8 +4,8 @@ from pathlib import Path
 import numpy as np
 import cv2
 
-# paths = ["img0.jpg", "img1.jpg", "img2.jpg", "img3.jpg", "img4.jpg"]
-paths = ["img0.jpg", "img1.jpg", "img2.jpg", "img3.jpg"]
+paths = ["img0.jpg", "img1.jpg", "img2.jpg", "img3.jpg", "img4.jpg", "img5.jpg", "img6.jpg", "img7.jpg"]
+# paths = ["img0.jpg", "img1.jpg", "img2.jpg", "img3.jpg"]
 
 images = []
 for pathNum, path in enumerate(paths):
@@ -14,29 +14,27 @@ for pathNum, path in enumerate(paths):
     # Resize based on ratio
     widthRatio = image.shape[1] / image.shape[0]
     distanceFromOne = 1 - widthRatio
-    
     if (distanceFromOne < 0.0):
-        print("negative")
         distanceFromOne *= -1.0
-    print(f'Image: {pathNum}')
-    print(f'Width Ratio: {widthRatio}')
-    print(f'Distance From One: {distanceFromOne}')
 
-    if (distanceFromOne < 0.3): # 4:3 Ratio
-        image = cv2.resize(image, (1600, 1200), cv2.INTER_AREA)
-        print("4:3")
-    elif (widthRatio > 1.0): # 16:9 Ratio
-        print("16:9")
-        image = cv2.resize(image, (1080, 1920), cv2.INTER_AREA)
-    elif (widthRatio < 1.0): # 9:16 Ratio
-        print("9:16")
-        image = cv2.resize(image, (1920, 1080), cv2.INTER_AREA)
+    if (widthRatio > 1.0): # Horizontal Ratio
+        if (distanceFromOne < 0.27): # 4:3 Ratio
+            image = cv2.resize(image, (1600, 1200), cv2.INTER_AREA)
+        else:
+            image = cv2.resize(image, (1920, 1080), cv2.INTER_AREA)
+    elif (widthRatio < 1.0): # Vertical Ratio
+        if (distanceFromOne < 0.27): # 3:4 Ratio
+            image = cv2.resize(image, (1200, 1600), cv2.INTER_AREA)
+        else:
+            image = cv2.resize(image, (1080, 1920), cv2.INTER_AREA)
 
     # Preprocess for better segmentation
     image = cv2.bilateralFilter(image, 7, sigmaColor=5, sigmaSpace=10)
     image = cv2.Canny(image, 15, 15, apertureSize=3)
     image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
-    cv2.imshow(f'Image {pathNum}', image)
+    showImg = np.copy(image)
+    showImg = cv2.resize(showImg, (0, 0), fx=0.5, fy=0.5)
+    cv2.imshow(f'Image {pathNum}', showImg)
 
     images.append(image)
     
@@ -122,8 +120,8 @@ for imgNum, image in enumerate(images):
         corners = np.int64(corners)
 
         if(len(corners) >= 4):
-            smallWidth = int(bMask[maskNum].shape[1]/2)
-            smallHeight = int(bMask[maskNum].shape[0]/2)
+            smallWidth = int(bMask[maskNum].shape[0]/2)
+            smallHeight = int(bMask[maskNum].shape[1]/2)
             smallMask = cv2.resize(bMask[maskNum], (smallHeight, smallWidth), interpolation=cv2.INTER_AREA)
             cv2.imshow(f'Image: {imgNum} Contour: {maskNum}', smallMask)
     
