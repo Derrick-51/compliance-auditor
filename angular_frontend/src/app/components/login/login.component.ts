@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -33,6 +33,7 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
+
 export class LoginComponent {
   loginForm = this.fb.group({
     username: ['', [Validators.required, Validators.email]],
@@ -73,6 +74,28 @@ export class LoginComponent {
       return 'Password field is empty';
     }
     return;
+  }
+
+  passwordPlaceholder = 'Type your password'; // Default placeholder text
+  passwordLabel = 'Enter your password'; // Default label text
+  emailLabel = 'Enter your password'; // Default label text
+
+  // Update placeholder text based on viewport size
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any): void {
+    this.updatePlaceholder();
+    this.updateLabel();
+  }
+
+  updatePlaceholder(): void {
+    // Set different placeholder text for small viewports
+    this.passwordPlaceholder = window.innerWidth < 1024 ? 'Password' : 'Type your password';
+  }
+
+  updateLabel(): void {
+    // Set different label text for small viewports
+    this.passwordLabel = window.innerWidth < 1024 ? 'Password' : 'Enter your password';
+    this.emailLabel = window.innerWidth < 1024 ? 'Email' : 'Enter your email';
   }
 
   hide = true;

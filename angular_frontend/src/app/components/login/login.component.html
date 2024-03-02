@@ -1,11 +1,15 @@
-<div class="flex justify-center items-center min-h-screen flex-col lg:flex-row lg:gap-3 bg-[#e2e2e2]">
-  <div class="lg:w-[500px] w-[300px] lg:mr-20">
+<div
+  class="flex justify-center items-center min-h-screen flex-col lg:flex-row lg:gap-3 bg-[#e2e2e2]"
+>
+  <div class="w-[500px] lg:mr-20 mb-2">
     <img
-      class="mb-2"
+      class="lg:mb-2"
       src="/assets/UrbanScienceHomepage.png"
       alt="Urban Science Logo"
     />
-    <p class="lg:text-xl">Please log in to access our automated auditing system.</p>
+    <p class="lg:text-xl flex justify-center text-lg">
+      Please log in to access our automated auditing system.
+    </p>
   </div>
   <div class="shadow-lg">
     <form [formGroup]="loginForm" (ngSubmit)="submitLogin()">
@@ -18,7 +22,7 @@
             <label for="email" class="ml-2">Email</label>
             <div class="email-container">
               <mat-form-field hideRequiredMarker class="w-full">
-                <mat-label>Enter your email</mat-label>
+                <mat-label>{{ emailLabel }}</mat-label>
                 <input
                   type="text"
                   matInput
@@ -34,13 +38,13 @@
             <label for="password" class="ml-2">Password</label>
             <div class="password-container">
               <mat-form-field hideRequiredMarker class="w-full">
-                <mat-label>Enter your password</mat-label>
+                <mat-label>{{ passwordLabel }}</mat-label>
                 <input
                   [type]="hide ? 'password' : 'text'"
                   matInput
                   formControlName="password"
                   name="password"
-                  placeholder="Type your password"
+                  [placeholder]="passwordPlaceholder"
                 />
                 <button
                   mat-icon-button
