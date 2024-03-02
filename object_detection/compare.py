@@ -28,5 +28,6 @@ def compareDHash(image: cv2.typing.MatLike,
     targetHash = int(dhash.format_hex(targetRow, targetCol), 16)
 
     hammingDistance = dhash.get_num_bits_different(imageHash, targetHash)
+    similarityRatio = 1 - (hammingDistance / (hash_size * hash_size))
 
-    return hammingDistance
+    return similarityRatio
