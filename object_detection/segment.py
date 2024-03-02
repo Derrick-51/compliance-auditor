@@ -37,32 +37,28 @@ def preprocessImage(image: cv2.typing.MatLike) -> cv2.typing.MatLike:
     return image
 
 
-# Determine if mask touches any boundary
-def isBoundaryMask(mask: cv2.typing.MatLike) -> bool:
+# Determine if mask touches given boundary
+def isBoundaryMask(mask: cv2.typing.MatLike, thickness: int=1) -> bool:
     # Check first rows and last rows
     for col in range(mask.shape[1]):
-        if(mask[0, col] or
-        mask[1, col] or
-        mask[2, col] or
-        mask[-1, col] or
-        mask[-2, col] or
-        mask[-3, col]):
-            return True
+        for row in range(thickness):
+
+            negative_row = (thickness - row) * -1
+            if(mask[row, col] or mask[negative_row, col]):
+                return True
         
     # Check first columns and last columns
     for row in range(mask.shape[0]):
-        if (mask[row, 0] or
-            mask[row, 1] or
-            mask[row, 2] or
-            mask[row, -1] or
-            mask[row, -2] or
-            mask[row, -3]):
-            return True
+        for col in range(thickness):
+
+            negative_col = (thickness - col) * -1
+            if(mask[row, col] or mask[row, negative_col]):
+                return True
         
     return False
 
 
-def generateMasks(images: List[cv2.typing.MatLike]) -> List[cv2.typing.MatLike]:
+def generateMasks(images: List[cv2.typing.MatLike], boundary_thickness: int=1, corner_quality: float=0.1, corner_min_distance: float=100.0) -> List[cv2.typing.MatLike]:
 
     model = FastSAM("FastSam-s.pt")
 
@@ -96,11 +92,11 @@ def generateMasks(images: List[cv2.typing.MatLike]) -> List[cv2.typing.MatLike]:
             cv2.drawContours(bMask, [contour], -1, (255, 255, 255), cv2.FILLED)
 
             # Ignore boundary touching masks
-            if isBoundaryMask(bMask):
+            if isBoundaryMask(bMask, boundary_thickness):
                 continue
 
             # Ignore masks with less than 4 corners
-            corners = cv2.goodFeaturesToTrack(bMask, maxCorners=4, qualityLevel=0.1, minDistance=100)
+            corners = cv2.goodFeaturesToTrack(bMask, maxCorners=4, qualityLevel=corner_quality, minDistance=corner_min_distance)
             corners = np.int64(corners)
 
             if(len(corners) >= 4):
