@@ -5,8 +5,6 @@ import numpy as np
 import cv2
 
 DEVICE = "cpu"
-CONF_THRESHOLD = 0.2
-IOU_THRESHOLD = 0.9
 
 
 def preprocessImage(image: cv2.typing.MatLike) -> cv2.typing.MatLike:
@@ -58,7 +56,12 @@ def isBoundaryMask(mask: cv2.typing.MatLike, thickness: int=1) -> bool:
     return False
 
 
-def generateMasks(images: List[cv2.typing.MatLike], boundary_thickness: int=1, corner_quality: float=0.1, corner_min_distance: float=100.0) -> List[cv2.typing.MatLike]:
+def generateMasks(images: List[cv2.typing.MatLike],
+                  conf_threshold: float=0.2,
+                  iou_threshold: float=0.9,
+                  boundary_thickness: int=1,
+                  corner_quality: float=0.1,
+                  corner_min_distance: float=100.0) -> List[cv2.typing.MatLike]:
 
     model = FastSAM("FastSam-s.pt")
 
@@ -72,8 +75,8 @@ def generateMasks(images: List[cv2.typing.MatLike], boundary_thickness: int=1, c
                            verbose=False,
                            retina_masks=False,
                            imgsz=1024,
-                           conf=CONF_THRESHOLD,
-                           iou=IOU_THRESHOLD)
+                           conf=conf_threshold,
+                           iou=iou_threshold)
         promptProcess = FastSAMPrompt(image, allResults, device=DEVICE)
         results = promptProcess.everything_prompt()
 
