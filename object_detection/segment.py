@@ -1,5 +1,3 @@
-from ultralytics import FastSAM
-from ultralytics.models.fastsam import FastSAMPrompt
 from typing import List
 import numpy as np
 import cv2
@@ -62,6 +60,8 @@ def generateMasks(images: List[cv2.typing.MatLike],
                   boundary_thickness: int=1,
                   corner_quality: float=0.1,
                   corner_min_distance: float=100.0) -> List[cv2.typing.MatLike]:
+    from ultralytics import FastSAM
+    from ultralytics.models.fastsam import FastSAMPrompt
 
     model = FastSAM("FastSam-s.pt")
 
