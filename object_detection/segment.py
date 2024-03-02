@@ -35,6 +35,32 @@ def preprocessImage(image: cv2.typing.MatLike) -> cv2.typing.MatLike:
     
     return image
 
+
+# Determine if mask touches any boundary
+def isBoundaryMask(mask: cv2.typing.MatLike) -> bool:
+    # Check first rows and last rows
+    for col in range(mask.shape[1]):
+        if(mask[0, col] or
+        mask[1, col] or
+        mask[2, col] or
+        mask[-1, col] or
+        mask[-2, col] or
+        mask[-3, col]):
+            return True
+        
+    # Check first columns and last columns
+    for row in range(mask.shape[0]):
+        if (mask[row, 0] or
+            mask[row, 1] or
+            mask[row, 2] or
+            mask[row, -1] or
+            mask[row, -2] or
+            mask[row, -3]):
+            return True
+        
+    return False
+
+
 def generateMasks(images: cv2.typing.MatLike) -> cv2.typing.MatLike:
 
     model = FastSAM("FastSam-s.pt")
@@ -43,6 +69,7 @@ def generateMasks(images: cv2.typing.MatLike) -> cv2.typing.MatLike:
 
     for imgNum, image in enumerate(images):
 
+        # Generate maks with model
         allResults = model(image,
                            device=DEVICE,
                            verbose=False,
@@ -53,48 +80,25 @@ def generateMasks(images: cv2.typing.MatLike) -> cv2.typing.MatLike:
         promptProcess = FastSAMPrompt(image, allResults, device=DEVICE)
         results = promptProcess.everything_prompt()
 
-        img = np.copy(results[0].orig_img)
+        # Ignore bad masks
         acceptedMasks = []
-
         for result in results[0]:
             bMask = np.zeros(image.shape[:2], np.uint8)
             contour = result.masks.xy.pop()
             contour = contour.astype(np.int32)
             contour = contour.reshape(-1, 1, 2)
 
+            # Ignore empty masks
             if(not contour.shape[0]):
                 continue
 
-
             cv2.drawContours(bMask, [contour], -1, (255, 255, 255), cv2.FILLED)
 
-            # Remove boundary touching masks
-            rejected = False
-            # Check first rows and last rows
-            for col in range(bMask.shape[1]):
-                if(bMask[0, col] or
-                bMask[1, col] or
-                bMask[2, col] or
-                bMask[-1, col] or
-                bMask[-2, col] or
-                bMask[-3, col]):
-                    rejected = True
-                    break
-            # Check first columns and last columns
-            if not rejected:
-                for row in range(bMask.shape[0]):
-                    if (bMask[row, 0] or
-                        bMask[row, 1] or
-                        bMask[row, 2] or
-                        bMask[row, -1] or
-                        bMask[row, -2] or
-                        bMask[row, -3]):
-                        rejected = True
-                        break
-            if rejected:
+            # Ignore boundary touching masks
+            if isBoundaryMask(bMask):
                 continue
 
-            # Only accept masks with at least 4 corners
+            # Ignore masks with less than 4 corners
             corners = cv2.goodFeaturesToTrack(bMask, maxCorners=4, qualityLevel=0.1, minDistance=100)
             corners = np.int64(corners)
 
