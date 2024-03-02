@@ -26,6 +26,7 @@ def preprocessImage(image: cv2.typing.MatLike) -> cv2.typing.MatLike:
             image = cv2.resize(image, (1080, 1920), cv2.INTER_AREA)
 
     # Process for better segmentation
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     image = cv2.bilateralFilter(image, 7, sigmaColor=5, sigmaSpace=10)
     image = cv2.Canny(image, 15, 15, apertureSize=3)
     image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
