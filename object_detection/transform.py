@@ -36,11 +36,11 @@ def transformImage(image: cv2.typing.MatLike,
     if corners[2][1] > corners[3][1]:
         corners[2], corners[3] = corners[3], corners[2]
 
-
+    inputPoints = np.float32([(corners[0], corners[1], corners[2], corners[3])])
     outputPoints = np.float32([(0, 0), (0, output_y), (output_x, 0), (output_x, output_y)])
 
     # Transform perspective using output size
-    perspectiveMat = cv2.getPerspectiveTransform(corners, outputPoints)
+    perspectiveMat = cv2.getPerspectiveTransform(inputPoints, outputPoints)
     transformedImage = cv2.warpPerspective(image, perspectiveMat, (output_x, output_y))
 
     return transformedImage
