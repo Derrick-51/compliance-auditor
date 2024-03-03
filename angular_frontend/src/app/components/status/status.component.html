@@ -1,3 +1,13 @@
-<app-navbar></app-navbar>
-<h3>No audits currently awaiting verdict from auditer.</h3>
-<button mat-raised-button  routerLink="/make-an-audit">Start an Audit</button>
+<div class="flex justify-between items-center mb-4">
+  <h2 class="text-xl font-semibold">Audit Status: {{ latestAudit?.finalVerdict || 'No audits submitted' }}</h2>
+  <button mat-raised-button routerLink="/make-an-audit" *ngIf="latestAudit?.finalVerdict !== 'Pending'">Start an Audit</button>
+</div>
+
+<div *ngIf="latestAudit?.finalVerdict === 'Failed'" class="text-center">
+  <h3 class="text-lg font-semibold">Failed Images</h3>
+  <div class="flex justify-center">
+    <div *ngFor="let image of failedImages" class="m-4">
+      <img [src]="getImageUrl(image.fileName)" alt="Failed Image">
+    </div>
+  </div>
+</div>

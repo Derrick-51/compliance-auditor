@@ -13,6 +13,8 @@ import { ImageModule } from './image/image.module';
 import { Images } from './image/entities/image.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './auth/constants';
+import { LatestAuditModule } from './latest-audit/latest-audit.module';
+import { FailedImagesModule } from './failed-images/failed-images.module';
 
 @Module({
   imports: [
@@ -33,6 +35,8 @@ import { jwtConstants } from './auth/constants';
     UserModule,
     AuditModule,
     ImageModule,
+    LatestAuditModule,
+    FailedImagesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
