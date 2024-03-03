@@ -1,11 +1,52 @@
 <app-navbar></app-navbar>
 <div class="flex justify-center items-center w-full h-full bg-[#ebebeb]">
-  <div class="flex justify-center items-center">
-    <table>
-      <tr>
-        Big Guy
-      </tr>
-      <td>1</td>
-    </table>
+  <div class="flex flex-col justify-center items-center">
+    <h2>List of Audits</h2>
+    <div class="w-full overflow-y-auto max-h-80">
+      <ul class="mat-list justify-center items-center w-full">
+        <li *ngFor="let audit of audits">
+          <button
+            class="flex min-w-full inline-flex items-center px-4 py-2 bg-gray-400 border rounded-md text-base font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            color="primary"
+            type="button"
+            (click)="onSelect(audit)"
+            [class.bg-green-500]="audit.finalVerdict === 'Passed'"
+            [class.bg-red-500]="audit.finalVerdict === 'Failed'"
+            [class.bg-yellow-500]="audit.finalVerdict === 'Pending'"
+          >
+            <div
+              class="grid grid-cols-2 sm:grid-cols-4 min-w-full justify-start"
+            >
+              <span class="text-lg font-medium flex mr-2">Dealership:</span>
+              <span class="text-lg col-span-3">{{ audit.name }}</span>
+              <span class="text-lg font-medium flex mr-2">Verdict:</span>
+              <span class="text-base col-span-3">{{ audit.finalVerdict }}</span>
+            </div>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div *ngIf="selectedAudit" class="flex flex-col justify-center items-center">
+    <h2>{{ selectedAudit.name | uppercase }} Details</h2>
+    <div>id: {{ selectedAudit.id }}</div>
+    <div *ngIf="selectedAudit.imageUrl && selectedAudit.imageUrl.length > 0">
+      <h4>Images</h4>
+      <div
+        class="flex flex-wrap justify-content align-items overflow-y-auto max-h-80"
+      >
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 w-full">
+          <img
+            *ngFor="let imageUrls of selectedAudit.imageUrl"
+            src="{{ imageUrls }}"
+            alt="Image for {{ selectedAudit.name }}"
+            class="object-cover h-full"
+          />
+        </div>
+      </div>
+    </div>
+    <div>
+      <label for="audit-name">Audit name: {{ selectedAudit.name }} </label>
+    </div>
   </div>
 </div>
