@@ -5,8 +5,7 @@ import cv2
 DEVICE = "cpu"
 
 
-def preprocessImage(image: cv2.typing.MatLike) -> cv2.typing.MatLike:
-
+def standardizeImageSize(image: cv2.typing.MatLike) -> cv2.typing.MatLike:
     # Resize based on ratio
     widthRatio = image.shape[1] / image.shape[0]
     distanceFromOne = 1 - widthRatio
@@ -24,6 +23,12 @@ def preprocessImage(image: cv2.typing.MatLike) -> cv2.typing.MatLike:
             image = cv2.resize(image, (1200, 1600), cv2.INTER_AREA)
         else:
             image = cv2.resize(image, (1080, 1920), cv2.INTER_AREA)
+
+    return image
+
+def preprocessImage(image: cv2.typing.MatLike) -> cv2.typing.MatLike:
+
+    image = standardizeImageSize(image)
 
     # Process for better segmentation
     image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
