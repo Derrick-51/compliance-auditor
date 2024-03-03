@@ -11,7 +11,6 @@ export class LatestAuditService {
   constructor(private http: HttpClient) { }
 
   getLatestAuditForDealership(dealershipId: number): Observable<Audit> {
-    const url = `${this.baseUrl}/latest-audit/${dealershipId}`;
-    return this.http.get<Audit>(url);
+    return this.http.get<Audit>(`${this.baseUrl}/latest-audit/${dealershipId}`);
   }
 }

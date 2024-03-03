@@ -7,6 +7,8 @@ import { Images } from '../../interfaces/images';
 import { LatestAuditService } from '../../services/latest-audit.service';
 import { FailedImagesService } from '../../services/failed-images.service';
 import { CommonModule } from '@angular/common';
+import { JwtTokenService } from '../../services/jwt-token.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-status',
@@ -19,17 +21,33 @@ export class StatusComponent implements OnInit {
   latestAudit: Audit | undefined;
   failedImages: Images[] | undefined;
   imageLoaded: boolean = true;
-  // Set up later to parse JWT token for dealershipID
-  dealershipID: number = 7;
+  dealershipId: number | undefined;
 
-  constructor(private latestAuditService: LatestAuditService, private failedImagesService: FailedImagesService) { }
+  constructor(
+    private latestAuditService: LatestAuditService,
+    private failedImagesService: FailedImagesService,
+    private jwtTokenService: JwtTokenService,
+    private cookieService: CookieService
+  ) {}
 
   ngOnInit(): void {
+    const token = this.cookieService.get('jwt'); 
+    if (!token){
+      console.error('JWT token not found in cookie');
+      return;
+    }
+    const dealershipId = this.jwtTokenService.getUserIdFromToken(token);
+    if (!dealershipId)
+      return;
+    this.dealershipId = dealershipId;
     this.loadLatestAudit();
   }
 
+
   loadLatestAudit() {
-    this.latestAuditService.getLatestAuditForDealership(this.dealershipID).subscribe((latestAudit) => {
+    if (!this.dealershipId)
+     return;
+    this.latestAuditService.getLatestAuditForDealership(this.dealershipId).subscribe((latestAudit) => {
       this.latestAudit = latestAudit;
       if(!this.latestAudit)
         return;

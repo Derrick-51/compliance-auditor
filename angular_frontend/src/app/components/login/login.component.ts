@@ -15,6 +15,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
+import { LoginResponse } from '../../interfaces/login-response';
 
 @Component({
   selector: 'app-login',
@@ -42,7 +44,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private cookieService: CookieService
   ) {}
 
   get email() {
@@ -55,9 +58,10 @@ export class LoginComponent {
   submitLogin() {
     const postData = { ...this.loginForm.value };
     this.http
-      .post('http://localhost:3000/auth/login', postData)
+      .post<LoginResponse>('http://localhost:3000/auth/login', postData)
       .subscribe((response) => {
         console.log(response);
+        this.cookieService.set('jwt', response.access_token); // Set JWT token in a cookie
         this.router.navigate(['status']);
       });
   }

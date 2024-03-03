@@ -11,7 +11,6 @@ export class FailedImagesService {
   constructor(private http: HttpClient) { }
 
   getFailedImagesForAudit(auditId: number): Observable<Images[]> {
-    const url = `${this.baseUrl}/failed-images/${auditId}`;
-    return this.http.get<Images[]>(url);
+    return this.http.get<Images[]>(`${this.baseUrl}/failed-images/${auditId}`);
   }
 }
