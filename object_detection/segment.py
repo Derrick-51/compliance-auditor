@@ -65,14 +65,13 @@ def generateMasks(images: List[cv2.typing.MatLike],
                   iou_threshold: float=0.9,
                   boundary_thickness: int=1,
                   corner_quality: float=0.1,
-                  corner_min_distance: float=100.0) -> List[cv2.typing.MatLike]:
+                  corner_min_distance: float=100.0) -> List[List[cv2.typing.MatLike]]:
     from ultralytics import FastSAM
     from ultralytics.models.fastsam import FastSAMPrompt
 
     model = FastSAM("FastSam-s.pt")
 
     imageMasks = []
-
     for imgNum, image in enumerate(images):
 
         # Generate maks with model
@@ -111,6 +110,6 @@ def generateMasks(images: List[cv2.typing.MatLike],
             if(len(corners) >= 4):
                 acceptedMasks.append(np.copy(bMask))
         
-        imageMasks.append((image, acceptedMasks))
+        imageMasks.append(acceptedMasks)
 
     return imageMasks
