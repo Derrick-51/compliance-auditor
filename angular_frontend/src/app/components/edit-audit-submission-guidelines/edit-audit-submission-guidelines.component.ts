@@ -13,24 +13,14 @@ import { MarkdownModule } from 'ngx-markdown';
   styleUrl: './edit-audit-submission-guidelines.component.scss'
 })
 export class EditAuditSubmissionGuidelinesComponent implements OnInit {
-  editorContent: string = '';
-  previewContent: string = '';
+  guidelines: string = '';
 
-  // Path to Markdown file with guidelines
-  markdownFilePath: string = '/assets/audit-submission-guidelines.md';
-
-    // Inject markdown file services
-  constructor(private markdownService: MarkdownFileService) { }
+  // Inject markdown file services
+  constructor(private markdownFileService: MarkdownFileService) { }
 
   ngOnInit(): void {
-    this.markdownService.readMarkdownFile(this.markdownFilePath)
-    .subscribe((markdownContent: string) => {
-     this.editorContent = markdownContent;
-     this.updatePreview();
+    this.markdownFileService.readMarkdownFile().subscribe((markdownContent: string) => {
+     this.guidelines = markdownContent;
     });
-  }
-
-  updatePreview() {
-    this.previewContent = this.editorContent;
   }
 }

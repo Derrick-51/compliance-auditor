@@ -3,13 +3,13 @@
   <div class="h-screen w-full bg-white">
     <mat-card class="m-5 h-1/5">
       <!--Audit Submission Guidelines-->
-      <!--<div [innerHTML]="guidelines"></div>-->
+      <markdown [data]="guidelines"></markdown>
     </mat-card>
     <mat-card class="m-5 h-4/6">
       <!--Previews-->
       <div class="h-3/4 p-5 overflow-scroll grid grid-cols-4 gap-5">
         <div *ngFor="let preview of previews; let i = index" class="relative">
-          <img [src]="preview" (error)="displayImageUrl($event, i)" alt="Image Preview"/>
+          <img [src]="preview" (error)="displayImageUrl($event, i)" alt="Preview of Submitted Image"/>
           <button class="absolute top-0 right-0 text-red-500 hover:text-red-700" (click)="deleteImage(i)">
             <mat-icon>delete</mat-icon>
           </button>

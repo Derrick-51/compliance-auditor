@@ -7,12 +7,13 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class MarkdownFileService {
-
+  private readonly markdownFilePath: string = '/assets/audit-submission-guidelines.md';
+  private databaseUrl = 'http://localhost:3000';
   constructor(private http: HttpClient) { }
 
   // Read Markdown file
-  readMarkdownFile(filePath: string): Observable<string> {
-    return this.http.get(filePath, { responseType: 'text' })
+  readMarkdownFile(): Observable<string> {
+    return this.http.get(this.markdownFilePath, { responseType: 'text' })
       .pipe(
         catchError((error: any) => {
           console.error('Could not find markdown file:', error);

@@ -7,10 +7,10 @@ import { Images } from '../interfaces/images';
   providedIn: 'root'
 })
 export class FailedImagesService {
-  private baseUrl = 'http://localhost:3000';
+  private databaseUrl = 'http://localhost:3000';
   constructor(private http: HttpClient) { }
 
   getFailedImagesForAudit(auditId: number): Observable<Images[]> {
-    return this.http.get<Images[]>(`${this.baseUrl}/failed-images/${auditId}`);
+    return this.http.get<Images[]>(`${this.databaseUrl}/failed-images/${auditId}`);
   }
 }

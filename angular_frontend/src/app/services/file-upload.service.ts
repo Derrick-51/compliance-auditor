@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class FileUploadService {
-  private baseUrl = 'http://localhost:3000';
+  private databaseUrl = 'http://localhost:3000';
   constructor(private http: HttpClient) {}
 
   // Upload a file
@@ -14,7 +14,7 @@ export class FileUploadService {
     const formData: FormData = new FormData();
 
     formData.append('images', file);
-    const req = new HttpRequest('POST', `${this.baseUrl}/api/upload`, formData, {
+    const req = new HttpRequest('POST', `${this.databaseUrl}/api/upload`, formData, {
       responseType: 'json'
     });
 

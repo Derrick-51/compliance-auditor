@@ -7,11 +7,12 @@ import { FileUploadService } from '../../services/file-upload.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MarkdownFileService } from '../../services/markdown-file.service';
 import { navbarComponent } from '../navbar/navbar.component';
+import { MarkdownModule } from 'ngx-markdown';
 
 @Component({
   selector: 'app-make-an-audit',
   standalone: true,
-  imports: [CommonModule, RouterLink, MatButtonModule, MatCardModule, MatIconModule, navbarComponent],
+  imports: [CommonModule, RouterLink, MatButtonModule, MatCardModule, MatIconModule, navbarComponent, MarkdownModule],
   templateUrl: './make-an-audit.component.html',
   styleUrl: './make-an-audit.component.scss',
 })
@@ -20,9 +21,10 @@ export class MakeAnAuditComponent implements OnInit{
   message = '';
   previews: string[] = [];
   hasInvalidFiles = false;
+  guidelines: string = '';
 
   // Inject file upload and markdown file services
-  constructor(private uploadService: FileUploadService,  private markdownService: MarkdownFileService) {}
+  constructor(private uploadService: FileUploadService,  private markdownFileService: MarkdownFileService) {}
 
   // Helper function to convert array of files into a FileList
   private createFileList(files: File[]): FileList {
@@ -71,16 +73,16 @@ export class MakeAnAuditComponent implements OnInit{
 
   // Upload individual images of submitted audit
   upload(file:File): void {
-    if (file) {
-      this.uploadService.upload(file).subscribe({
-        error: (err: any) => {
-          this.message = 'Could not submit audit. Please run nest backend.';
-        },
-        complete: () => {
-          this.audit = undefined;
-        },
-      });
-    }
+    if (!file)
+      return;
+    this.uploadService.upload(file).subscribe({
+      error: (err: any) => {
+        this.message = 'Could not submit audit. Please run nest backend.';
+      },
+      complete: () => {
+        this.audit = undefined;
+      },
+    });
   }
 
   // Uploads all images of submitted audit
@@ -114,13 +116,9 @@ export class MakeAnAuditComponent implements OnInit{
   }
 
   // Read Markdown file and set guidelines to its content when page is loaded
-  guidelines: string = '';
   ngOnInit(): void {
-    // Path to Markdown file with guidelines
-    const markdownFilePath = '/assets/audit-submission-guidelines.md';
-    this.markdownService.readMarkdownFile(markdownFilePath)
-      .subscribe((markdownContent: string) => {
-       this.guidelines = markdownContent;
+    this.markdownFileService.readMarkdownFile().subscribe((markdownContent: string) => {
+     this.guidelines = markdownContent;
     });
   }
 } 
