@@ -7,7 +7,8 @@
   <h3 class="text-lg font-semibold">Failed Images</h3>
   <div class="flex justify-center">
     <div *ngFor="let image of failedImages" class="m-4">
-      <img [src]="getImageUrl(image.fileName)" alt="Failed Image">
+        <img [src]="getImageUrl(image.fileName)" (error)="displayFileName(image.fileName)" alt="Failed Image">
+        <span *ngIf="!imageLoaded">{{ image.fileName }}</span>
     </div>
   </div>
 </div>
