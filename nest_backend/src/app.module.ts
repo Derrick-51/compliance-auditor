@@ -15,6 +15,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './auth/constants';
 import { LatestAuditModule } from './latest-audit/latest-audit.module';
 import { FailedImagesModule } from './failed-images/failed-images.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -28,6 +30,10 @@ import { FailedImagesModule } from './failed-images/failed-images.module';
       synchronize: true, //REMOVE THIS IN PRODUCTION
       entities: [Users, Audit, Images],
       options: { encrypt: false }, //bypasses self-signed certificate, may need to change this later since this can be exploited in a cyber attack
+    }),
+    // Allows access to images folder in front end
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'images'),
     }),
     UploadModule,
     AuthModule,

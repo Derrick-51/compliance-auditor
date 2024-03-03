@@ -11,6 +11,6 @@ export class FailedImagesService {
   ) {}
 
   async getFailedImagesForAudit(auditId: number): Promise<Images[]> {
-    return this.failedImagesRepository.find({ where: { audit: { id: auditId } } });
+    return this.failedImagesRepository.find({ where: { audit: { id: auditId }, verdict: 'Failed' } });
   }
 }

@@ -29,29 +29,25 @@ export class StatusComponent implements OnInit {
   }
 
   loadLatestAudit() {
-    this.latestAuditService.getLatestAuditForDealership(this.dealershipID).subscribe(
-      (latestAudit) => {
-        this.latestAudit = latestAudit;
-        if (this.latestAudit.finalVerdict === 'Failed') {
-          this.loadFailedImages(this.latestAudit.id);
-        }
-      },
-      (error) => {
-        // Log any errors that occur during the HTTP request
-        console.error('Error fetching latest audit:', error);
-      }
-    );
+    this.latestAuditService.getLatestAuditForDealership(this.dealershipID).subscribe((latestAudit) => {
+      this.latestAudit = latestAudit;
+      if(!this.latestAudit)
+        return;
+      if (this.latestAudit.finalVerdict === 'Failed')
+        this.loadFailedImages(this.latestAudit.id);
+    });
   }
 
   loadFailedImages(auditId: number) {
     this.failedImagesService.getFailedImagesForAudit(auditId).subscribe(failedImages => {
       this.failedImages = failedImages;
-      console.log('Failed Images:', failedImages); 
     });
   }
 
   getImageUrl(fileName: string): string {
-    return `http://localhost:3000/assets/${fileName}`;
+    if (!fileName)
+     return '';
+    return `http://localhost:3000/${fileName}`;
   }
 
   displayFileName(fileName: string) {
