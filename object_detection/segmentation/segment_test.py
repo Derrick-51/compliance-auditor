@@ -30,6 +30,8 @@ for pathNum, path in enumerate(paths):
 
     # Preprocess for better segmentation
     image = cv2.bilateralFilter(image, 7, sigmaColor=5, sigmaSpace=10)
+    # image = cv2.bilateralFilter(image, 9, sigmaColor=75, sigmaSpace=75)
+    # image = cv2.Canny(image, 75, 75, apertureSize=5)
     image = cv2.Canny(image, 15, 15, apertureSize=3)
     image = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
     showImg = np.copy(image)
@@ -70,13 +72,15 @@ model = FastSAM("FastSAM-s.pt")
 # #####
 
 for imgNum, image in enumerate(images):
-    allResults = model(image, device="cpu", verbose=False, retina_masks=False, imgsz=1024, conf=0.2, iou=0.9)
+    allResults = model(image, device="cpu", verbose=False, retina_masks=True, imgsz=1024, conf=0.2, iou=0.9)
     promptProcess = FastSAMPrompt(image, allResults, device="cpu")
 
     results = promptProcess.everything_prompt()
 
     img = np.copy(results[0].orig_img)
     bMask = []
+
+    print(f'Image {imgNum}: Processing masks')
 
     for maskNum, result in enumerate(results[0]):
         bMask.append(np.zeros(img.shape[:2], np.uint8))
@@ -115,14 +119,63 @@ for imgNum, image in enumerate(images):
         if rejected:
             continue
 
+        # Dilate and erode to remove rough edges
+
         # Only accept masks with at least 4 corners
-        corners = cv2.goodFeaturesToTrack(bMask[maskNum], maxCorners=4, qualityLevel=0.1, minDistance=100)
+        corners = cv2.goodFeaturesToTrack(bMask[maskNum], maxCorners=4, qualityLevel=0.1, minDistance=150, blockSize=21)
         corners = np.int64(corners)
+        
 
         if(len(corners) >= 4):
-            smallWidth = int(bMask[maskNum].shape[0]/2)
-            smallHeight = int(bMask[maskNum].shape[1]/2)
-            smallMask = cv2.resize(bMask[maskNum], (smallHeight, smallWidth), interpolation=cv2.INTER_AREA)
+
+            # Test lerp and dilating
+            #######################################################################################
+            maskWidth = bMask[maskNum].shape[1]
+            maskHeight = bMask[maskNum].shape[0]
+            lerpMask = cv2.resize(bMask[maskNum], (0, 0), fx=0.03, fy=0.03, interpolation=cv2.INTER_AREA)
+            lerpMask = cv2.resize(lerpMask, (maskWidth, maskHeight), interpolation=cv2.INTER_LINEAR)
+            for row in range(lerpMask.shape[0]):
+                for col in range(lerpMask.shape[1]):
+                    if(lerpMask[row][col] > (255 / 2)):
+                        lerpMask[row][col] = 255
+                    else:
+                        lerpMask[row][col] = 0
+            cv2.imshow(f'I: {imgNum} M: {maskNum}', lerpMask)
+            lerpCorners = cv2.goodFeaturesToTrack(lerpMask, maxCorners=4, qualityLevel=0.5, minDistance=150, blockSize=7)
+            lerpCorners = np.int64(corners)
+            lerpCornerList = []
+            for c in lerpCorners:
+                x, y = c.ravel()
+                lerpCornerList.append((x, y))
+            lerpMask = cv2.cvtColor(lerpMask, cv2.COLOR_GRAY2BGR)
+            cornerColors = [(0, 255, 0), (0, 255, 255), (255, 0, 255), (255, 255, 0)]
+            for count, corner in enumerate(lerpCornerList):
+                x, y = corner
+                cv2.circle(lerpMask, (x, y), radius=10, color=cornerColors[count], thickness=-1)
+            lerpMask = cv2.resize(lerpMask, (0, 0), fx=0.5, fy=0.5, interpolation=cv2.INTER_AREA)
+            
+            
+            
+
+            
+            cv2.imshow(f'Image: {imgNum} Lerp: {maskNum}', lerpMask)
+            #######################################################################################
+
+            cornerColors = [(0, 255, 0), (0, 255, 255), (255, 0, 255), (255, 255, 0)]
+            cornerList = []
+            for c in corners:
+                x, y = c.ravel()
+                cornerList.append((x, y))
+            bMask[maskNum] = cv2.cvtColor(bMask[maskNum], cv2.COLOR_GRAY2BGR)
+
+            for count, corner in enumerate(cornerList):
+                x, y = corner
+                cv2.circle(bMask[maskNum], (x, y), radius=10, color=cornerColors[count], thickness=-1)
+
+            
+            smallMask = cv2.resize(bMask[maskNum], (0, 0), fx=0.5, fy=0.5, interpolation=cv2.INTER_AREA)
             cv2.imshow(f'Image: {imgNum} Contour: {maskNum}', smallMask)
+
+            
     
 cv2.waitKey(0)
