@@ -16,6 +16,7 @@ import { RouterModule } from '@angular/router';
 import { passwordMatchValidator } from './password-match.directive';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr'
 
 @Component({
   selector: 'app-register',
@@ -50,7 +51,8 @@ export class RegisterComponent {
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   get dealership() {
@@ -75,6 +77,7 @@ export class RegisterComponent {
       .post('http://localhost:3000/auth/register', postData)
       .subscribe((response) => {
         console.log(response);
+        this.toastr.success("Your account was successfully created!", "Account Created")
         this.router.navigate(['login']);
       });
   }

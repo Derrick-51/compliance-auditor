@@ -14,7 +14,7 @@ export class ToastComponent {
   constructor(private toastr:ToastrService) {}
 
   showSuccess() {
-    this.toastr.success("please, please please please")
+    this.toastr.success("Your account was successfully created!", "Account Created")
   }
 }
 
