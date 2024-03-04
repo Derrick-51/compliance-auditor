@@ -8,11 +8,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { ReadGuidelinesService } from '../../services/read-guidelines.service';
 import { navbarComponent } from '../navbar/navbar.component';
 import { MarkdownModule } from 'ngx-markdown';
+import { ImageModalComponent } from '../image-modal/image-modal.component';
 
 @Component({
   selector: 'app-make-an-audit',
   standalone: true,
-  imports: [CommonModule, RouterLink, MatButtonModule, MatCardModule, MatIconModule, navbarComponent, MarkdownModule],
+  imports: [CommonModule, RouterLink, MatButtonModule, MatCardModule, MatIconModule, navbarComponent, MarkdownModule, ImageModalComponent],
   templateUrl: './make-an-audit.component.html',
   styleUrl: './make-an-audit.component.scss',
 })
@@ -22,6 +23,7 @@ export class MakeAnAuditComponent implements OnInit{
   previews: string[] = [];
   hasInvalidFiles = false;
   guidelines: string = '';
+  modalImageUrl: string | null = null;
 
   // Inject file upload and markdown file services
   constructor(private uploadService: FileUploadService,  private readGuidelinesService: ReadGuidelinesService) {}
@@ -120,5 +122,13 @@ export class MakeAnAuditComponent implements OnInit{
     const img = event.target;
     const url = img.src;
     this.previews[index] = url;
+  }
+
+  openModal(imageUrl: string): void {
+    this.modalImageUrl = imageUrl;
+  }
+
+  closeModal(): void {
+    this.modalImageUrl = null;
   }
 } 

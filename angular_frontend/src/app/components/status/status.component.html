@@ -1,3 +1,4 @@
+<app-navbar></app-navbar>
 <div class="flex justify-between items-center mb-4">
   <h2 class="text-xl font-semibold">Audit Status: {{ latestAudit?.finalVerdict || 'No audits submitted' }}</h2>
   <button mat-raised-button routerLink="/make-an-audit" *ngIf="latestAudit?.finalVerdict !== 'Pending'">Start an Audit</button>
@@ -7,8 +8,13 @@
   <h3 class="text-lg font-semibold">Failed Images</h3>
   <div class="flex justify-center">
     <div *ngFor="let image of failedImages" class="m-4">
-        <img [src]="getImageUrl(image.fileName)" (error)="displayFileName(image.fileName)" alt="Failed Image">
+        <img [src]="getImageUrl(image.fileName)" (error)="displayFileName(image.fileName)" alt="Failed Image" (click)="openModal(getImageUrl(image.fileName))" class="cursor-pointer">
         <span *ngIf="!imageLoaded">{{ image.fileName }}</span>
     </div>
   </div>
 </div>
+
+<!-- Modal for Enlarged Image -->
+<ng-container *ngIf="modalImageUrl">
+  <app-image-modal [imageUrl]="modalImageUrl" (close)="closeModal()"></app-image-modal>
+</ng-container>

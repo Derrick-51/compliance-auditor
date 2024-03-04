@@ -8,11 +8,12 @@ import { LatestAuditService } from '../../services/latest-audit.service';
 import { FailedImagesService } from '../../services/failed-images.service';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { ImageModalComponent } from '../image-modal/image-modal.component';
 
 @Component({
   selector: 'app-status',
   standalone: true,
-  imports: [MatButtonModule, RouterLink, navbarComponent, CommonModule],
+  imports: [MatButtonModule, RouterLink, navbarComponent, CommonModule, ImageModalComponent],
   templateUrl: './status.component.html',
   styleUrl: './status.component.scss'
 })
@@ -21,6 +22,7 @@ export class StatusComponent implements OnInit {
   failedImages: Images[] | undefined;
   imageLoaded: boolean = true;
   dealershipId: number | undefined;
+  modalImageUrl: string | null = null;
 
   constructor(
     private latestAuditService: LatestAuditService,
@@ -38,7 +40,6 @@ export class StatusComponent implements OnInit {
       console.error('Error fetching user data:', error);
     });
   }
-
 
   loadLatestAudit() {
     if (!this.dealershipId)
@@ -66,5 +67,13 @@ export class StatusComponent implements OnInit {
 
   displayFileName(fileName: string) {
     this.imageLoaded = false;
+  }
+
+  openModal(imageUrl: string): void {
+    this.modalImageUrl = imageUrl;
+  }
+  
+  closeModal(): void {
+    this.modalImageUrl = null;
   }
 }

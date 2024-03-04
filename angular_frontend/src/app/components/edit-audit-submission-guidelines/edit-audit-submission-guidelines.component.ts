@@ -16,7 +16,7 @@ import { SaveGuidelinesService } from '../../services/save-guidelines.service';
 export class EditAuditSubmissionGuidelinesComponent implements OnInit {
   guidelines: string = '';
 
-  // Inject markdown file services
+  // Inject guideline file services
   constructor(private readGuidelinesService: ReadGuidelinesService, private saveGuidelinesService: SaveGuidelinesService) { }
 
   ngOnInit(): void {
