@@ -1,4 +1,7 @@
-#Ignore images
+# Ignore python cache
+__pycache__/
+
+# Ignore images
 *.jpg
 *.png
 *.jpeg
