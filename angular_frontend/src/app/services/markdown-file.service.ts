@@ -8,7 +8,6 @@ import { catchError } from 'rxjs/operators';
 })
 export class MarkdownFileService {
   private readonly markdownFilePath: string = '/assets/audit-submission-guidelines.md';
-  private databaseUrl = 'http://localhost:3000';
   constructor(private http: HttpClient) { }
 
   // Read Markdown file

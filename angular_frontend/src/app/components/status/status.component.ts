@@ -7,8 +7,7 @@ import { Images } from '../../interfaces/images';
 import { LatestAuditService } from '../../services/latest-audit.service';
 import { FailedImagesService } from '../../services/failed-images.service';
 import { CommonModule } from '@angular/common';
-import { JwtTokenService } from '../../services/jwt-token.service';
-import { CookieService } from 'ngx-cookie-service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-status',
@@ -26,21 +25,18 @@ export class StatusComponent implements OnInit {
   constructor(
     private latestAuditService: LatestAuditService,
     private failedImagesService: FailedImagesService,
-    private jwtTokenService: JwtTokenService,
-    private cookieService: CookieService
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
-    const token = this.cookieService.get('jwt'); 
-    if (!token){
-      console.error('JWT token not found in cookie');
-      return;
-    }
-    const dealershipId = this.jwtTokenService.getUserIdFromToken(token);
-    if (!dealershipId)
-      return;
-    this.dealershipId = dealershipId;
-    this.loadLatestAudit();
+    this.http.get<any>('http://localhost:3000/auth/profile', {
+      withCredentials: true
+    }).subscribe((data) => {
+      this.dealershipId = data.id;
+      this.loadLatestAudit();
+    }, (error) => {
+      console.error('Error fetching user data:', error);
+    });
   }
 
 
