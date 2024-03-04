@@ -4,13 +4,15 @@ import cv2
 
 def getFourCorners(mask: cv2.typing.MatLike,
                    quality: float=0.1,
-                   min_distance: float=100.0) -> List[Union[np.int64, np.int64]]:
+                   min_distance: float=100.0,
+                   block_size=3) -> List[Union[np.int64, np.int64]]:
 
     # Corner Detection
     corners = cv2.goodFeaturesToTrack(mask,
                                       maxCorners=4,
                                       qualityLevel=quality,
-                                      minDistance=min_distance)
+                                      minDistance=min_distance,
+                                      blockSize=block_size)
     corners = np.int64(corners)
 
     # Extract points

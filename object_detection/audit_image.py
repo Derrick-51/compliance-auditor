@@ -23,11 +23,13 @@ IOU_THRESHOLD = 0.9
 # Masks are ignored if they touch mask boundaries
 MASK_BOUNDARY_THICKNESS = 3
 # Corners below quality level are ignored
-CORNER_QUALITY = 0.1
+CORNER_QUALITY = 0.4
 # Corners are ignored if they are too close to another corner (pixel distance)
-CORNER_MIN_DISTANCE = 100
+CORNER_MIN_DISTANCE = 150
+# 
+CORNER_BLOCK_SIZE = 3
 # Posters are accepted if a match with a reference poster is above this threshold
-SIMILARITY_THRESHOLD = 0.7
+SIMILARITY_THRESHOLD = 0.64
 
 
 # Read script arguments
@@ -51,7 +53,8 @@ imageMasks = generateMasks(images,
                            IOU_THRESHOLD,
                            MASK_BOUNDARY_THICKNESS,
                            CORNER_QUALITY,
-                           CORNER_MIN_DISTANCE)
+                           CORNER_MIN_DISTANCE,
+                           CORNER_BLOCK_SIZE)
 
 # Load references
 referencePaths = (glob.glob(f'{REFERENCE_PATH}/*.jpg')
@@ -69,18 +72,32 @@ for referenceName in referencePaths:
 results = {}
 for imgNum, image in enumerate(images):
     matchFound = False
-    print(f'Image: {imgNum}')
-    print(f'')
 
-    for imageMask in imageMasks:
-        corners = getFourCorners(imageMask, CORNER_QUALITY, CORNER_MIN_DISTANCE)
+    for maskNum, imageMask in enumerate(imageMasks[imgNum]):
+        corners = getFourCorners(imageMask,
+                                 CORNER_QUALITY,
+                                 CORNER_MIN_DISTANCE,
+                                 CORNER_BLOCK_SIZE)
+
+        # TEST ##################################
+        # Draw points on mask
+        mask = imageMask
+        mask = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
+        cornerColors = [(0, 255, 0), (0, 255, 255), (255, 0, 255), (255, 255, 0)]
+        for count, corner in enumerate(corners):
+            x, y = corner
+            cv2.circle(mask, (x, y), radius=10, color=cornerColors[count], thickness=-1)
+        cv2.imshow(f'Image: {imgNum} Mask: {maskNum}', mask)
+        #########################################
+
 
         for refNum, reference in enumerate(references):
             referenceX = reference.shape[1]
             referenceY = reference.shape[0]
             transformedImage = transformImage(image, corners, referenceX, referenceY)
+            cv2.imshow(f'Image: {imgNum}', transformedImage)
 
-            similarity = compareDHash(transformedImage, reference, hash_size=16)
+            similarity = compareDHash(transformedImage, reference, hash_size=8)
 
             print(f'Image: {imgNum} Similarity: {similarity}')
 
@@ -98,5 +115,5 @@ for imgNum, image in enumerate(images):
 print(results)
     
 
-
+cv2.waitKey(0)
 sys.exit(0)

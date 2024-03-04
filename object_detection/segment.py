@@ -65,7 +65,8 @@ def generateMasks(images: List[cv2.typing.MatLike],
                   iou_threshold: float=0.9,
                   boundary_thickness: int=1,
                   corner_quality: float=0.1,
-                  corner_min_distance: float=100.0) -> List[List[cv2.typing.MatLike]]:
+                  corner_min_distance: float=100.0,
+                  corner_block_size: int = 3) -> List[List[cv2.typing.MatLike]]:
     from ultralytics import FastSAM
     from ultralytics.models.fastsam import FastSAMPrompt
 
@@ -104,7 +105,11 @@ def generateMasks(images: List[cv2.typing.MatLike],
                 continue
 
             # Ignore masks with less than 4 corners
-            corners = cv2.goodFeaturesToTrack(bMask, maxCorners=4, qualityLevel=corner_quality, minDistance=corner_min_distance)
+            corners = cv2.goodFeaturesToTrack(bMask,
+                                              maxCorners=4,
+                                              qualityLevel=corner_quality,
+                                              minDistance=corner_min_distance,
+                                              blockSize=corner_block_size)
             corners = np.int64(corners)
 
             if(len(corners) >= 4):
