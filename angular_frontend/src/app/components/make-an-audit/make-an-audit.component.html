@@ -1,0 +1,48 @@
+<app-navbar></app-navbar>
+<div class="bg-gray-300 h-screen flex items-center justify-center">
+  <div class="h-screen w-full bg-white">
+    <mat-card class="m-5 h-1/5">
+      <!--Audit Submission Guidelines-->
+      <markdown [data]="guidelines"></markdown>
+    </mat-card>
+    <mat-card class="m-5 h-4/6">
+      <!--Previews-->
+      <div class="h-3/4 p-5 overflow-scroll grid grid-cols-4 gap-5">
+        <div *ngFor="let preview of previews; let i = index" class="relative">
+          <img [src]="preview" (error)="displayImageUrl($event, i)" alt="Preview of Submitted Image" (click)="openModal(preview)" class="cursor-pointer"/>
+          <button class="absolute top-0 right-0 text-red-500 hover:text-red-700" (click)="deleteImage(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="absolute bottom-0 left-0 w-full p-5">
+        <div class="flex justify-between">
+        <!--Browse button and file explorer-->
+        <div>
+          <label for="images">Choose images to upload (PNG or JPG)</label>
+          <input type="file" id="images" accept=".jpg, .jpeg, .png" multiple="" (change)="selectImages($event)" />
+        </div>
+        <!--Submit button-->
+        <button
+          mat-raised-button
+          color="primary"
+          routerLink="/status"
+          [disabled]="!previews.length"
+          (click)="submitAudit()"
+        >
+          Submit
+        </button>
+      </div>
+      <!-- Error message -->
+      <div class="flex justify-between">
+        <span *ngIf="message" class="text-red-500">{{ message }}</span>
+      </div>
+    </div>
+    </mat-card>
+  </div>
+</div>
+
+<!-- Modal for Enlarged Image -->
+<ng-container *ngIf="modalImageUrl">
+  <app-image-modal [imageUrl]="modalImageUrl" (close)="closeModal()"></app-image-modal>
+</ng-container>
