@@ -61,7 +61,7 @@ export class StatusComponent implements OnInit {
   getImageUrl(fileName: string): string {
     if (!fileName)
      return '';
-    return `http://localhost:3000/${fileName}`;
+    return `http://localhost:3000/images/${fileName}`;
   }
 
   displayFileName(fileName: string) {

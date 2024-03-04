@@ -6,12 +6,12 @@ import { catchError } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class MarkdownFileService {
-  private readonly markdownFilePath: string = '/assets/audit-submission-guidelines.md';
+export class ReadGuidelinesService {
+  private readonly markdownFilePath: string = 'http://localhost:3000/guidelines/audit-submission-guidelines.md';
   constructor(private http: HttpClient) { }
 
   // Read Markdown file
-  readMarkdownFile(): Observable<string> {
+  readGuidelines(): Observable<string> {
     return this.http.get(this.markdownFilePath, { responseType: 'text' })
       .pipe(
         catchError((error: any) => {

@@ -17,6 +17,7 @@ import { LatestAuditModule } from './latest-audit/latest-audit.module';
 import { FailedImagesModule } from './failed-images/failed-images.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { GuidelinesModule } from './guidelines/guidelines.module';
 
 @Module({
   imports: [
@@ -31,8 +32,14 @@ import { join } from 'path';
       entities: [Users, Audit, Images],
       options: { encrypt: false }, //bypasses self-signed certificate, may need to change this later since this can be exploited in a cyber attack
     }),
-    // Allows access to images folder in front end
+    // Serve files from the 'guidelines' folder
     ServeStaticModule.forRoot({
+      serveRoot: '/guidelines',
+      rootPath: join(__dirname, '..', 'guidelines'),
+    }),
+    // Serve files from the 'images' folder
+    ServeStaticModule.forRoot({
+      serveRoot: '/images', 
       rootPath: join(__dirname, '..', 'images'),
     }),
     UploadModule,
@@ -43,6 +50,7 @@ import { join } from 'path';
     ImageModule,
     LatestAuditModule,
     FailedImagesModule,
+    GuidelinesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

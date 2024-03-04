@@ -26,7 +26,6 @@
     "@auth0/angular-jwt": "^5.2.0",
     "express": "^4.18.2",
     "marked": "^9.0.0",
-    "ngx-cookie-service": "^17.1.0",
     "ngx-markdown": "^17.1.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
