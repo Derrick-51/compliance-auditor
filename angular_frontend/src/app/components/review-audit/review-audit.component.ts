@@ -6,6 +6,7 @@ import { AUDITS, Audit } from './mock-audits';
 import { NgFor, NgIf, UpperCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-review-audit',
@@ -17,6 +18,7 @@ import { MatButtonModule } from '@angular/material/button';
     NgIf,
     UpperCasePipe,
     MatButtonModule,
+    MatCardModule,
   ],
   templateUrl: './review-audit.component.html',
   styleUrl: './review-audit.component.scss',
