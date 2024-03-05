@@ -9,11 +9,12 @@ import { FailedImagesService } from '../../services/failed-images.service';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { ImageModalComponent } from '../image-modal/image-modal.component';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-status',
   standalone: true,
-  imports: [MatButtonModule, RouterLink, navbarComponent, CommonModule, ImageModalComponent],
+  imports: [MatButtonModule, RouterLink, navbarComponent, CommonModule, ImageModalComponent, MatCardModule],
   templateUrl: './status.component.html',
   styleUrl: './status.component.scss'
 })

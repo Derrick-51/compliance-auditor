@@ -1,36 +1,45 @@
-<div class="h-screen">
-<app-navbar></app-navbar>
-  <div class="flex justify-between items-center p-4">
-    <!--Audit Status-->
-    <h1 class="text-xl font-semibold">Audit Status: {{ latestAudit?.finalVerdict || 'No audits submitted' }}</h1>
-    <!--"Start an Audit" Button-->
-    <button
-      mat-raised-button 
-      color="primary" 
-      routerLink="/make-an-audit" 
-      *ngIf="latestAudit?.finalVerdict !== 'Pending'"
-    >
-      Start an Audit
-    </button>
-  </div>
-  <!--Failed Images-->
-  <div *ngIf="latestAudit?.finalVerdict === 'Failed'" class="text-center px-2">
-    <h2 class="text-lg font-semibold">Failed Images</h2>
-    <!-- Scrollable box for failed images -->
-    <div class="h-96 overflow-y-auto">
-      <div class="flex flex-wrap justify-center">
-        <div *ngFor="let image of failedImages" class="p-2 w-1/4">
-          <img
-            [src]="getImageUrl(image.fileName)"
-            (error)="displayFileName(image.fileName)"
-            alt="Failed Image"
-            (click)="openModal(getImageUrl(image.fileName))"
-            class="w-full h-auto object-contain"
+<div class="min-h-screen">
+  <app-navbar></app-navbar>
+  <div class="flex items-center p-4">
+    <div class="w-full">
+      <mat-card class="p-4 sm:h-16 mb-4">
+        <div class = "flex justify-between">
+          <!--Audit Status-->
+          <h1 class="text-xl font-semibold">Audit Status: {{ latestAudit?.finalVerdict || 'No audits submitted' }}</h1>
+          <!--"Start an Audit" Button-->
+          <button
+            mat-raised-button 
+            color="primary" 
+            routerLink="/make-an-audit" 
+            *ngIf="latestAudit?.finalVerdict !== 'Pending'"
+            class ="cursor-pointer"
           >
-          <span *ngIf="!imageLoaded">{{ image.fileName }}</span>
+            Start an Audit
+          </button>
+        </div>
+      </mat-card>
+    <!--Failed Images-->
+    <mat-card *ngIf="latestAudit?.finalVerdict === 'Failed'">
+      <div class="text-center px-2">
+        <h2 class="text-lg font-semibold">Failed Images</h2>
+        <!-- Scrollable box for failed images -->
+        <div class="overflow-hidden sm:overflow-y-auto h-auto sm:h-[415px]">
+          <div class="flex flex-wrap justify-center">
+            <div *ngFor="let image of failedImages" class="p-2 w-full sm:w-1/5">
+              <img
+                [src]="getImageUrl(image.fileName)"
+                (error)="displayFileName(image.fileName)"
+                alt="Failed Image"
+                (click)="openModal(getImageUrl(image.fileName))"
+                class="w-full h-auto object-contain"
+                class="cursor-pointer"
+              >
+              <span *ngIf="!imageLoaded">{{ image.fileName }}</span>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </mat-card>
   </div>
 </div>
 <!-- Modal for Enlarged Image -->
