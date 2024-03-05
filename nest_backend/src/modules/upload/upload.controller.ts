@@ -1,13 +1,18 @@
 import { Controller, Post, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { Req } from '@nestjs/common';
+import { Request } from 'express'
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { UploadService } from './upload.service';
+import { UserService } from 'src/user/user.service';
 import {v4 as uuidv4} from "uuid";
 
 @Controller('api')
 export class UploadController {
-    constructor(private uploadService: UploadService) {}
+    constructor(
+        private uploadService: UploadService
+    ) {}
 
     // Files will be named with dealer id with sequential numbering
     @Post('upload')
@@ -23,7 +28,7 @@ export class UploadController {
             }
         })
     }))
-    uploadFiles(@UploadedFiles() files: Array<Express.Multer.File>) {
+    uploadFiles(@Req() request: Request, @UploadedFiles() files: Array<Express.Multer.File>) {
 
         // Extract file names
         let fileNames: string[] = [];
@@ -31,6 +36,6 @@ export class UploadController {
             fileNames.push(files[idx].filename);
         }
 
-        return this.uploadService.uploadFiles("12345", fileNames) // PLACEHOLDER ID
+        return this.uploadService.uploadFiles(request, fileNames) // PLACEHOLDER ID
     }
 }
