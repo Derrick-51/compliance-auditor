@@ -23,13 +23,13 @@ IOU_THRESHOLD = 0.9
 # Masks are ignored if they touch mask boundaries
 MASK_BOUNDARY_THICKNESS = 3
 # Corners below quality level are ignored
-CORNER_QUALITY = 0.4
+CORNER_QUALITY = 0.1
 # Corners are ignored if they are too close to another corner (pixel distance)
 CORNER_MIN_DISTANCE = 150
 # 
-CORNER_BLOCK_SIZE = 3
+CORNER_BLOCK_SIZE = 11
 # Posters are accepted if a match with a reference poster is above this threshold
-SIMILARITY_THRESHOLD = 0.64
+SIMILARITY_THRESHOLD = 0.6
 
 
 # Read script arguments
@@ -87,7 +87,7 @@ for imgNum, image in enumerate(images):
         for count, corner in enumerate(corners):
             x, y = corner
             cv2.circle(mask, (x, y), radius=10, color=cornerColors[count], thickness=-1)
-        cv2.imshow(f'Image: {imgNum} Mask: {maskNum}', mask)
+        # cv2.imshow(f'Image: {imgNum} Mask: {maskNum}', mask)
         #########################################
 
 
@@ -95,11 +95,12 @@ for imgNum, image in enumerate(images):
             referenceX = reference.shape[1]
             referenceY = reference.shape[0]
             transformedImage = transformImage(image, corners, referenceX, referenceY)
-            cv2.imshow(f'Image: {imgNum}', transformedImage)
+            transImageShow = cv2.resize(transformedImage, (0, 0), fx=0.5, fy=0.5)
+            cv2.imshow(f'Image: {imgNum} Ref{refNum}', transImageShow)
 
             similarity = compareDHash(transformedImage, reference, hash_size=8)
 
-            print(f'Image: {imgNum} Similarity: {similarity}')
+            print(f'Image: {imgNum} Ref: {refNum} Similarity: {similarity}')
 
             if similarity > SIMILARITY_THRESHOLD:
                 results[imageNames[imgNum]] = "Passed"
