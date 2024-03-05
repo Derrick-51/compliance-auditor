@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { navbarComponent } from '../navbar/navbar.component';
-import { Audit } from '../../interfaces/audit-status';
+import { Audit } from '../../interfaces/audit';
 import { Images } from '../../interfaces/images';
 import { LatestAuditService } from '../../services/latest-audit.service';
 import { FailedImagesService } from '../../services/failed-images.service';
