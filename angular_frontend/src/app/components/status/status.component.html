@@ -19,7 +19,7 @@
     <!-- Scrollable box for failed images -->
     <div class="h-96 overflow-y-auto">
       <div class="flex flex-wrap justify-center">
-        <div *ngFor="let image of failedImages" class="p-2 w-1/5">
+        <div *ngFor="let image of failedImages" class="p-2 w-1/4">
           <img
             [src]="getImageUrl(image.fileName)"
             (error)="displayFileName(image.fileName)"
