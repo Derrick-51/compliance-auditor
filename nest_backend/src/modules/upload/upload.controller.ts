@@ -23,8 +23,14 @@ export class UploadController {
             }
         })
     }))
-    uploadFile(@UploadedFiles() files: Array<Express.Multer.File>) {
-        console.log(files)
-        //this.uploadService.uploadFile("12345", file.filename) // PLACEHOLDER ID
+    uploadFiles(@UploadedFiles() files: Array<Express.Multer.File>) {
+
+        // Extract file names
+        let fileNames: string[] = [];
+        for(let idx = 0; idx < files.length; ++idx) {
+            fileNames.push(files[idx].filename);
+        }
+
+        return this.uploadService.uploadFiles("12345", fileNames) // PLACEHOLDER ID
     }
 }
