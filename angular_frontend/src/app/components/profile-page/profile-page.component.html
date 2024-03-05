@@ -20,8 +20,8 @@
         <div class="grid grid-cols-2 pt-4 gap-2">
           <div class="text-lg font-bold">Email</div>
           <div class="text-lg font-bold">Password</div>
-          <div class="text-lg">email&#64;email.com</div>
-          <div class="text-lg">*****************</div>
+          <div class="text-lg">{{ dealershipEmail }}</div>
+          <div class="text-lg">{{ dealershipEmail }}</div>
         </div>
         <div class="text-xl border-b-2 pt-8">Dealership Information</div>
         <div class="grid grid-cols-2 pt-4 gap-2">
@@ -31,11 +31,11 @@
           <div class="text-lg pb-4">Smith</div>
           <div class="text-lg font-bold">Address</div>
           <div class="text-lg font-bold">City</div>
-          <div class="text-lg pb-4">3828 Piermont Drive</div>
-          <div class="text-lg pb-4">{{ dealershipEmail }}</div>
+          <div class="text-lg pb-4">{{ dealershipAddress }}</div>
+          <div class="text-lg pb-4">{{ dealershipCity }}</div>
           <div class="text-lg font-bold">State</div>
           <div></div>
-          <div class="text-lg pb-4">New Mexico</div>
+          <div class="text-lg pb-4"> {{ dealershipState }}</div>
         </div>
       </div>
     </div>

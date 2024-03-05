@@ -101,12 +101,7 @@ export class RegisterComponent {
     }
     return;
   }
-  getConfirmPassErrorMessage() {
-    if (this.confirmPassword.hasError('required')) {
-      return 'Password does not match';
-    }
-    return;
-  }
 
-  hide = true;
+  passwordFieldHide = true; // initially password is hidden
+  confirmFieldHide = true; // initially confirm password is hidden
 }

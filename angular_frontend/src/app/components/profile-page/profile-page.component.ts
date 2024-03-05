@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { navbarComponent } from '../navbar/navbar.component';
 import { MatCardModule } from '@angular/material/card';
@@ -14,9 +14,12 @@ import { HttpClient } from '@angular/common/http';
   styleUrl: './profile-page.component.scss'
 })
 
-export class ProfilePageComponent {
+export class ProfilePageComponent implements OnInit{
   user: any;
   dealershipEmail!: string;
+  dealershipState!: string;
+  dealershipCity!: string;
+  dealershipAddress!: string;
 
   constructor(
     private userService: UserService,
@@ -24,11 +27,16 @@ export class ProfilePageComponent {
     ) {}
 
   ngOnInit(): void {
-    this.http.get<any>('http://localhost:3000/auth/profile', {
-      withCredentials: true
-    }).subscribe((data) => {
-      this.dealershipEmail = data.username;
+    this.http.get<any>('http://localhost:3000/auth/profile',{ withCredentials: true}).subscribe((data) => {
+      const { email, state, city, address } = data;
+      this.dealershipEmail = email;
+      this.dealershipState = state;
+      this.dealershipCity = city;
+      this.dealershipAddress = address;
+    
+    console.log(data);
+
     })
-  }
+    }
 
 }

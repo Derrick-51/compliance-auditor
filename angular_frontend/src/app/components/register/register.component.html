@@ -5,7 +5,9 @@
       src="/assets/UrbanScienceHomepage.png"
       alt="Urban Science Logo"
     />
-    <p class="text-xl">Please create an account to access our automated auditing system.</p>
+    <p class="text-xl">
+      Please create an account to access our automated auditing system.
+    </p>
   </div>
   <div class="ml-4 shadow-lg">
     <div>
@@ -53,7 +55,7 @@
               <mat-form-field hideRequiredMarker class="w-full">
                 <mat-label>Enter your password</mat-label>
                 <input
-                  [type]="hide ? 'password' : 'text'"
+                  [type]="passwordFieldHide ? 'password' : 'text'"
                   matInput
                   formControlName="password"
                   name="password"
@@ -62,12 +64,13 @@
                 <button
                   mat-icon-button
                   matSuffix
-                  (click)="hide = !hide"
+                  (click)="passwordFieldHide = !passwordFieldHide"
                   [attr.aria-label]="'Hide password'"
-                  [attr.aria-pressed]="hide"
+                  [attr.aria-pressed]="passwordFieldHide"
+                  type="button"
                 >
                   <mat-icon class="mr-4">{{
-                    hide ? "visibility_off" : "visibility"
+                    passwordFieldHide ? "visibility_off" : "visibility"
                   }}</mat-icon>
                 </button>
                 @if (password.invalid && password.dirty || password.touched) {
@@ -80,7 +83,7 @@
               <mat-form-field hideRequiredMarker class="w-full">
                 <mat-label>Confirm password</mat-label>
                 <input
-                  [type]="hide ? 'password' : 'text'"
+                  [type]="confirmFieldHide ? 'password' : 'text'"
                   matInput
                   formControlName="confirmPassword"
                   name="confirmPassword"
@@ -89,18 +92,18 @@
                 <button
                   mat-icon-button
                   matSuffix
-                  (click)="hide = !hide"
+                  (click)="confirmFieldHide = !confirmFieldHide"
                   [attr.aria-label]="'Hide password'"
-                  [attr.aria-pressed]="hide"
+                  [attr.aria-pressed]="confirmFieldHide"
+                  type="button"
                 >
                   <mat-icon class="mr-4">{{
-                    hide ? "visibility_off" : "visibility"
+                    confirmFieldHide ? "visibility_off" : "visibility"
                   }}</mat-icon>
                 </button>
-                @if (confirmPassword.invalid && confirmPassword.dirty ||
-                confirmPassword.touched) {
-                <mat-error>{{ getConfirmPassErrorMessage() }}</mat-error>
-                }
+                <mat-error *ngIf="registerForm.errors?.['passwordMatchError']"
+                  >Passwords do not match</mat-error
+                >
               </mat-form-field>
             </div>
           </mat-card-content>
