@@ -9,15 +9,23 @@ import { ReadGuidelinesService } from '../../services/read-guidelines.service';
 import { navbarComponent } from '../navbar/navbar.component';
 import { MarkdownModule } from 'ngx-markdown';
 import { ImageModalComponent } from '../image-modal/image-modal.component';
-
 @Component({
   selector: 'app-make-an-audit',
   standalone: true,
-  imports: [CommonModule, RouterLink, MatButtonModule, MatCardModule, MatIconModule, navbarComponent, MarkdownModule, ImageModalComponent],
+  imports: [
+    CommonModule,
+    RouterLink,
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule,
+    navbarComponent,
+    MarkdownModule,
+    ImageModalComponent,
+  ],
   templateUrl: './make-an-audit.component.html',
   styleUrl: './make-an-audit.component.scss',
 })
-export class MakeAnAuditComponent implements OnInit{
+export class MakeAnAuditComponent implements OnInit {
   audit?: FileList;
   message = '';
   previews: string[] = [];
@@ -26,19 +34,24 @@ export class MakeAnAuditComponent implements OnInit{
   modalImageUrl: string | null = null;
 
   // Inject file upload and markdown file services
-  constructor(private uploadService: FileUploadService,  private readGuidelinesService: ReadGuidelinesService) {}
+  constructor(
+    private uploadService: FileUploadService,
+    private readGuidelinesService: ReadGuidelinesService
+  ) {}
 
   // Read Markdown file and set guidelines to its content when page is loaded
   ngOnInit(): void {
-    this.readGuidelinesService.readGuidelines().subscribe((markdownContent: string) => {
-     this.guidelines = markdownContent;
-    });
+    this.readGuidelinesService
+      .readGuidelines()
+      .subscribe((markdownContent: string) => {
+        this.guidelines = markdownContent;
+      });
   }
 
   // Helper function to convert array of files into a FileList
   private createFileList(files: File[]): FileList {
     const fileList = new ClipboardEvent('').clipboardData || new DataTransfer();
-    files.forEach(file => fileList.items.add(file));
+    files.forEach((file) => fileList.items.add(file));
     return fileList.files;
   }
 
@@ -49,9 +62,8 @@ export class MakeAnAuditComponent implements OnInit{
     this.hasInvalidFiles = false;
     this.audit = event.target.files;
 
-    if (!this.audit)
-      return;
-    
+    if (!this.audit) return;
+
     // Filter files by allowed extensions (PNG, JPG, JPEG)
     const allowedExtensions = ['png', 'jpg', 'jpeg'];
     const validFiles: File[] = [];
@@ -68,22 +80,20 @@ export class MakeAnAuditComponent implements OnInit{
           this.previews.push(e.target.result);
         };
         reader.readAsDataURL(file);
-      } 
-      else
-        this.hasInvalidFiles = true;
+      } else this.hasInvalidFiles = true;
     }
 
     if (this.hasInvalidFiles == true)
-      this.message = 'Invalid files were removed. Please only select PNG, JPG, or JPEG files.';
+      this.message =
+        'Invalid files were removed. Please only select PNG, JPG, or JPEG files.';
 
     // Add valid files to audit
     this.audit = this.createFileList(validFiles);
   }
 
   // Upload individual images of submitted audit
-  upload(file:File): void {
-    if (!file)
-      return;
+  upload(file: File): void {
+    if (!file) return;
     this.uploadService.upload(file).subscribe({
       error: (err: any) => {
         this.message = 'Could not submit audit. Please run nest backend.';
@@ -96,8 +106,7 @@ export class MakeAnAuditComponent implements OnInit{
 
   // Uploads all images of submitted audit
   submitAudit(): void {
-    if (!this.audit)
-      return;
+    if (!this.audit) return;
     for (let i = 0; i < this.audit.length; i++) {
       this.upload(this.audit[i]);
     }
@@ -107,14 +116,14 @@ export class MakeAnAuditComponent implements OnInit{
   deleteImage(index: number): void {
     this.message = '';
     this.previews.splice(index, 1);
-    if (!this.audit)
-      return;
+    if (!this.audit) return;
     length = this.audit.length;
     const images = Array.from(this.audit);
     images.splice(index, 1);
     this.audit = this.createFileList(images);
     if (this.audit.length != length - 1)
-      this.message = 'Image was not deleted correctly. Reload the page and reselect images.';
+      this.message =
+        'Image was not deleted correctly. Reload the page and reselect images.';
   }
 
   // Display image url if preview is unable to be displayed
@@ -131,4 +140,4 @@ export class MakeAnAuditComponent implements OnInit{
   closeModal(): void {
     this.modalImageUrl = null;
   }
-} 
+}
