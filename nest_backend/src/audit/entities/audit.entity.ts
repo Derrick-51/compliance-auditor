@@ -26,9 +26,9 @@ export class Audit {
   @Column({ type: 'datetime' })
   update: Date;
 
-  @ManyToOne((type) => Users, (user) => user.audit)
+  @ManyToOne((type) => Users, (user) => user.audits)
   user: Users;
 
   @OneToMany((type) => Images, (image) => image.audit)
-  image: Images;
+  image: Images[];
 }

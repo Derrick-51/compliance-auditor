@@ -34,5 +34,5 @@ export class Users {
   address: string;
 
   @OneToMany((type) => Audit, (audit) => audit.user)
-  audit: Audit;
+  audits: Audit[];
 }
