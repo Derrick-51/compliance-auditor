@@ -18,6 +18,6 @@ export class Images {
   @Column({ default: 'Pending' })
   verdict: string;
 
-  @ManyToOne((type) => Audit, (audit) => audit.image)
+  @ManyToOne((type) => Audit, (audit) => audit.images)
   audit: Audit;
 }

@@ -30,5 +30,5 @@ export class Audit {
   user: Users;
 
   @OneToMany((type) => Images, (image) => image.audit)
-  image: Images[];
+  images: Images[];
 }
