@@ -14,13 +14,13 @@ export class Audit {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ default: 'Pending' })
   finalVerdict: string;
 
   @CreateDateColumn()
   auditDate: Date;
 
-  @Column()
+  @Column({ type: 'datetime' })
   dueDate: Date;
 
   @Column({ type: 'datetime' })

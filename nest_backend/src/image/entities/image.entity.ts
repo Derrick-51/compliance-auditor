@@ -12,10 +12,10 @@ export class Images {
   @Column({ type: 'datetime' })
   update: Date;
 
-  @Column()
+  @Column({ default: 'False' })
   override: string;
 
-  @Column()
+  @Column({ default: 'Pending' })
   verdict: string;
 
   @ManyToOne((type) => Audit, (audit) => audit.image)
