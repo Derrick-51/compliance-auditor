@@ -1,6 +1,10 @@
 <app-navbar></app-navbar>
 <div class="bg-gray-300 h-screen flex items-center justify-center">
+<<<<<<< HEAD
   <div class="h-screen w-full bg-white">
+=======
+  <div class="h-screen w-3/5 bg-white">
+>>>>>>> parent of 1483645e (Merge pull request #21 from Derrick-51/Shane-2)
     <mat-card class="m-5 h-1/5">
       <div class="p-5">
         <div><h2>Instructions for submitting an audit:</h2></div>
@@ -9,6 +13,7 @@
             <li>1. Take pictures of brand signage</li>
             <li>2. Upload images</li>
             <li>3. Wait for verdict from auditor</li>
+<<<<<<< HEAD
           </ul>
         </div>
       </div>
@@ -58,3 +63,45 @@
     </mat-card>
   </div>
 </div>
+=======
+          </ul> 
+        </div>
+      </div>
+    </mat-card>
+    <mat-card class="m-5 h-4/6">
+      <!--previews-->
+      <div class="h-3/4 p-5 overflow-scroll grid grid-cols-4 gap-5">
+        <div *ngFor="let preview of previews; let i = index" class="relative">
+          <img [src]="preview" (error)="displayImageUrl($event, i)"/>
+          <button class="absolute top-0 right-0 text-red-500 hover:text-red-700" (click)="deleteImage(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="absolute bottom-0 left-0 w-full p-5">
+        <div class="flex justify-between">
+        <!--Browse button and file explorer-->
+        <div>
+          <label for="photos">Choose images to upload (PNG or JPG)</label>
+          <input type="file" id="photos" accept=".jpg, .jpeg, .png" multiple="" (change)="selectFiles($event)" />
+        </div>
+        <!--Upload button-->
+        <button
+          mat-raised-button
+          color="primary"
+          routerLink="/status"
+          [disabled]="!previews.length"
+          (click)="uploadFiles()"
+        >
+          Upload
+        </button>
+      </div>
+      <!-- Error message -->
+      <div class="flex justify-between">
+        <span *ngIf="message" class="text-red-500">{{ message }}</span>
+      </div>
+    </div>
+    </mat-card>
+  </div>
+</div>
+>>>>>>> parent of 1483645e (Merge pull request #21 from Derrick-51/Shane-2)

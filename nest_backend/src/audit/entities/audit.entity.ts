@@ -15,7 +15,7 @@ export class Audit {
   id: number;
 
   @Column()
-  finalVerdict: string;
+  finalVerdit: string;
 
   @CreateDateColumn()
   auditDate: Date;
