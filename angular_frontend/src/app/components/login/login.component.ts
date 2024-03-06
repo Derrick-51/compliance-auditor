@@ -46,7 +46,7 @@ export class LoginComponent {
     private http: HttpClient,
     private router: Router,
     private toastr: ToastrService
-
+,
   ) { }
 
   get email() {
