@@ -6,21 +6,12 @@ import { MatCardModule } from '@angular/material/card';
 import { FileUploadService } from '../../services/file-upload.service';
 import { MatIconModule } from '@angular/material/icon';
 import { navbarComponent } from '../navbar/navbar.component';
-
+import { MarkdownModule } from 'ngx-markdown';
+import { ImageModalComponent } from '../image-modal/image-modal.component';
 @Component({
   selector: 'app-make-an-audit',
   standalone: true,
-<<<<<<< HEAD
-  imports: [
-    CommonModule,
-    RouterLink,
-    MatButtonModule,
-    MatCardModule,
-    MatIconModule,
-    navbarComponent,
-    MarkdownModule,
-    ImageModalComponent,
-  ],
+  imports: [CommonModule, RouterLink, MatButtonModule, MatCardModule, MatIconModule, navbarComponent, MarkdownModule, ImageModalComponent],
   templateUrl: './make-an-audit.component.html',
   styleUrl: './make-an-audit.component.scss',
 })
@@ -75,11 +66,9 @@ export class MakeAnAuditComponent {
 <<<<<<< HEAD
     if (!this.audit) return;
 
-=======
-    if (!this.currentFiles)
+    if (!this.audit)
       return;
     
->>>>>>> parent of 1483645e (Merge pull request #21 from Derrick-51/Shane-2)
     // Filter files by allowed extensions (PNG, JPG, JPEG)
     const allowedExtensions = ['png', 'jpg', 'jpeg'];
     const validFiles: File[] = [];
@@ -153,25 +142,14 @@ export class MakeAnAuditComponent {
   deleteImage(index: number): void {
     this.message = '';
     this.previews.splice(index, 1);
-<<<<<<< HEAD
-    if (!this.audit) return;
+    if (!this.audit)
+      return;
     length = this.audit.length;
     const images = Array.from(this.audit);
     images.splice(index, 1);
     this.audit = this.createFileList(images);
     if (this.audit.length != length - 1)
-      this.message =
-        'Image was not deleted correctly. Reload the page and reselect images.';
-=======
-    if (!this.currentFiles)
-      return;
-    length = this.currentFiles.length;
-    const fileListArray = Array.from(this.currentFiles);
-    fileListArray.splice(index, 1);
-    this.currentFiles = this.createFileList(fileListArray);
-    if (this.currentFiles.length != length - 1)
       this.message = 'Image was not deleted correctly. Reload the page and reselect images.';
->>>>>>> parent of 1483645e (Merge pull request #21 from Derrick-51/Shane-2)
   }
 
   // Displays image url if preview is unable to be displayed
@@ -189,7 +167,4 @@ export class MakeAnAuditComponent {
   closeModal(): void {
     this.modalImageUrl = null;
   }
-}
-=======
 } 
->>>>>>> parent of 1483645e (Merge pull request #21 from Derrick-51/Shane-2)
