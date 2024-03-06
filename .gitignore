@@ -1,14 +1,3 @@
-# Ignore dataset categories
-object_detection/data/train
-object_detection/data/test
-object_detection/data/val
-
-# Ignore model training output
-object_detection/runs
-
-# Ignore Default models
-*.pt
-
 #macOS specific file
 .DS_Store
 

@@ -1,7 +1,0 @@
-path: C:\dev\repos\compliance-auditor\object_detection\data
-train: train
-test: test
-val: val
-
-names: 
-    0: poster
