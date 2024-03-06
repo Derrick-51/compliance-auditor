@@ -1,4 +1,4 @@
-<div class="flex justify-center items-center w-full h-full bg-[#e2e2e2]">
+<div class="flex justify-center items-center w-full h-full bg-[#f2f2f2]">
   <div class="w-[500px] mr-20">
     <img
       class="mb-2"
@@ -101,9 +101,9 @@
                     confirmFieldHide ? "visibility_off" : "visibility"
                   }}</mat-icon>
                 </button>
-                <mat-error *ngIf="registerForm.errors?.['passwordMatchError']"
-                  >Passwords do not match</mat-error
-                >
+                <mat-error *ngIf="confirmPassword.hasError('passwordMismatch')">
+                  Passwords do not match
+                </mat-error>
               </mat-form-field>
             </div>
           </mat-card-content>
