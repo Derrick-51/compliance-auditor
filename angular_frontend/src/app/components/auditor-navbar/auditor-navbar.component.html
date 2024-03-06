@@ -1,0 +1,70 @@
+<header>
+  <mat-toolbar class="flex justify-between items-center">
+    <div>
+      <a routerLink="/status">
+        <img
+          class="w-64"
+          src="/assets/UrbanScience Original.png"
+          alt="Urban Science Logo"
+        />
+      </a>
+    </div>
+    <div
+      class="lg:static absolute lg:min-h-fit min-h-[30vh] left-0 top-[-100%] lg:w-auto w-full flex items-center px-5"
+    >
+      <ul
+        class="flex lg:flex-row flex-col lg:items-center lg:gap-[3vw] gap-6 lg:mr-20"
+      >
+        <li>
+          <a class="hover:text-[#66CC33] text-[#414551]" routerLink="/status">Audit Review</a>
+        </li>
+        <li>
+          <a class="hover:text-[#66CC33] text-[#414551]" routerLink="/make-an-audit"
+            >Audit Guidelines</a
+          >
+        </li>
+      </ul>
+    </div>
+    <div>
+      <div class="hidden lg:block">
+        <a routerLink="/profile">
+            <button mat-flat-button>Profile</button>
+          </a>
+        <button class="ml-2" mat-flat-button>Logout</button>
+      </div>
+      <div class="lg:hidden">
+        <button
+          mat-icon-button
+          [matMenuTriggerFor]="menu"
+          aria-label="menu button"
+        >
+          <mat-icon>menu</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <a routerLink="/status">
+            <button mat-menu-item>
+              <mat-icon>check_circle</mat-icon>
+              <span>Audit Review</span>
+            </button>
+          </a>
+          <a routerLink="/make-an-audit">
+            <button mat-menu-item>
+              <mat-icon>create</mat-icon>
+              <span>Edit Audit Guidelines</span>
+            </button>
+          </a>
+          <a routerLink="/profile">
+            <button mat-menu-item>
+              <mat-icon>person_pin</mat-icon>
+              <span>Profile</span>
+            </button>
+          </a>
+          <button mat-menu-item>
+            <mat-icon>exit_to_app</mat-icon>
+            <span>Logout</span>
+          </button>
+        </mat-menu>
+      </div>
+    </div>
+  </mat-toolbar>
+</header>
