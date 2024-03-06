@@ -15,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr'
 
 @Component({
   selector: 'app-login',
@@ -43,8 +44,10 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private router: Router
-  ) {}
+    private router: Router,
+    private toastr: ToastrService
+
+  ) { }
 
   get email() {
     return this.loginForm.controls['username'];
@@ -53,7 +56,7 @@ export class LoginComponent {
     return this.loginForm.controls['password'];
   }
 
-  submitLogin() {
+  submitLogin() { //this is using an old method, we might switch it later
     const postData = { ...this.loginForm.value };
     this.http
       .post('http://localhost:3000/auth/login', postData, {
@@ -62,7 +65,10 @@ export class LoginComponent {
       .subscribe((response) => {
         console.log(response);
         this.router.navigate(['status']);
-      });
+      },
+        (error) => {
+          this.toastr.error('Invalid login credentials!', 'Login Error');
+        });
   }
 
   getEmailErrorMessage() {
