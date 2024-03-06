@@ -2,6 +2,7 @@ import { Inject, Injectable } from "@nestjs/common";
 import { Req, UnauthorizedException } from '@nestjs/common';
 import { Request } from 'express'
 import { JwtService } from '@nestjs/jwt';
+import { jwtConstants } from '../../auth/constants'
 import { spawn } from "child_process"
 import { ImageService } from "src/image/image.service";
 import { UserService } from "src/user/user.service";
@@ -26,7 +27,9 @@ export class UploadService {
                 throw new Error('JWT cookie not found');
             }
 
-            const data = await this.jwtService.verifyAsync(cookie);
+            const data = await this.jwtService.verifyAsync(cookie, {
+                secret: jwtConstants.secret
+            });
             if(!data) {
                 throw new UnauthorizedException();
             }
@@ -62,7 +65,7 @@ export class UploadService {
         // auditScript.on("close", (code) =>{
         //     exitCode = code
         //     console.log(`exited with code: ${code}`)
-        // })      
+        // })
         
         return 'Success'
     }
