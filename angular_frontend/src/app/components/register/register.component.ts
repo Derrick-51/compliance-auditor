@@ -79,7 +79,10 @@ export class RegisterComponent {
         console.log(response);
         this.toastr.success("Your account was successfully created!", "Account Created")
         this.router.navigate(['login']);
-      });
+      },
+        (error) => {
+          this.toastr.error('An account with this email already exists!', 'Registration Error');
+        });
   }
 
   getDealerErrorMessage() {
