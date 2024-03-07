@@ -9,7 +9,7 @@ export class Images {
   @Column({ unique: true })
   fileName: string;
 
-  @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' }) //for mssql type: 'datetime' //for postgres  type: "timestamptz"
+  @Column({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' }) //for mssql type: 'datetime' //for postgres  type: "timestamptz"
   update: Date;
 
   @Column()
