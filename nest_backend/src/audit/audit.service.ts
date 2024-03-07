@@ -21,7 +21,7 @@ export class AuditService {
   async findAll(): Promise<Audit[]> {
     const audits = await this.auditRepository.find({
       select: ['id', 'finalVerdict', 'auditDate', 'dueDate', 'update'], // Specify only required columns
-      relations: ['user'],
+      relations: ['user'], //show user tied to the audit
     });
     return audits;
   }
