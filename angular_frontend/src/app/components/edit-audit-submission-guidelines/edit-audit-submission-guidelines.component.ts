@@ -33,7 +33,7 @@ export class EditAuditSubmissionGuidelinesComponent implements OnInit {
     });
   }
 
-  // Submit button click handler
+  // Save Guidelines button click handler
   saveGuidelines(): void {
     this.saveGuidelinesService.save(this.guidelines).subscribe(() => {
       this.toastr.success("The changes to the audit guidlines have been saved!", "Successfully Changed!")
