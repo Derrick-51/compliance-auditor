@@ -7,7 +7,6 @@ from segment import preprocessImage, generateMasks, standardizeImageSize
 from transform import getFourCorners, transformImage
 from compare import compareDHash
 import json
-import ast
 import cv2
 import sys
 import glob
@@ -16,8 +15,7 @@ from pathlib import Path
 # Backend src folder
 IMAGE_PATH = "./images"
 REFERENCE_PATH = "./posters"
-RESULTS_PATH = "./analysis_results"
-MODEL_PATH = "../object_detection"
+MODEL_PATH = "./"
 
 # Segmentation model parameters
 CONF_THRESHOLD = 0.4
@@ -36,11 +34,14 @@ SIMILARITY_THRESHOLD = 0.6
 
 
 # Read script arguments
-imageNames = ast.literal_eval(sys.argv[1])
+# imageNames = sys.argv[1]
+# imageNames = json.loads(imageNames)
+imageNames = ["img0.jpg", "img1.jpg", "img2.jpg", "img3.jpg", "img4.jpg", "img5.jpg", "img6.jpg", "img7.jpg"]
 
 # Load audit images
 images = []
 for imageName in imageNames:
+    # images.append(cv2.imread(f'{ROOT_PATH}images/{imageName}'))
     images.append(standardizeImageSize(cv2.imread(f'{IMAGE_PATH}/{imageName}')))
 
 # Segment posters from images
@@ -62,6 +63,8 @@ referencePaths = (glob.glob(f'{REFERENCE_PATH}/*.jpg')
               + glob.glob(f'{REFERENCE_PATH}/*.jpeg')
               + glob.glob(f'{REFERENCE_PATH}/*.png'))
 
+# for refNum in range(len(referencePaths)):
+#     referencePaths[refNum] = F'{REFERENCE_PATH}/{Path(referencePaths[refNum]).name}'
 
 references = []
 for referenceName in referencePaths:
@@ -78,12 +81,28 @@ for imgNum, image in enumerate(images):
                                  CORNER_MIN_DISTANCE,
                                  CORNER_BLOCK_SIZE)
 
+        # TEST ##################################
+        # Draw points on mask
+        mask = imageMask
+        mask = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
+        cornerColors = [(0, 255, 0), (0, 255, 255), (255, 0, 255), (255, 255, 0)]
+        for count, corner in enumerate(corners):
+            x, y = corner
+            cv2.circle(mask, (x, y), radius=10, color=cornerColors[count], thickness=-1)
+        # cv2.imshow(f'Image: {imgNum} Mask: {maskNum}', mask)
+        #########################################
+
+
         for refNum, reference in enumerate(references):
             referenceX = reference.shape[1]
             referenceY = reference.shape[0]
             transformedImage = transformImage(image, corners, referenceX, referenceY)
+            transImageShow = cv2.resize(transformedImage, (0, 0), fx=0.5, fy=0.5)
+            cv2.imshow(f'Image: {imgNum} Ref{refNum}', transImageShow)
 
             similarity = compareDHash(transformedImage, reference, hash_size=8)
+
+            print(f'Image: {imgNum} Ref: {refNum} Similarity: {similarity}')
 
             if similarity > SIMILARITY_THRESHOLD:
                 results[imageNames[imgNum]] = "Passed"
@@ -96,11 +115,8 @@ for imgNum, image in enumerate(images):
     if not matchFound:
         results[imageNames[imgNum]] = "Failed"
 
+print(results)
+    
 
-resultsFile = open(f'{RESULTS_PATH}/Audit_{sys.argv[2]}.json', "w")
-
-json.dump(results, resultsFile, indent=4)
-
-resultsFile.close()
-
+cv2.waitKey(0)
 sys.exit(0)

@@ -19,7 +19,7 @@ export class ImageController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.imageService.findOne(+id);
+    return this.imageService.findOne(id);
   }
 
   @Patch(':id')
