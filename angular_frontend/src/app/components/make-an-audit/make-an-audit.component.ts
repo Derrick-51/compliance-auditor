@@ -9,7 +9,6 @@ import { ReadGuidelinesService } from '../../services/read-guidelines.service';
 import { navbarComponent } from '../navbar/navbar.component';
 import { MarkdownModule } from 'ngx-markdown';
 import { ImageModalComponent } from '../image-modal/image-modal.component';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-make-an-audit',
@@ -38,8 +37,7 @@ export class MakeAnAuditComponent implements OnInit {
   // Inject file upload and markdown file services
   constructor(
     private uploadService: FileUploadService,
-    private readGuidelinesService: ReadGuidelinesService,
-    private toastr: ToastrService,
+    private readGuidelinesService: ReadGuidelinesService
   ) {}
 
   // Read Markdown file and set guidelines to its content when page is loaded
@@ -98,9 +96,6 @@ export class MakeAnAuditComponent implements OnInit {
   upload(file: File): void {
     if (!file) return;
     this.uploadService.upload(file).subscribe({
-      next: () => {
-        this.toastr.success("The audit has been submitted!", "Successfully Submitted!");
-      },
       error: (err: any) => {
         this.message = 'Could not submit audit. Please run nest backend.';
       },
