@@ -16,9 +16,9 @@ export class UploadController {
 
     // Files will be named with dealer id with sequential numbering
     @Post('upload')
-    @UseInterceptors(FilesInterceptor('images', undefined, {
+    @UseInterceptors(FilesInterceptor('photos', undefined, {
         storage: diskStorage({
-            destination: 'images',
+            destination: 'photos',
             filename: (req, file, callback) => {
                 const uniqueName = uuidv4()
                 const extension = extname(file.originalname)
