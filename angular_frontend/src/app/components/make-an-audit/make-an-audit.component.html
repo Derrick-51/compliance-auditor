@@ -4,7 +4,9 @@
     <div class="w-full">
       <!--Audit Submission Guidelines-->
       <mat-card class="p-4 mb-4 sm:h-40">
-        <markdown [data]="guidelines"></markdown>
+        <div class="overflow-hidden">
+          <markdown [data]="guidelines"></markdown>
+        </div>
       </mat-card>
       <!--Audit Submission-->
       <mat-card class="p-4 pb-20 sm:h-[365px]">
