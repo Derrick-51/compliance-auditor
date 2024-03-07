@@ -38,6 +38,10 @@ import { ToastrService } from 'ngx-toastr'
 })
 
 export class RegisterComponent {
+
+  passwordFieldHide = true; // initially password is hidden
+  confirmFieldHide = true; // initially confirm password is hidden
+
   registerForm = this.fb.group(
     {
       dealership: ['', [Validators.required]],
@@ -120,6 +124,4 @@ export class RegisterComponent {
    return control.get('password')?.value === control.get('confirmPassword')?.value ? null : { mismatch: true };
   }
 
-  passwordFieldHide = true; // initially password is hidden
-  confirmFieldHide = true; // initially confirm password is hidden
 }
