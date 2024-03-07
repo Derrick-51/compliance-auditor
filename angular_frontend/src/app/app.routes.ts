@@ -7,7 +7,6 @@ import { RegisterComponent } from './components/register/register.component';
 import { EditAuditSubmissionGuidelinesComponent } from './components/edit-audit-submission-guidelines/edit-audit-submission-guidelines.component';
 import { navbarComponent } from './components/navbar/navbar.component';
 import { ProfilePageComponent } from './components/profile-page/profile-page.component';
-import { ToastComponent } from './components/toast/toast.component';
 import { AuditorNavbarComponent } from './components/auditor-navbar/auditor-navbar.component';
 import { submitAuditGuard } from './guards/submit-audit.guard';
 
