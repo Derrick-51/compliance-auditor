@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-navbar',
@@ -21,7 +22,11 @@ import { Router } from '@angular/router';
   styleUrl: './navbar.component.scss',
 })
 export class navbarComponent {
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
 
   logout() {
     this.http
@@ -30,6 +35,7 @@ export class navbarComponent {
       })
       .subscribe((response) => {
         console.log(response);
+        this.toastr.success('Loggout was successful!', 'Logged Out');
         this.router.navigate(['login']);
       });
   }
