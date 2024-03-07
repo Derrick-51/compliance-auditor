@@ -5,10 +5,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { FileUploadService } from '../../services/file-upload.service';
 import { MatIconModule } from '@angular/material/icon';
-import { ReadGuidelinesService } from '../../services/read-guidelines.service';
+//import { ReadGuidelinesService } from '../../services/read-guidelines.service';
 import { navbarComponent } from '../navbar/navbar.component';
 import { MarkdownModule } from 'ngx-markdown';
-import { ImageModalComponent } from '../image-modal/image-modal.component';
+//import { ImageModalComponent } from '../image-modal/image-modal.component';
 
 @Component({
   selector: 'app-make-an-audit',
@@ -21,7 +21,7 @@ import { ImageModalComponent } from '../image-modal/image-modal.component';
     MatIconModule,
     navbarComponent,
     MarkdownModule,
-    ImageModalComponent,
+    //ImageModalComponent,
   ],
   templateUrl: './make-an-audit.component.html',
   styleUrl: './make-an-audit.component.scss',
