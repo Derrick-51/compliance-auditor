@@ -5,12 +5,13 @@ import {
   OneToMany,
   CreateDateColumn,
   ManyToOne,
+  BaseEntity,
 } from 'typeorm';
 import { Users } from 'src/user/entities/user.entity';
 import { Images } from 'src/image/entities/image.entity';
 
 @Entity()
-export class Audit {
+export class Audit extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 

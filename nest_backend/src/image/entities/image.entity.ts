@@ -1,8 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, BaseEntity } from 'typeorm';
 import { Audit } from 'src/audit/entities/audit.entity';
 
 @Entity()
-export class Images {
+export class Images extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
