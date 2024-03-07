@@ -23,7 +23,7 @@ export class Audit {
   @Column()
   dueDate: Date;
 
-  @Column({ type: 'datetime' })
+  @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' }) //for mssql { type: 'datetime' } //for postgres{ type: "timestamptz", default: () => "CURRENT_TIMESTAMP" }
   update: Date;
 
   @ManyToOne((type) => Users, (user) => user.audit)

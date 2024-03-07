@@ -14,3 +14,7 @@ object_detection/runs
 
 #personal vscode settings
 /.vscode
+
+node_modules/
+
+.angular/

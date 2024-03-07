@@ -16,6 +16,7 @@ import { RouterModule } from '@angular/router';
 import { passwordMatchValidator } from './password-match.directive';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr'
 
 @Component({
   selector: 'app-register',
@@ -50,7 +51,8 @@ export class RegisterComponent {
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   get dealership() {
@@ -75,8 +77,12 @@ export class RegisterComponent {
       .post('http://localhost:3000/auth/register', postData)
       .subscribe((response) => {
         console.log(response);
+        this.toastr.success("Your account was successfully created!", "Account Created")
         this.router.navigate(['login']);
-      });
+      },
+        (error) => {
+          this.toastr.error('An account with this email already exists!', 'Registration Error');
+        });
   }
 
   getDealerErrorMessage() {
@@ -92,18 +98,21 @@ export class RegisterComponent {
     }
     return this.email.hasError('email') ? 'Please enter a valid email' : '';
   }
+
   getPassErrorMessage() {
     if (this.password.hasError('required')) {
       return 'Password field is empty';
     }
     return;
   }
+  
   getConfirmPassErrorMessage() {
     if (this.confirmPassword.hasError('required')) {
-      return 'Password does not match';
+      return 'Password field is empty';
     }
-    return;
-  }
-
-  hide = true;
+    return this.confirmPassword.hasError('passwordMatchValidator') ? 'Password does not match' : '';
+  };
+    
+  passwordFieldHide = true; // initially password is hidden
+  confirmFieldHide = true; // initially confirm password is hidden
 }
