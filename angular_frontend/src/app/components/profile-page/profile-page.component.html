@@ -1,2 +1,43 @@
-<app-navbar></app-navbar>
-<p>profile-page works!</p>
+<div class="w-full h-full bg-[#f2f2f2] overflow-hidden">
+  <app-navbar></app-navbar>
+  <div class="flex justify-center items-center h-full w-full">
+    <div
+      class="bg-gradient-to-r from-[#72b330] to-[#003771] rounded-l-md w-1/5 h-3/5 -mt-10"
+    >
+      <div class="scale-[3] flex justify-center items-center mt-20">
+        <mat-icon class="white-icon">person</mat-icon>
+      </div>
+      <div class="flex justify-center items-center mt-20 text-white text-2xl">
+        Dealership A
+      </div>
+      <div class="scale-[] flex justify-center items-center mt-32">
+        <mat-icon class="white-icon">edit</mat-icon>
+      </div>
+    </div>
+    <div class="bg-white rounded-r-md w-[550px] h-3/5 -mt-10">
+      <div class="px-8 py-2">
+        <div class="text-xl border-b-2">User Information</div>
+        <div class="grid grid-cols-2 pt-4 gap-2">
+          <div class="text-lg font-bold">Email</div>
+          <div class="text-lg font-bold">Password</div>
+          <div class="text-lg">{{ dealershipEmail }}</div>
+          <div class="text-lg">{{ dealershipEmail }}</div>
+        </div>
+        <div class="text-xl border-b-2 pt-8">Dealership Information</div>
+        <div class="grid grid-cols-2 pt-4 gap-2">
+          <div class="text-lg font-bold">First Name</div>
+          <div class="text-lg font-bold">Last Name</div>
+          <div class="text-lg pb-4">John</div>
+          <div class="text-lg pb-4">Smith</div>
+          <div class="text-lg font-bold">Address</div>
+          <div class="text-lg font-bold">City</div>
+          <div class="text-lg pb-4">{{ dealershipAddress }}</div>
+          <div class="text-lg pb-4">{{ dealershipCity }}</div>
+          <div class="text-lg font-bold">State</div>
+          <div></div>
+          <div class="text-lg pb-4"> {{ dealershipState }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
