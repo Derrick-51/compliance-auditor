@@ -9,12 +9,17 @@ import { UserService } from "src/user/user.service";
 import { Users } from "src/user/entities/user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
+import { AuditService } from "src/audit/audit.service";
+import { DefaultDeserializer } from "v8";
 
 
 @Injectable()
 export class UploadService {
     constructor(
         private jwtService: JwtService,
+        private userService: UserService,
+        private auditService: AuditService,
+        private imageService: ImageService
     ) {}
 
 
@@ -34,16 +39,20 @@ export class UploadService {
                 throw new UnauthorizedException();
             }
 
-            console.log(data['id'])
+            const user = await this.userService.findID(Number(data['id']));
 
             // // WIP //////////////////////////
-            // const audit = this.auditService.createOne();
-            // this.imageService.createMany(audit, fileNames);
+            const audit = await this.auditService.createOne(user, new Date(), new Date());
+            const newAudit = await this.auditService.findOne(audit.id)
+
+            for(let idx = 0; idx < fileNames.length; ++idx) {
+                await this.imageService.createOne(fileNames[idx], new Date(), newAudit);
+            }
             // /////////////////////////////////
 
         } catch(err) {
-            console.error('JWT verification error: ', err.message);
-            throw new Error('Invalid JWT token');
+            console.error(err.message);
+            throw new Error('File upload failure');
         }
 
 
@@ -67,6 +76,6 @@ export class UploadService {
         //     console.log(`exited with code: ${code}`)
         // })
         
-        return 'Success'
+        return 'Done'
     }
 }

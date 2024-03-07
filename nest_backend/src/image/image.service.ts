@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { CreateImageDto } from './dto/create-image.dto';
 import { UpdateImageDto } from './dto/update-image.dto';
 import { Images } from './entities/image.entity';
+import { Audit } from '../audit/entities/audit.entity'
 import { DataSource } from 'typeorm';
 
 @Injectable()
@@ -16,6 +17,15 @@ export class ImageService {
 
   create(createImageDto: CreateImageDto) {
     return 'This action adds a new image';
+  }
+
+  async createOne(imageName: string, update: Date, audit: Audit): Promise<Images> {
+    const newImage = await this.imageRepository.save({fileName: imageName, update});
+
+    audit.images = [...audit.images, newImage];
+    await audit.save();
+
+    return newImage
   }
 
   async createMany(imageNames: string[]) {
