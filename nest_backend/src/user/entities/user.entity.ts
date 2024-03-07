@@ -1,5 +1,5 @@
 import { Audit } from 'src/audit/entities/audit.entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
 
 @Entity()
 export class Users {
@@ -33,6 +33,6 @@ export class Users {
   @Column({ nullable: true })
   address: string;
 
-  @OneToMany((type) => Audit, (audit) => audit.user)
+  @ManyToMany((type) => Audit, (audit) => audit.user)
   audit: Audit;
 }

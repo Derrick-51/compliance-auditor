@@ -4,10 +4,10 @@ import {
   PrimaryGeneratedColumn,
   OneToMany,
   CreateDateColumn,
-  ManyToOne,
+  ManyToMany,
 } from 'typeorm';
 import { Users } from 'src/user/entities/user.entity';
-import { Images } from 'src/image/entities/image.entity';
+import { Image } from 'src/image/entities/image.entity';
 
 @Entity()
 export class Audit {
@@ -15,7 +15,7 @@ export class Audit {
   id: number;
 
   @Column()
-  finalVerdict: string;
+  finalVerdit: string;
 
   @CreateDateColumn()
   auditDate: Date;
@@ -26,9 +26,9 @@ export class Audit {
   @Column({ type: 'datetime' })
   update: Date;
 
-  @ManyToOne((type) => Users, (user) => user.audit)
+  @ManyToMany((type) => Users, (user) => user.audit)
   user: Users;
 
-  @OneToMany((type) => Images, (image) => image.audit)
-  image: Images;
+  @OneToMany((type) => Image, (image) => image.audit)
+  image: Image;
 }
