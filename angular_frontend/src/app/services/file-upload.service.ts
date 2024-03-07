@@ -14,9 +14,14 @@ export class FileUploadService {
     const formData: FormData = new FormData();
 
     formData.append('images', file);
-    const req = new HttpRequest('POST', `${this.databaseUrl}/api/upload`, formData, {
-      responseType: 'json'
-    });
+    const req = new HttpRequest(
+      'POST',
+      `${this.databaseUrl}/api/upload`,
+      formData,
+      {
+        responseType: 'json',
+      }
+    );
 
     return this.http.request(req);
   }
