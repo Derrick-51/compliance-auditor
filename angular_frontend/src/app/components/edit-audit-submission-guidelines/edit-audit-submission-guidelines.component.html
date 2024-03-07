@@ -1,0 +1,22 @@
+<div class="min-h-screen">
+  <div class="flex items-center p-4">
+    <div class="w-full">
+      <mat-card class="p-4 mb-4 sm:h-14">
+        <h3 class="text-lg font-semibold">How the audit submission guidelines appear on the Make an Audit Page is below</h3>
+      </mat-card>
+      <!-- Markdown preview-->
+      <mat-card class="p-4 mb-4 sm:h-40">
+        <markdown [data]="guidelines"></markdown>
+      </mat-card>
+      <!-- Markdown editor -->
+      <mat-card class="p-4 sm:h-[270px]">
+        <h3 class="text-lg font-semibold">Enter the edits for the audit submission guidelines using Markdown format below</h3>
+        <textarea [(ngModel)]="guidelines" class="w-full border rounded p-2 mb-4 sm:h-[140px]"></textarea>
+        <!-- Submit button-->
+        <div class="flex justify-end">
+          <button mat-raised-button color="primary" (click)="saveGuidelines()">Save Guidelines</button>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>
