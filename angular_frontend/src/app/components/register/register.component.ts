@@ -98,9 +98,20 @@ export class RegisterComponent {
     }
     return this.email.hasError('email') ? 'Please enter a valid email' : '';
   }
+
   getPassErrorMessage() {
     if (this.password.hasError('required')) {
       return 'Password field is empty';
+    }
+    return;
+  }
+  
+  getConfirmPassErrorMessage() {
+    if (this.confirmPassword.hasError('required')) {
+      return 'Confirm Password field is empty';
+    }
+    else if (this.confirmPassword.hasError('passwordMismatch')) {
+      return 'Confirm Password does match the password';
     }
     return;
   }

@@ -101,9 +101,9 @@
                     confirmFieldHide ? "visibility_off" : "visibility"
                   }}</mat-icon>
                 </button>
-                <mat-error *ngIf="confirmPassword.hasError('passwordMismatch')">
-                  Passwords do not match
-                </mat-error>
+                @if (confirmPassword.invalid && confirmPassword.dirty || confirmPassword.touched) {
+                <mat-error>{{ getConfirmPassErrorMessage() }}</mat-error>
+                }
               </mat-form-field>
             </div>
           </mat-card-content>

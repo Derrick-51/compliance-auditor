@@ -9,4 +9,5 @@ export const passwordMatchValidator: ValidatorFn = (control: AbstractControl): V
   }
 
   return password.value === confirmPassword.value ? null : { passwordMismatch: true }
+  
 }
