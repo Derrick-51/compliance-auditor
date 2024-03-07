@@ -6,12 +6,13 @@ import { FormsModule } from '@angular/forms';
 import { MarkdownModule } from 'ngx-markdown';
 import { SaveGuidelinesService } from '../../services/save-guidelines.service';
 import { AuditorNavbarComponent } from '../auditor-navbar/auditor-navbar.component';
-import { ToastrService } from 'ngx-toastr'
+import { ToastrService } from 'ngx-toastr';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-edit-audit-submission-guidelines',
   standalone: true,
-  imports: [MatButtonModule, CommonModule, FormsModule, MarkdownModule, AuditorNavbarComponent],
+  imports: [MatButtonModule, CommonModule, FormsModule, MarkdownModule, AuditorNavbarComponent, MatCardModule, AuditorNavbarComponent],
   templateUrl: './edit-audit-submission-guidelines.component.html',
   styleUrl: './edit-audit-submission-guidelines.component.scss'
 })
@@ -31,7 +32,7 @@ export class EditAuditSubmissionGuidelinesComponent implements OnInit {
     });
   }
 
-  // Submit button click handler
+  // Save Guidelines button click handler
   saveGuidelines(): void {
     this.saveGuidelinesService.save(this.guidelines).subscribe(() => {
       this.toastr.success("The changes to the audit guidlines have been saved!", "Successfully Changed!")

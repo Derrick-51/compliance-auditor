@@ -9,6 +9,7 @@ import { ReadGuidelinesService } from '../../services/read-guidelines.service';
 import { navbarComponent } from '../navbar/navbar.component';
 import { MarkdownModule } from 'ngx-markdown';
 import { ImageModalComponent } from '../image-modal/image-modal.component';
+
 @Component({
   selector: 'app-make-an-audit',
   standalone: true,

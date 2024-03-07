@@ -61,6 +61,7 @@ def isBoundaryMask(mask: cv2.typing.MatLike, thickness: int=1) -> bool:
 
 
 def generateMasks(images: List[cv2.typing.MatLike],
+                  model_path: str,
                   conf_threshold: float=0.2,
                   iou_threshold: float=0.9,
                   boundary_thickness: int=1,
@@ -70,7 +71,7 @@ def generateMasks(images: List[cv2.typing.MatLike],
     from ultralytics import FastSAM
     from ultralytics.models.fastsam import FastSAMPrompt
 
-    model = FastSAM("FastSam-s.pt")
+    model = FastSAM(f'{model_path}/FastSam-s.pt')
 
     imageMasks = []
     for imgNum, image in enumerate(images):

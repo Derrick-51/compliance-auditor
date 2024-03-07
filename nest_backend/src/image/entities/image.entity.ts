@@ -1,8 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, BaseEntity } from 'typeorm';
 import { Audit } from 'src/audit/entities/audit.entity';
 
 @Entity()
-export class Images {
+export class Images extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -12,12 +12,12 @@ export class Images {
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' }) //for mssql type: 'datetime' //for postgres  type: "timestamptz"
   update: Date;
 
-  @Column()
+  @Column({ default: 'False' })
   override: string;
 
-  @Column()
+  @Column({ default: 'Pending' })
   verdict: string;
 
-  @ManyToOne((type) => Audit, (audit) => audit.image)
+  @ManyToOne((type) => Audit, (audit) => audit.images)
   audit: Audit;
 }
