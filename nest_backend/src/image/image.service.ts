@@ -6,6 +6,8 @@ import { UpdateImageDto } from './dto/update-image.dto';
 import { Images } from './entities/image.entity';
 import { Audit } from '../audit/entities/audit.entity'
 import { DataSource } from 'typeorm';
+import { spawn } from "child_process";
+import  fs  from 'fs';
 
 @Injectable()
 export class ImageService {
@@ -70,5 +72,18 @@ export class ImageService {
 
   remove(id: number) {
     return `This action removes a #${id} image`;
+  }
+
+  async analyzeImages(fileNames: string[], auditId: string) {
+    // Call audit script with image path
+    const auditScript = spawn("py", ["-3.11", "../object_detection/audit_image.py", JSON.stringify(fileNames), auditId])
+
+    
+    // Script exit code
+    var exitCode: Number = -1
+    auditScript.on("close", (code) =>{
+        exitCode = code
+        console.log(`exited with code: ${code}`)
+    })
   }
 }
