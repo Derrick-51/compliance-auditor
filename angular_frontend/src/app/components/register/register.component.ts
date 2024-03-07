@@ -8,6 +8,8 @@ import {
   FormsModule,
   ReactiveFormsModule,
   FormBuilder,
+  FormGroup,
+  AbstractControl,
 } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
@@ -35,6 +37,7 @@ import { ToastrService } from 'ngx-toastr'
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
+
 export class RegisterComponent {
   registerForm = this.fb.group(
     {
@@ -53,7 +56,7 @@ export class RegisterComponent {
     private http: HttpClient,
     private router: Router,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   get dealership() {
     return this.registerForm.controls['dealership'];
@@ -105,14 +108,18 @@ export class RegisterComponent {
     }
     return;
   }
-  
+
   getConfirmPassErrorMessage() {
     if (this.confirmPassword.hasError('required')) {
       return 'Password field is empty';
     }
     return this.confirmPassword.hasError('passwordMatchValidator') ? 'Password does not match' : '';
   };
-    
+
+  passwordMatchValidator(control: AbstractControl) {
+    return control.get('password')?.value === control.get('confirmPassword')?.value ? null : { mismatch: true };
+  }
+
   passwordFieldHide = true; // initially password is hidden
   confirmFieldHide = true; // initially confirm password is hidden
 }
