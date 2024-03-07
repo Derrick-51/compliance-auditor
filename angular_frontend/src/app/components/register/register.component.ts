@@ -15,7 +15,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { RouterModule } from '@angular/router';
-import { passwordMatchValidator } from './password-match.directive';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr'
@@ -47,7 +46,7 @@ export class RegisterComponent {
       confirmPassword: ['', [Validators.required]],
     },
     {
-      validators: passwordMatchValidator,
+      validators: this.passwordMatchValidator,
     }
   );
 
@@ -111,13 +110,14 @@ export class RegisterComponent {
 
   getConfirmPassErrorMessage() {
     if (this.confirmPassword.hasError('required')) {
-      return 'Password field is empty';
+      return 'Confirm password field is empty';
     }
     return this.confirmPassword.hasError('passwordMatchValidator') ? 'Password does not match' : '';
+
   };
 
   passwordMatchValidator(control: AbstractControl) {
-    return control.get('password')?.value === control.get('confirmPassword')?.value ? null : { mismatch: true };
+   return control.get('password')?.value === control.get('confirmPassword')?.value ? null : { mismatch: true };
   }
 
   passwordFieldHide = true; // initially password is hidden
