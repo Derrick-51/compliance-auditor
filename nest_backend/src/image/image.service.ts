@@ -7,7 +7,9 @@ import { Images } from './entities/image.entity';
 import { Audit } from '../audit/entities/audit.entity'
 import { DataSource } from 'typeorm';
 import { spawn } from "child_process";
-import  fs  from 'fs';
+import  * as fs from 'fs'
+import * as path from 'path';
+import { AuditService } from 'src/audit/audit.service';
 
 @Injectable()
 export class ImageService {
@@ -62,8 +64,10 @@ export class ImageService {
     return `This action returns all image`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} image`;
+  async findOne(imageName: string) {
+    return await this.imageRepository.findOne({
+      where: {fileName: imageName}
+    });
   }
 
   update(id: number, updateImageDto: UpdateImageDto) {
@@ -74,16 +78,42 @@ export class ImageService {
     return `This action removes a #${id} image`;
   }
 
-  async analyzeImages(fileNames: string[], auditId: string) {
-    // Call audit script with image path
-    const auditScript = spawn("py", ["-3.11", "../object_detection/audit_image.py", JSON.stringify(fileNames), auditId])
+  async analyzeImages(fileNames: string[], auditId: number) {
+    try {
+      // Call audit script with image path
+      const auditScript = spawn("py", ["-3.11", "../object_detection/audit_image.py", JSON.stringify(fileNames), auditId.toString()]);
+      
+      // Script exit code
+      var exitCode: Number = -1
+      auditScript.on("close", (code) =>{
+        
+        exitCode = code;
+        console.log(`Audit exited with code: ${code}`);
 
-    
-    // Script exit code
-    var exitCode: Number = -1
-    auditScript.on("close", (code) =>{
-        exitCode = code
-        console.log(`exited with code: ${code}`)
-    })
+        if(exitCode === 1) throw new Error("audit_image.py exited with error");
+        console.log("Script exited")
+        
+        const results = fs.readFileSync(path.resolve(__dirname, `../../analysis_results/Audit_${auditId}.json`), 'utf-8');
+        if(!results) { throw new Error("Error reading audit results file")}
+
+        let resultsObj = JSON.parse(results)
+
+        for(let idx = 0; idx < fileNames.length; ++idx) {
+          let verdict = resultsObj[`${fileNames[idx]}`];
+          this.updateResult(fileNames[idx], verdict);
+        }
+      });
+
+    } catch (err) {
+      console.log(err.message);
+      throw err;
+    }
+  }
+
+  async updateResult(imageName: string, verdict: string) {
+    let image = await this.findOne(imageName);
+
+    image.verdict = verdict;
+    await image.save();
   }
 }
