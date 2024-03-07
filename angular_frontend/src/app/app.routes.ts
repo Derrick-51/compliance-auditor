@@ -14,8 +14,11 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'navbar', component: navbarComponent },
   { path: 'review-audit', component: ReviewAuditComponent },
-  { path: 'edit-audit-submission-guidelines', component: EditAuditSubmissionGuidelinesComponent },
-  { path: 'status', component: StatusComponent},
+  {
+    path: 'edit-audit-submission-guidelines',
+    component: EditAuditSubmissionGuidelinesComponent,
+  },
+  { path: 'status', component: StatusComponent },
   { path: 'make-an-audit', component: MakeAnAuditComponent },
   { path: 'profile-page', component: ProfilePageComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
