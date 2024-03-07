@@ -39,4 +39,23 @@ export class AuditService {
   remove(id: number) {
     return `This action removes a #${id} audit`;
   }
+
+  async updateVerdict(id: number) {
+    const audit = await this.findOne(id);
+    let auditFailed: boolean;
+    for(let idx = 0; idx < audit.images.length; ++idx) {
+      if(audit.images[idx].verdict.toString() === 'Failed') {
+        console.log("Failed image")
+        auditFailed = true;
+        break;
+      }
+    }
+    if(auditFailed) {
+      audit.finalVerdict = 'Failed';
+    }
+    else {
+      audit.finalVerdict = 'Passed';
+    }
+    await audit.save();
+  }
 }
