@@ -1,4 +1,5 @@
 <div class="min-h-screen bg-[#f2f2f2]">
+  <app-navbar></app-navbar>
   <div class="flex items-center p-4">
     <div class="w-full">
       <mat-card class="p-4 mb-4 sm:h-14">
@@ -11,9 +12,9 @@
         </div>
       </mat-card>
       <!-- Markdown editor -->
-      <mat-card class="p-4 sm:h-[270px]">
+      <mat-card class="p-4 sm:h-[295px]">
         <h3 class="text-lg font-semibold">Enter the edits for the audit submission guidelines using Markdown format below.</h3>
-        <textarea [(ngModel)]="guidelines" class="w-full border rounded p-2 mb-4 sm:h-[140px]"></textarea>
+        <textarea [(ngModel)]="guidelines" class="w-full border rounded p-2 mb-4 sm:h-[165px]"></textarea>
         <!-- Submit button-->
         <div class="flex justify-end">
           <button mat-raised-button color="primary" (click)="saveGuidelines()">Save Guidelines</button>

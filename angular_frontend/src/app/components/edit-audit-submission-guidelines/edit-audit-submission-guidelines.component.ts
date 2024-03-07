@@ -8,11 +8,12 @@ import { SaveGuidelinesService } from '../../services/save-guidelines.service';
 import { AuditorNavbarComponent } from '../auditor-navbar/auditor-navbar.component';
 import { ToastrService } from 'ngx-toastr'
 import { MatCardModule } from '@angular/material/card';
+import { navbarComponent } from '../navbar/navbar.component';
 
 @Component({
   selector: 'app-edit-audit-submission-guidelines',
   standalone: true,
-  imports: [MatButtonModule, CommonModule, FormsModule, MarkdownModule, AuditorNavbarComponent, MatCardModule],
+  imports: [MatButtonModule, CommonModule, FormsModule, MarkdownModule, AuditorNavbarComponent, MatCardModule, navbarComponent],
   templateUrl: './edit-audit-submission-guidelines.component.html',
   styleUrl: './edit-audit-submission-guidelines.component.scss'
 })
