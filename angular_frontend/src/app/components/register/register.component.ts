@@ -108,14 +108,11 @@ export class RegisterComponent {
   
   getConfirmPassErrorMessage() {
     if (this.confirmPassword.hasError('required')) {
-      return 'Confirm Password field is empty';
+      return 'Password field is empty';
     }
-    else if (this.confirmPassword.hasError('passwordMismatch')) {
-      return 'Confirm Password does match the password';
-    }
-    return;
-  }
-
+    return this.confirmPassword.hasError('passwordMatchValidator') ? 'Password does not match' : '';
+  };
+    
   passwordFieldHide = true; // initially password is hidden
   confirmFieldHide = true; // initially confirm password is hidden
 }

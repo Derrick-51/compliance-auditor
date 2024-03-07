@@ -102,7 +102,7 @@
                   }}</mat-icon>
                 </button>
                 @if (confirmPassword.invalid && confirmPassword.dirty || confirmPassword.touched) {
-                <mat-error>{{ getConfirmPassErrorMessage() }}</mat-error>
+                <mat-error>{{ getEmailErrorMessage() }}</mat-error>
                 }
               </mat-form-field>
             </div>
