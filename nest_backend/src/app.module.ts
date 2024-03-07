@@ -23,7 +23,7 @@ import { DataSource } from 'typeorm';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'postgres',
+      type: 'mssql', //postgres for Zwar
       host: 'localhost',
       port: 1433,
       username: 'admin',
@@ -31,7 +31,7 @@ import { DataSource } from 'typeorm';
       database: 'compliance-auditor',
       synchronize: true, //REMOVE THIS IN PRODUCTION
       entities: [Users, Audit, Images],
-      //options: { encrypt: false }, //bypasses self-signed certificate, may need to change this later since this can be exploited in a cyber attack
+      options: { encrypt: false }, //Make sure to comment this out when working with postgres //bypasses self-signed certificate, may need to change this later since this can be exploited in a cyber attack
     }),
     // Serve files from the 'guidelines' folder
     ServeStaticModule.forRoot({
@@ -40,7 +40,7 @@ import { DataSource } from 'typeorm';
     }),
     // Serve files from the 'images' folder
     ServeStaticModule.forRoot({
-      serveRoot: '/images', 
+      serveRoot: '/images',
       rootPath: join(__dirname, '..', 'images'),
     }),
     UploadModule,
