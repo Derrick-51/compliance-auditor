@@ -93,7 +93,7 @@ export class AuthService {
 
       const user = await this.usersService.findID(Number(data['id']));
 
-      const { password, usertype, ...result } = user;
+      const { password, usertype, state, city, address, ...result } = user;
 
       return result;
     } catch (e) {

@@ -42,7 +42,7 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
   ) {}
 
   get email() {
@@ -55,7 +55,9 @@ export class LoginComponent {
   submitLogin() {
     const postData = { ...this.loginForm.value };
     this.http
-      .post('http://localhost:3000/auth/login', postData, {withCredentials: true})
+      .post('http://localhost:3000/auth/login', postData, {
+        withCredentials: true,
+      })
       .subscribe((response) => {
         console.log(response);
         this.router.navigate(['status']);

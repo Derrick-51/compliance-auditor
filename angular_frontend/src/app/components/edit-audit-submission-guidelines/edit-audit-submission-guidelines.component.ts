@@ -5,12 +5,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { MarkdownModule } from 'ngx-markdown';
 import { SaveGuidelinesService } from '../../services/save-guidelines.service';
-import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-edit-audit-submission-guidelines',
   standalone: true,
-  imports: [MatButtonModule, CommonModule, FormsModule, MarkdownModule, MatCardModule],
+  imports: [MatButtonModule, CommonModule, FormsModule, MarkdownModule],
   templateUrl: './edit-audit-submission-guidelines.component.html',
   styleUrl: './edit-audit-submission-guidelines.component.scss'
 })
