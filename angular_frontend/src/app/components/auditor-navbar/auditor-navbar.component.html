@@ -16,10 +16,16 @@
         class="flex lg:flex-row flex-col lg:items-center lg:gap-[3vw] gap-6 lg:mr-20"
       >
         <li>
-          <a class="hover:text-[#66CC33] text-[#414551]" routerLink="/review-audit">Audit Review</a>
+          <a
+            class="hover:text-[#66CC33] text-[#414551]"
+            routerLink="/review-audit"
+            >Audit Review</a
+          >
         </li>
         <li>
-          <a class="hover:text-[#66CC33] text-[#414551]" routerLink="/edit-audit-submission-guidelines"
+          <a
+            class="hover:text-[#66CC33] text-[#414551]"
+            routerLink="/edit-audit-submission-guidelines"
             >Audit Guidelines</a
           >
         </li>
@@ -27,10 +33,7 @@
     </div>
     <div>
       <div class="hidden lg:block">
-        <a routerLink="/profile">
-            <button mat-flat-button>Profile</button>
-          </a>
-        <button class="ml-2" mat-flat-button>Logout</button>
+        <button class="ml-2" mat-flat-button (click)="logout()">Logout</button>
       </div>
       <div class="lg:hidden">
         <button
@@ -53,13 +56,7 @@
               <span>Edit Audit Guidelines</span>
             </button>
           </a>
-          <a routerLink="/profile">
-            <button mat-menu-item>
-              <mat-icon>person_pin</mat-icon>
-              <span>Profile</span>
-            </button>
-          </a>
-          <button mat-menu-item>
+          <button mat-menu-item (click)="logout()">
             <mat-icon>exit_to_app</mat-icon>
             <span>Logout</span>
           </button>

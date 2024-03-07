@@ -39,11 +39,14 @@ export class AuthService {
   async login(user: any, @Res({ passthrough: true }) response: Response) {
     const payload = { id: user.id, email: user.email, sub: user.userId };
 
+    const userType = user.usertype;
+
     const accessToken = this.jwtService.sign(payload);
 
-    response.cookie('jwt', accessToken, { httpOnly: true, });
+    response.cookie('jwt', accessToken, { httpOnly: true });
     return {
       access_token: accessToken,
+      usertype: userType,
     };
   }
 
