@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { MarkdownModule } from 'ngx-markdown';
 import { SaveGuidelinesService } from '../../services/save-guidelines.service';
 import { AuditorNavbarComponent } from '../auditor-navbar/auditor-navbar.component';
-import { ToastrService } from 'ngx-toastr'
+import { ToastrService } from 'ngx-toastr';
 import { MatCardModule } from '@angular/material/card';
 import { navbarComponent } from '../navbar/navbar.component';
 
