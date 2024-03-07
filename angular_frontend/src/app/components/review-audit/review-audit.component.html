@@ -18,7 +18,9 @@
           >
             <div class="grid grid-cols-2 sm:grid-cols-4 min-w-full">
               <span class="text-lg font-medium flex mr-2">Dealership:</span>
-              <span class="text-lg col-span-3">{{ audit.name }}</span>
+              <span class="text-lg col-span-3">{{
+                audit.user.dealershipName
+              }}</span>
               <span class="text-lg font-medium flex mr-2">Verdict:</span>
               <span class="text-base col-span-3">{{ audit.finalVerdict }}</span>
             </div>
@@ -31,12 +33,13 @@
     <mat-card class="h-full">
       <mat-card-header>
         <h2 class="flex justify-center items-center w-full">
-          {{ selectedAudit.name | uppercase }} Details
+          <!-- {{ selectedAudit.userID | uppercase }}-->
+          Details
         </h2>
       </mat-card-header>
       <mat-card-content>
         <div>id: {{ selectedAudit.id }}</div>
-        <div
+        <!-- <div
           *ngIf="selectedAudit.imageUrl && selectedAudit.imageUrl.length > 0"
         >
           <h4>Images</h4>
@@ -44,17 +47,19 @@
             class="flex flex-wrap justify-content align-items overflow-y-auto max-h-80"
           >
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 w-full">
-              <img
+              <!-- <img
                 *ngFor="let imageUrls of selectedAudit.imageUrl"
                 src="{{ imageUrls }}"
-                alt="Image for {{ selectedAudit.name }}"
+                alt="Image for {{ selectedAudit.userID }}"
                 class="object-cover h-full"
               />
             </div>
           </div>
-        </div>
+        </div> -->
         <div>
-          <label for="audit-name">Audit name: {{ selectedAudit.name }} </label>
+          <label for="audit-name"
+            >Audit name: {{ selectedAudit.user.dealershipName }}
+          </label>
         </div>
       </mat-card-content>
     </mat-card>

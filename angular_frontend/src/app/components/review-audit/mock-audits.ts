@@ -12,9 +12,6 @@ export const AUDITS: Audit[] = [
     id: 12,
     name: 'Toyota Mattic',
     finalVerdict: 'Pending',
-    imageUrl: [
-      '/compliance-auditor/nest_backend/photos/3d4deacf-9d09-4f66-8bc5-3d29936fff8b.png',
-    ],
   },
   {
     id: 13,

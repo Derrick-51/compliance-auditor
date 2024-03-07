@@ -1,10 +1,12 @@
 export interface Audit {
   id: number;
-  userID: number;
   auditDate: Date;
   dueDate: Date;
   finalVerdict: string;
-  //imageUrl?: Images[];
+  user: {
+    dealershipName: string;
+  };
+  //imageUrl?: Images[]; Save for later
 }
 
 export interface Images {

@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { navbarComponent } from '../navbar/navbar.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MessageService } from '../../messages/message.service';
-import { Audit } from './mock-audits';
+import { Audit } from './audit-list';
 import { NgFor, NgIf, UpperCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -24,7 +24,7 @@ import { AuditListService } from '../../services/audit-list.service';
   templateUrl: './review-audit.component.html',
   styleUrl: './review-audit.component.scss',
 })
-export class ReviewAuditComponent {
+export class ReviewAuditComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private messageService: MessageService,
@@ -35,10 +35,16 @@ export class ReviewAuditComponent {
 
   selectedAudit?: Audit;
 
-  getAudits(): void {
-    this.auditlistService
-      .getAudits()
-      .subscribe((audits) => (this.audits = audits));
+  getAudits() {
+    // this.http
+    // .get('http://localhost:3000/audit/listall')
+    // .subscribe((data: any) => {
+    //   console.log(data);
+    //   this.audits = data;
+    // });
+    this.auditlistService.getAudits().subscribe((audits) => {
+      this.audits = audits;
+    });
   }
 
   ngOnInit(): void {
