@@ -9,7 +9,7 @@ export class Images extends BaseEntity {
   @Column({ unique: true })
   fileName: string;
 
-  @Column({ type: 'datetime' })
+  @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' }) //for mssql type: 'datetime' //for postgres  type: "timestamptz"
   update: Date;
 
   @Column({ default: 'False' })

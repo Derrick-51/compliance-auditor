@@ -1,9 +1,20 @@
+<app-auditor-navbar></app-auditor-navbar>
 <div class="container flex">
   <div class="w-1/2 p-4">
     <!-- Markdown editor -->
-    <textarea [(ngModel)]="guidelines" class="w-full h-full border rounded p-2"></textarea>
+    <textarea
+      [(ngModel)]="guidelines"
+      class="w-full h-full border rounded p-2"
+    ></textarea>
     <!-- Submit button-->
-    <button mat-raised-button color="primary" class="mt-4" (click)="saveGuidelines()">Save Guidelines</button>
+    <button
+      mat-raised-button
+      color="primary"
+      class="mt-4"
+      (click)="saveGuidelines()"
+    >
+      Save Guidelines
+    </button>
   </div>
   <!-- Markdown preview-->
   <markdown [data]="guidelines"></markdown>

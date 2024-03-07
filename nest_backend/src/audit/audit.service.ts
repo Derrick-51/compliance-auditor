@@ -6,6 +6,7 @@ import { Users } from 'src/user/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
+
 @Injectable()
 export class AuditService {
   constructor(
@@ -13,16 +14,20 @@ export class AuditService {
     private auditRepository: Repository<Audit>
   ) {}
 
-  async createOne(user: Users, dueDate: Date, update: Date): Promise<Audit> {
-    return await this.auditRepository.save({user, dueDate, update});
-  }
-
   create(createAuditDto: CreateAuditDto) {
     return 'This action adds a new audit';
   }
 
-  findAll() {
-    return `This action returns all audit`;
+  async createOne(user: Users, dueDate: Date, update: Date): Promise<Audit> {
+    return await this.auditRepository.save({user, dueDate, update});
+  }
+
+  async findAll(): Promise<Audit[]> {
+    const audits = await this.auditRepository.find({
+      select: ['id', 'finalVerdict', 'auditDate', 'dueDate', 'update'], // Specify only required columns
+      relations: ['user'],
+    });
+    return audits;
   }
 
   async findOne(id: number): Promise<Audit> {

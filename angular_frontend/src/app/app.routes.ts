@@ -7,6 +7,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { EditAuditSubmissionGuidelinesComponent } from './components/edit-audit-submission-guidelines/edit-audit-submission-guidelines.component';
 import { navbarComponent } from './components/navbar/navbar.component';
 import { ProfilePageComponent } from './components/profile-page/profile-page.component';
+import { AuditorNavbarComponent } from './components/auditor-navbar/auditor-navbar.component';
 import { submitAuditGuard } from './guards/submit-audit.guard';
 
 export const routes: Routes = [
@@ -14,10 +15,14 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'navbar', component: navbarComponent },
   { path: 'review-audit', component: ReviewAuditComponent },
-  { path: 'edit-audit-submission-guidelines', component: EditAuditSubmissionGuidelinesComponent },
-  { path: 'status', component: StatusComponent},
+  {
+    path: 'edit-audit-submission-guidelines',
+    component: EditAuditSubmissionGuidelinesComponent,
+  },
+  { path: 'status', component: StatusComponent },
   { path: 'make-an-audit', component: MakeAnAuditComponent },
-  { path: 'profile-page', component: ProfilePageComponent },
+  { path: 'profile', component: ProfilePageComponent },
+  { path: 'audit-navbar', component: AuditorNavbarComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '**', redirectTo: 'login', pathMatch: 'full' }, //this will be a 404 page, when the user tries to go to a page that doesnt exist }
 ];

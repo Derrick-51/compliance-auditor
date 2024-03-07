@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
-  selector: 'app-navbar',
+  selector: 'app-auditor-navbar',
   standalone: true,
   imports: [
     MatIconModule,
@@ -15,7 +15,9 @@ import { MatMenuModule } from '@angular/material/menu';
     RouterModule,
     MatMenuModule,
   ],
-  templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.scss',
+  templateUrl: './auditor-navbar.component.html',
+  styleUrl: './auditor-navbar.component.scss'
 })
-export class navbarComponent { }
+export class AuditorNavbarComponent {
+
+}
