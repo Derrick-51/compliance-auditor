@@ -34,7 +34,7 @@ export class EditAuditSubmissionGuidelinesComponent implements OnInit {
   // Submit button click handler
   saveGuidelines(): void {
     this.saveGuidelinesService.save(this.guidelines).subscribe(() => {
-      this.toastr.success("The changes to the audit guidlines have been saved!", "Successfully Changed!")
+      this.toastr.success("The changes to the audit guidelines have been saved!", "Successfully Changed!")
       console.log('Guidelines saved successfully.');
     }, (error) => {
       this.toastr.error('An error has occured trying to save the audit guidelines!', 'Change Unsuccessful!');
