@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { AuditListService } from '../../services/audit-list.service';
+import { AuditorNavbarComponent } from '../auditor-navbar/auditor-navbar.component';
 
 @Component({
   selector: 'app-review-audit',
@@ -20,6 +21,7 @@ import { AuditListService } from '../../services/audit-list.service';
     UpperCasePipe,
     MatButtonModule,
     MatCardModule,
+    AuditorNavbarComponent,
   ],
   templateUrl: './review-audit.component.html',
   styleUrl: './review-audit.component.scss',

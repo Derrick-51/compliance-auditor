@@ -64,6 +64,7 @@ export class LoginComponent {
       })
       .subscribe((response) => {
         console.log(response);
+        this.toastr.success('Login was successful!', 'Logged in!');
         this.router.navigate(['status']);
       },
         (error) => {
