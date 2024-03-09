@@ -42,8 +42,7 @@ export class UploadService {
             const audit = await this.auditService.createOne(user, new Date(), new Date());
             auditId = audit.id
 
-            // Need to use findOne to retrieve image field
-            const newAudit = await this.auditService.findOne(audit.id)
+            const newAudit = await this.auditService.findOneWithImages(audit.id)
 
             for(let idx = 0; idx < fileNames.length; ++idx) {
                 await this.imageService.createOne(fileNames[idx], new Date(), newAudit);

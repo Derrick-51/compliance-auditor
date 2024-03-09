@@ -30,7 +30,7 @@ export class AuditService {
     return audits;
   }
 
-  async findOne(id: number): Promise<Audit> {
+  async findOneWithImages(id: number): Promise<Audit> {
     return await this.auditRepository.findOne({
       where: { id: id },
       relations: { images: true }
@@ -46,7 +46,7 @@ export class AuditService {
   }
 
   async updateVerdict(id: number) {
-    const audit = await this.findOne(id);
+    const audit = await this.findOneWithImages(id);
 
     let auditFailed: boolean = false;
     for(let idx = 0; idx < audit.images.length; ++idx) {
