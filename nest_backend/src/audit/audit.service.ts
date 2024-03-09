@@ -47,19 +47,20 @@ export class AuditService {
 
   async updateVerdict(id: number) {
     const audit = await this.findOne(id);
-    let auditFailed: boolean;
+
+    let auditFailed: boolean = false;
     for(let idx = 0; idx < audit.images.length; ++idx) {
-      if(audit.images[idx].verdict.toString() === 'Failed') {
-        console.log("Failed image")
+      if(audit.images[idx].verdict.toString() === "Failed") {
         auditFailed = true;
         break;
       }
     }
+    
     if(auditFailed) {
-      audit.finalVerdict = 'Failed';
+      audit.finalVerdict = "Failed";
     }
     else {
-      audit.finalVerdict = 'Passed';
+      audit.finalVerdict = "Passed";
     }
     await audit.save();
   }
