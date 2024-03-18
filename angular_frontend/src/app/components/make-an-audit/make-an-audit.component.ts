@@ -9,6 +9,7 @@ import { ReadGuidelinesService } from '../../services/read-guidelines.service';
 import { navbarComponent } from '../navbar/navbar.component';
 import { MarkdownModule } from 'ngx-markdown';
 import { ImageModalComponent } from '../image-modal/image-modal.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-make-an-audit',
@@ -22,6 +23,7 @@ import { ImageModalComponent } from '../image-modal/image-modal.component';
     navbarComponent,
     MarkdownModule,
     ImageModalComponent,
+    MatTooltipModule,
   ],
   templateUrl: './make-an-audit.component.html',
   styleUrl: './make-an-audit.component.scss',
