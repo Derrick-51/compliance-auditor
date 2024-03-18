@@ -9,6 +9,7 @@ import { navbarComponent } from './components/navbar/navbar.component';
 import { ProfilePageComponent } from './components/profile-page/profile-page.component';
 import { AuditorNavbarComponent } from './components/auditor-navbar/auditor-navbar.component';
 import { submitAuditGuard } from './guards/submit-audit.guard';
+import { pendingAuditGuard } from './guards/pending-audit.guard';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -20,7 +21,7 @@ export const routes: Routes = [
     component: EditAuditSubmissionGuidelinesComponent,
   },
   { path: 'status', component: StatusComponent },
-  { path: 'make-an-audit', component: MakeAnAuditComponent },
+  { path: 'make-an-audit', component: MakeAnAuditComponent, canActivate: [pendingAuditGuard] },
   { path: 'profile', component: ProfilePageComponent },
   { path: 'audit-navbar', component: AuditorNavbarComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
