@@ -20,6 +20,7 @@ import { join } from 'path';
 import { GuidelinesModule } from './guidelines/guidelines.module';
 import { DataSource } from 'typeorm';
 import { PasswordModule } from './password/password.module';
+import { PasswordEntity } from './password/password.entity';
 
 @Module({
   imports: [
@@ -31,7 +32,7 @@ import { PasswordModule } from './password/password.module';
       password: 'admin123',
       database: 'compliance-auditor',
       synchronize: true, //REMOVE THIS IN PRODUCTION
-      entities: [Users, Audit, Images],
+      entities: [Users, Audit, Images, PasswordEntity],
       //options: { encrypt: false }, //Make sure to comment this out when working with postgres //bypasses self-signed certificate, may need to change this later since this can be exploited in a cyber attack
     }),
     // Serve files from the 'guidelines' folder
