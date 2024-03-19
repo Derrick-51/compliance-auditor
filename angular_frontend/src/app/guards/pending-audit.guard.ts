@@ -1,4 +1,4 @@
-import { CanActivate, Router } from '@angular/router';
+import { CanActivate } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { LatestAuditService } from '../services/latest-audit.service';
 import { ToastrService } from 'ngx-toastr';
@@ -15,7 +15,6 @@ export class pendingAuditGuard implements CanActivate {
     private latestAuditService: LatestAuditService,
     private toastrService: ToastrService,
     private http: HttpClient,
-    private router: Router
   ) {}
 
   canActivate(): Observable<boolean> {
