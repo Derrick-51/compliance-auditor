@@ -22,6 +22,14 @@ export class AuditService {
     return await this.auditRepository.save({user, dueDate, update});
   }
 
+  async findOne(id: number): Promise<Audit> {
+    return await this.auditRepository.findOne({
+      where: { id: id },
+      select: ['id', 'finalVerdict', 'auditDate', 'dueDate', 'update'],
+      relations: ['user']
+    });
+  }
+
   async findAll(): Promise<Audit[]> {
     const audits = await this.auditRepository.find({
       select: ['id', 'finalVerdict', 'auditDate', 'dueDate', 'update'], // Specify only required columns
