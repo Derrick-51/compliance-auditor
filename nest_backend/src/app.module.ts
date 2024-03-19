@@ -19,6 +19,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { GuidelinesModule } from './guidelines/guidelines.module';
 import { DataSource } from 'typeorm';
+import { CriteriaModule } from './criteria/criteria.module';
 
 @Module({
   imports: [
@@ -52,6 +53,7 @@ import { DataSource } from 'typeorm';
     LatestAuditModule,
     FailedImagesModule,
     GuidelinesModule,
+    CriteriaModule
   ],
   controllers: [AppController],
   providers: [AppService],
