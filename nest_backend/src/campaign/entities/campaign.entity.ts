@@ -11,7 +11,7 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class Campaign {
+export class Campaign extends BaseEntity {
   @PrimaryGeneratedColumn()
   campaignID: number;
 
