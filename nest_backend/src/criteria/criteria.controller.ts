@@ -9,7 +9,7 @@ import { diskStorage } from 'multer';
 import { extname } from 'path';
 import {v4 as uuidv4} from "uuid";
 
-@Controller('criteria')
+@Controller('api/criteria')
 export class CriteriaController {
   constructor(private readonly criteriaService: CriteriaService) {}
 
