@@ -24,7 +24,7 @@ export class Criterion {
   @Column()
   guidelines: string;
 
-  @ManyToOne((type) => Campaign, (campaign) => campaign.criterion)
+  @ManyToOne((type) => Campaign, (campaign) => campaign.criteria)
   campaign: Campaign;
 
   @OneToMany((type) => Images, (image) => image.criterion)

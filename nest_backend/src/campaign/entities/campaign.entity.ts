@@ -25,5 +25,5 @@ export class Campaign {
   audits: Audit[];
 
   @OneToMany((type) => Criterion, (criterion) => criterion.campaign)
-  criterion: Criterion[];
+  criteria: Criterion[];
 }
