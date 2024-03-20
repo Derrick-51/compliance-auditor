@@ -6,12 +6,11 @@ import { Users } from 'src/user/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-
 @Injectable()
 export class AuditService {
   constructor(
     @InjectRepository(Audit)
-    private auditRepository: Repository<Audit>
+    private auditRepository: Repository<Audit>,
   ) {}
 
   create(createAuditDto: CreateAuditDto) {
@@ -19,12 +18,12 @@ export class AuditService {
   }
 
   async createOne(user: Users, dueDate: Date, update: Date): Promise<Audit> {
-    return await this.auditRepository.save({user, dueDate, update});
+    return await this.auditRepository.save({ user, dueDate, update });
   }
 
   async findAll(): Promise<Audit[]> {
     const audits = await this.auditRepository.find({
-      select: ['id', 'finalVerdict', 'auditDate', 'dueDate', 'update'], // Specify only required columns
+      select: ['auditID', 'finalVerdict', 'submitDate', 'update'], // Specify only required columns
       relations: ['user'], //show user tied to the audit
     });
     return audits;
@@ -32,8 +31,8 @@ export class AuditService {
 
   async findOne(id: number): Promise<Audit> {
     return await this.auditRepository.findOne({
-      where: { id: id },
-      relations: { images: true }
+      where: { auditID: id },
+      relations: { images: true },
     });
   }
 
@@ -48,17 +47,16 @@ export class AuditService {
   async updateVerdict(id: number) {
     const audit = await this.findOne(id);
     let auditFailed: boolean;
-    for(let idx = 0; idx < audit.images.length; ++idx) {
-      if(audit.images[idx].verdict.toString() === 'Failed') {
-        console.log("Failed image")
+    for (let idx = 0; idx < audit.images.length; ++idx) {
+      if (audit.images[idx].verdict.toString() === 'Failed') {
+        console.log('Failed image');
         auditFailed = true;
         break;
       }
     }
-    if(auditFailed) {
+    if (auditFailed) {
       audit.finalVerdict = 'Failed';
-    }
-    else {
+    } else {
       audit.finalVerdict = 'Passed';
     }
     await audit.save();
