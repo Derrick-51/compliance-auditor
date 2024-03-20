@@ -21,6 +21,14 @@ export class AuditService {
     return await this.auditRepository.save({ user, dueDate, update });
   }
 
+  async findOne(id: number): Promise<Audit> {
+    return await this.auditRepository.findOne({
+      where: { id: id },
+      select: ['id', 'finalVerdict', 'auditDate', 'dueDate', 'update'],
+      relations: ['user']
+    });
+  }
+
   async findAll(): Promise<Audit[]> {
     const audits = await this.auditRepository.find({
       select: ['auditID', 'finalVerdict', 'submitDate', 'update'], // Specify only required columns
@@ -29,7 +37,7 @@ export class AuditService {
     return audits;
   }
 
-  async findOne(id: number): Promise<Audit> {
+  async findOneWithImages(id: number): Promise<Audit> {
     return await this.auditRepository.findOne({
       where: { auditID: id },
       relations: { images: true },
@@ -45,19 +53,22 @@ export class AuditService {
   }
 
   async updateVerdict(id: number) {
-    const audit = await this.findOne(id);
-    let auditFailed: boolean;
-    for (let idx = 0; idx < audit.images.length; ++idx) {
-      if (audit.images[idx].verdict.toString() === 'Failed') {
-        console.log('Failed image');
+
+    const audit = await this.findOneWithImages(id);
+
+    let auditFailed: boolean = false;
+    for(let idx = 0; idx < audit.images.length; ++idx) {
+      if(audit.images[idx].verdict.toString() === "Failed") {
         auditFailed = true;
         break;
       }
     }
-    if (auditFailed) {
-      audit.finalVerdict = 'Failed';
-    } else {
-      audit.finalVerdict = 'Passed';
+    
+    if(auditFailed) {
+      audit.finalVerdict = "Failed";
+    }
+    else {
+      audit.finalVerdict = "Passed";
     }
     await audit.save();
   }

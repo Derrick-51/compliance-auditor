@@ -7,6 +7,12 @@ export class CriteriaService {
   create(createCriterionDto: CreateCriterionDto) {
     return 'This action adds a new criterion';
   }
+  
+  async createCriteria(fileName: string, criteriaName: string, description: string) {
+    console.log(fileName)
+    console.log(criteriaName)
+    console.log(description)
+  }
 
   findAll() {
     return `This action returns all criteria`;

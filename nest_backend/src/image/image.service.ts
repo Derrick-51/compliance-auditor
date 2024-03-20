@@ -80,27 +80,29 @@ export class ImageService {
 
   async analyzeImages(fileNames: string[], auditId: number) {
     try {
-      // Call audit script with image path
+      // Call audit script with image names list
       const auditScript = spawn("py", ["-3.11", "../object_detection/audit_image.py", JSON.stringify(fileNames), auditId.toString()]);
       
-      // Script exit code
-      var exitCode: Number = -1
+      // Script exit event listener
       auditScript.on("close", (code) =>{
         
-        exitCode = code;
         console.log(`Audit exited with code: ${code}`);
 
-        if(exitCode === 1) throw new Error("audit_image.py exited with error");
-        console.log("Script exited")
+        if(code === 1) throw new Error("audit_image.py exited with error");
         
-        const results = fs.readFileSync(path.resolve(__dirname, `../../analysis_results/Audit_${auditId}.json`), 'utf-8');
-        if(!results) { throw new Error("Error reading audit results file")}
+        const results = fs.readFileSync(
+          path.resolve(__dirname, `../../analysis_results/Audit_${auditId}.json`), 'utf-8');
+          
+        if(!results) {
+          throw new Error("Error reading audit results file")
+        }
 
         let resultsObj = JSON.parse(results)
 
+        // Update individual image verdicts
         for(let idx = 0; idx < fileNames.length; ++idx) {
-          let verdict = resultsObj[`${fileNames[idx]}`];
-          this.updateResult(fileNames[idx], verdict);
+          let verdict = resultsObj[fileNames[idx]];
+          this.updateVerdict(fileNames[idx], verdict);
         }
       });
 
@@ -110,7 +112,7 @@ export class ImageService {
     }
   }
 
-  async updateResult(imageName: string, verdict: string) {
+  async updateVerdict(imageName: string, verdict: string) {
     let image = await this.findOne(imageName);
 
     image.verdict = verdict;

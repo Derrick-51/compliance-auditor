@@ -19,39 +19,37 @@ export class UploadService {
     private imageService: ImageService,
   ) {}
 
+
   async uploadFiles(@Req() request: Request, fileNames: string[]) {
+
     let auditId: number;
     try {
       const cookie = request.cookies['jwt'];
-      if (!cookie) {
+      if(!cookie) {
         throw new Error('JWT cookie not found');
       }
 
       const data = await this.jwtService.verifyAsync(cookie, {
-        secret: jwtConstants.secret,
+        secret: jwtConstants.secret
       });
-      if (!data) {
+      if(!data) {
         throw new UnauthorizedException();
       }
 
       const user = await this.userService.findID(Number(data['id']));
 
-      const audit = await this.auditService.createOne(
-        user,
-        new Date(),
-        new Date(),
-      );
+      const audit = await this.auditService.createOne(user, new Date(), new Date());
       auditId = audit.auditID;
 
-      // Need to use findOne to retrieve image field
-      const newAudit = await this.auditService.findOne(audit.auditID);
+      const newAudit = await this.auditService.findOneWithImages(audit.auditID);
 
-      for (let idx = 0; idx < fileNames.length; ++idx) {
+      for(let idx = 0; idx < fileNames.length; ++idx) {
         await this.imageService.createOne(fileNames[idx], new Date(), newAudit);
       }
-    } catch (err) {
-      console.error(err.message);
-      throw new Error('File upload failure');
+    } 
+    catch(err) {
+        console.error(err.message);
+        throw new Error('File upload failure');
     }
 
     await this.imageService.analyzeImages(fileNames, auditId);
