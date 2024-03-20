@@ -6,12 +6,11 @@ import { Users } from 'src/user/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-
 @Injectable()
 export class AuditService {
   constructor(
     @InjectRepository(Audit)
-    private auditRepository: Repository<Audit>
+    private auditRepository: Repository<Audit>,
   ) {}
 
   create(createAuditDto: CreateAuditDto) {
@@ -19,7 +18,7 @@ export class AuditService {
   }
 
   async createOne(user: Users, dueDate: Date, update: Date): Promise<Audit> {
-    return await this.auditRepository.save({user, dueDate, update});
+    return await this.auditRepository.save({ user, dueDate, update });
   }
 
   async findOne(id: number): Promise<Audit> {
@@ -32,16 +31,16 @@ export class AuditService {
 
   async findAll(): Promise<Audit[]> {
     const audits = await this.auditRepository.find({
-      select: ['id', 'finalVerdict', 'auditDate', 'dueDate', 'update'], // Specify only required columns
-      relations: ['user'],
+      select: ['auditID', 'finalVerdict', 'submitDate', 'update'], // Specify only required columns
+      relations: ['user'], //show user tied to the audit
     });
     return audits;
   }
 
   async findOneWithImages(id: number): Promise<Audit> {
     return await this.auditRepository.findOne({
-      where: { id: id },
-      relations: { images: true }
+      where: { auditID: id },
+      relations: { images: true },
     });
   }
 
@@ -54,6 +53,7 @@ export class AuditService {
   }
 
   async updateVerdict(id: number) {
+
     const audit = await this.findOneWithImages(id);
 
     let auditFailed: boolean = false;

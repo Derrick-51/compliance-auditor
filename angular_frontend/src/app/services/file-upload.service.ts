@@ -19,6 +19,7 @@ export class FileUploadService {
       `${this.databaseUrl}/api/upload`,
       formData,
       {
+        withCredentials: true,
         responseType: 'json',
       }
     );

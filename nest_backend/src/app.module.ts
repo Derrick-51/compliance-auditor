@@ -19,7 +19,10 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { GuidelinesModule } from './guidelines/guidelines.module';
 import { DataSource } from 'typeorm';
+import { CampaignModule } from './campaign/campaign.module';
 import { CriteriaModule } from './criteria/criteria.module';
+import { Campaign } from './campaign/entities/campaign.entity';
+import { Criterion } from './criteria/entities/criterion.entity';
 
 @Module({
   imports: [
@@ -31,7 +34,7 @@ import { CriteriaModule } from './criteria/criteria.module';
       password: 'admin123',
       database: 'compliance-auditor',
       synchronize: true, //REMOVE THIS IN PRODUCTION
-      entities: [Users, Audit, Images],
+      entities: [Users, Audit, Images, Campaign, Criterion],
       options: { encrypt: false }, //Make sure to comment this out when working with postgres //bypasses self-signed certificate, may need to change this later since this can be exploited in a cyber attack
     }),
     // Serve files from the 'guidelines' folder
@@ -53,7 +56,8 @@ import { CriteriaModule } from './criteria/criteria.module';
     LatestAuditModule,
     FailedImagesModule,
     GuidelinesModule,
-    CriteriaModule
+    CampaignModule,
+    CriteriaModule,
   ],
   controllers: [AppController],
   providers: [AppService],

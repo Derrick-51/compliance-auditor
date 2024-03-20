@@ -4,10 +4,12 @@
     <div class="w-full">
       <!--Audit Submission Guidelines-->
       <mat-card class="p-4 mb-4 sm:h-40">
-        <markdown [data]="guidelines"></markdown>
+        <div class="overflow-hidden">
+          <markdown [data]="guidelines"></markdown>
+        </div>
       </mat-card>
       <!--Audit Submission-->
-      <mat-card class="p-4 pb-20 sm:h-[365px]">
+      <mat-card class="p-2 pb-16 sm:h-[365px]">
         <!--Previews-->
         <div class="overflow-hidden sm:overflow-y-auto h-auto">
           <div class="flex flex-wrap justify-center">
@@ -43,6 +45,7 @@
                 accept=".jpg, .jpeg, .png"
                 multiple=""
                 (change)="selectImages($event)"
+                class="cursor-pointer"
               />
             </div>
             <!--Submit button-->

@@ -17,7 +17,9 @@ export class ReadGuidelinesService {
         catchError((error: any) => {
           console.error('Could not find markdown file:', error);
           // Default guidelines displayed if Markdown file not found
-          return of('Default guidelines');
+          return of('1. Submit the audit with images of brand signage that follow the criteria.\n' +
+          '2. Wait for an auditor to review the submitted audit.\n' +
+          '3. The verdict of the submitted audit will be displayed on the Status Page.');
         })
       );
   }
