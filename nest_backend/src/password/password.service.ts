@@ -8,11 +8,11 @@ export class PasswordService {
 
   constructor(
     @InjectRepository(PasswordEntity) private readonly passwordRepository: Repository<PasswordEntity>
-  ){
+  ) {
 
   }
 
-  async create(body: any){
+  async create(body: any) {
     return this.passwordRepository.save(body);
   }
 }
