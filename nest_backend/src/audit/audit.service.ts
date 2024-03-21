@@ -23,8 +23,8 @@ export class AuditService {
 
   async findOne(id: number): Promise<Audit> {
     return await this.auditRepository.findOne({
-      where: { id: id },
-      select: ['id', 'finalVerdict', 'auditDate', 'dueDate', 'update'],
+      where: { auditID: id },
+      select: ['auditID', 'finalVerdict', 'submitDate', 'update'],
       relations: ['user']
     });
   }
