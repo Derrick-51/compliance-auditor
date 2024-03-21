@@ -11,7 +11,7 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class Campaign {
+export class Campaign extends BaseEntity {
   @PrimaryGeneratedColumn()
   campaignID: number;
 
@@ -25,5 +25,5 @@ export class Campaign {
   audits: Audit[];
 
   @OneToMany((type) => Criterion, (criterion) => criterion.campaign)
-  criterion: Criterion[];
+  criteria: Criterion[];
 }

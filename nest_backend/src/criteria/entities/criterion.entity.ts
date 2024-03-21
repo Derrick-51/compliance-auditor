@@ -11,20 +11,20 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class Criterion {
+export class Criterion extends BaseEntity {
   @PrimaryGeneratedColumn()
   criteriaID: number;
 
-  @Column()
+  @Column({default: "New Criterion"})
   name: string;
 
-  @Column()
+  @Column({default: ""})
   filename: string;
 
-  @Column()
+  @Column({default: ""})
   guidelines: string;
 
-  @ManyToOne((type) => Campaign, (campaign) => campaign.criterion)
+  @ManyToOne((type) => Campaign, (campaign) => campaign.criteria)
   campaign: Campaign;
 
   @OneToMany((type) => Images, (image) => image.criterion)
