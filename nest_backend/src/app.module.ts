@@ -25,6 +25,7 @@ import { Campaign } from './campaign/entities/campaign.entity';
 import { Criterion } from './criteria/entities/criterion.entity';
 import { PasswordModule } from './password/password.module';
 import { PasswordEntity } from './password/password.entity';
+import { UserService } from './user/user.service';
 
 @Module({
   imports: [

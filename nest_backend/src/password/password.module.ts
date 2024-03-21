@@ -1,9 +1,11 @@
-import { MaxFileSizeValidator, Module } from '@nestjs/common';
+import { MaxFileSizeValidator, Module, forwardRef } from '@nestjs/common';
 import { PasswordController } from './password.controller';
 import { PasswordService } from './password.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PasswordEntity } from './password.entity';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { UserService } from 'src/user/user.service';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
   imports: [
@@ -18,8 +20,9 @@ import { MailerModule } from '@nestjs-modules/mailer';
       },
 
     }),
+    forwardRef(() => UserModule)
   ],
   controllers: [PasswordController],
-  providers: [PasswordService]
+  providers: [PasswordService],
 })
 export class PasswordModule { }

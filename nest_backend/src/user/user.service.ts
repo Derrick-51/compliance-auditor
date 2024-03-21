@@ -8,7 +8,7 @@ export class UserService {
   constructor(
     @InjectRepository(Users)
     private userRepository: Repository<Users>,
-  ) {}
+  ) { }
 
   async findAll(): Promise<Users[]> {
     return this.userRepository.find();
@@ -24,5 +24,9 @@ export class UserService {
 
   async remove(id: number): Promise<void> {
     await this.userRepository.delete(id);
+  }
+
+  async update(id: number, data: any): Promise<any> {
+    return this.userRepository.update(id, data);
   }
 }
