@@ -13,8 +13,8 @@ export class CampaignService {
     private readonly campaignRepository: Repository<Campaign>
   ) {}
 
-  create(createCampaignDto: CreateCampaignDto) {
-    return 'This action adds a new campaign';
+  async create(createCampaignDto: CreateCampaignDto) {
+    return await this.campaignRepository.save(createCampaignDto);
   }
 
   findAll() {
