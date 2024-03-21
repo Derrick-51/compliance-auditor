@@ -23,9 +23,9 @@ export class AuditService {
 
   async findOne(id: number): Promise<Audit> {
     return await this.auditRepository.findOne({
-      where: { id: id },
-      select: ['id', 'finalVerdict', 'auditDate', 'dueDate', 'update'],
-      relations: ['user']
+      where: { auditID: id },
+      select: ['auditID', 'finalVerdict', 'submitDate', 'update'],
+      relations: ['user'],
     });
   }
 
@@ -53,22 +53,20 @@ export class AuditService {
   }
 
   async updateVerdict(id: number) {
-
     const audit = await this.findOneWithImages(id);
 
     let auditFailed: boolean = false;
-    for(let idx = 0; idx < audit.images.length; ++idx) {
-      if(audit.images[idx].verdict.toString() === "Failed") {
+    for (let idx = 0; idx < audit.images.length; ++idx) {
+      if (audit.images[idx].verdict.toString() === 'Failed') {
         auditFailed = true;
         break;
       }
     }
-    
-    if(auditFailed) {
-      audit.finalVerdict = "Failed";
-    }
-    else {
-      audit.finalVerdict = "Passed";
+
+    if (auditFailed) {
+      audit.finalVerdict = 'Failed';
+    } else {
+      audit.finalVerdict = 'Passed';
     }
     await audit.save();
   }
