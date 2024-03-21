@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { CriteriaService } from './criteria.service';
+import { CampaignService } from '../campaign/campaign.service';
 import { CreateCriterionDto } from './dto/create-criterion.dto';
 import { UpdateCriterionDto } from './dto/update-criterion.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -8,39 +9,40 @@ import { Request } from 'express'
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import {v4 as uuidv4} from "uuid";
+import { Campaign } from 'src/campaign/entities/campaign.entity';
 
 @Controller('api/criteria')
 export class CriteriaController {
-  constructor(private readonly criteriaService: CriteriaService) {}
-
-  @Post()
-  create(@Body() createCriterionDto: CreateCriterionDto) {
-    return this.criteriaService.create(createCriterionDto);
-  }
+  constructor(
+    private readonly criteriaService: CriteriaService,
+    private readonly campaignService: CampaignService
+    ) {}
   
-  @Post('create')
-  @UseInterceptors(FileInterceptor('image', {
-      storage: diskStorage({
-          destination: 'posters',
-          filename: (req, file, callback) => {
-              const uniqueName = uuidv4()
-              const extension = extname(file.originalname)
-              const filename = `${uniqueName}${extension}`
+    @Post('create')
+    @UseInterceptors(FileInterceptor('image', {
+        storage: diskStorage({
+            destination: 'posters',
+            filename: (req, file, callback) => {
+                const uniqueName = uuidv4()
+                const extension = extname(file.originalname)
+                const filename = `${uniqueName}${extension}`
 
-              callback(null, filename)
-          }
-      })
-  }))
-  createCriteria(@Req() request: Request, @UploadedFile() file: Express.Multer.File) {
+                callback(null, filename)
+            }
+        })
+    }))
+    async createCriteria(
+        @UploadedFile() file: Express.Multer.File,
+        @Body() createCriteriaDto: CreateCriterionDto) {
 
-      const fileName: string = file.filename
-      const name: string = request.body.name
-      const description: string = request.body.description
+            const filename: string = file.filename;
 
-      this.criteriaService.createCriteria(fileName, name, description)
+            const campaign: Campaign = await this.campaignService.findOneWithCriteria(createCriteriaDto.campaignID)
 
-      return JSON.stringify({FileName: fileName, Criteria: name, Description: description})
-  }
+            const criterion = await this.criteriaService.create(createCriteriaDto, filename, campaign);
+
+            return JSON.stringify(criterion)
+    }
 
   @Get()
   findAll() {
