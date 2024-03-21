@@ -28,7 +28,7 @@ CORNER_QUALITY = 0.1
 # Corners are ignored if they are too close to another corner (pixel distance)
 CORNER_MIN_DISTANCE = 150
 # 
-CORNER_BLOCK_SIZE = 11
+CORNER_BLOCK_SIZE = 23
 # Posters are accepted if a match with a reference poster is above this threshold
 SIMILARITY_THRESHOLD = 0.6
 
@@ -48,6 +48,9 @@ for imageName in imageNames:
 processedImages = []
 for image in images:
     processedImages.append(preprocessImage(image))
+
+for imgNum, processedImage in enumerate(processedImages):
+    cv2.imshow(f'Edges: {imgNum}', processedImage)
 
 imageMasks = generateMasks(images,
                            MODEL_PATH,
@@ -89,7 +92,7 @@ for imgNum, image in enumerate(images):
         for count, corner in enumerate(corners):
             x, y = corner
             cv2.circle(mask, (x, y), radius=10, color=cornerColors[count], thickness=-1)
-        # cv2.imshow(f'Image: {imgNum} Mask: {maskNum}', mask)
+        cv2.imshow(f'Image: {imgNum} Mask: {maskNum}', mask)
         #########################################
 
 
@@ -98,7 +101,7 @@ for imgNum, image in enumerate(images):
             referenceY = reference.shape[0]
             transformedImage = transformImage(image, corners, referenceX, referenceY)
             transImageShow = cv2.resize(transformedImage, (0, 0), fx=0.5, fy=0.5)
-            cv2.imshow(f'Image: {imgNum} Ref{refNum}', transImageShow)
+            cv2.imshow(f'Image: {imgNum} Ref: {refNum} Mask: {maskNum}', transImageShow)
 
             similarity = compareDHash(transformedImage, reference, hash_size=8)
 
