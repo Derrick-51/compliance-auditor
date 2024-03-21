@@ -1,5 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, BaseEntity } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  BaseEntity,
+} from 'typeorm';
 import { Audit } from 'src/audit/entities/audit.entity';
+import { Criterion } from 'src/criteria/entities/criterion.entity';
 
 @Entity()
 export class Images extends BaseEntity {
@@ -20,4 +27,7 @@ export class Images extends BaseEntity {
 
   @ManyToOne((type) => Audit, (audit) => audit.images)
   audit: Audit;
+
+  @ManyToOne((type) => Criterion, (criterion) => criterion.images)
+  criterion: Criterion;
 }
