@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateCriterionDto } from './dto/create-criterion.dto';
@@ -14,13 +14,9 @@ export class CriteriaService {
     private criterionRepository: Repository<Criterion>,
   ) {}
 
-  async create(createCriterionDto: CreateCriterionDto, filename: string, campaign: Campaign): Promise<Criterion> {
+  async create(campaign: Campaign): Promise<Criterion> {
 
-    const newCriterion = await this.criterionRepository.save({
-      name: createCriterionDto.name,
-      filename: filename,
-      guidelines: createCriterionDto.guidelines,
-    });
+    const newCriterion = await this.criterionRepository.save({});
 
     // Attach campaign to criterion
     campaign.criteria = [...campaign.criteria, newCriterion];
@@ -37,10 +33,23 @@ export class CriteriaService {
     return `This action returns a #${id} criterion`;
   }
 
-  async update(id: number, updateCriterionDto: UpdateCriterionDto): Promise<Criterion> {
+  async update(
+    id: number,
+    updateCriterionDto: UpdateCriterionDto,
+    filename: string
+    ): Promise<Criterion> {
+
     let criterion = await this.criterionRepository.findOne({
       where: {criteriaID: id}
     });
+    if(!criterion) {
+      throw new HttpException('Criterion not found', HttpStatus.NOT_FOUND);
+    }
+
+    // Don't replace filename if no file uploaded
+    if(filename.length > 0) {
+      Object.assign(criterion, {filename: filename});
+    }
 
     Object.assign(criterion, updateCriterionDto);
     await criterion.save();

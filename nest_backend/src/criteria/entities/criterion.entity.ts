@@ -15,13 +15,13 @@ export class Criterion extends BaseEntity {
   @PrimaryGeneratedColumn()
   criteriaID: number;
 
-  @Column()
+  @Column({default: "New Criterion"})
   name: string;
 
-  @Column()
+  @Column({default: ""})
   filename: string;
 
-  @Column()
+  @Column({default: ""})
   guidelines: string;
 
   @ManyToOne((type) => Campaign, (campaign) => campaign.criteria)

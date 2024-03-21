@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UploadedFile, UseInterceptors, HttpException, HttpStatus } from '@nestjs/common';
 import { CriteriaService } from './criteria.service';
 import { CampaignService } from '../campaign/campaign.service';
 import { CreateCriterionDto } from './dto/create-criterion.dto';
@@ -10,6 +10,7 @@ import { diskStorage } from 'multer';
 import { extname } from 'path';
 import {v4 as uuidv4} from "uuid";
 import { Campaign } from 'src/campaign/entities/campaign.entity';
+import { isEmpty, validate } from 'class-validator';
 
 @Controller('api/criteria')
 export class CriteriaController {
@@ -19,29 +20,20 @@ export class CriteriaController {
     ) {}
   
     @Post('create')
-    @UseInterceptors(FileInterceptor('image', {
-        storage: diskStorage({
-            destination: 'posters',
-            filename: (req, file, callback) => {
-                const uniqueName = uuidv4()
-                const extension = extname(file.originalname)
-                const filename = `${uniqueName}${extension}`
+    async create(@Body() createCriteriaDto: CreateCriterionDto) {
+        // Criteria will attach to first campaign in database if no ID given
+        if(!createCriteriaDto.campaignID) {
+            throw new HttpException('No campaignID given', HttpStatus.BAD_REQUEST);
+        }
 
-                callback(null, filename)
-            }
-        })
-    }))
-    async create(
-        @UploadedFile() file: Express.Multer.File,
-        @Body() createCriteriaDto: CreateCriterionDto) {
+        const campaign: Campaign = await this.campaignService.findOneWithCriteria(createCriteriaDto.campaignID)
+        if(!campaign) {
+            throw new HttpException('Campaign not found', HttpStatus.NOT_FOUND)
+        }
 
-            const filename: string = file.filename;
+        const criterion = await this.criteriaService.create(campaign);
 
-            const campaign: Campaign = await this.campaignService.findOneWithCriteria(createCriteriaDto.campaignID)
-
-            const criterion = await this.criteriaService.create(createCriteriaDto, filename, campaign);
-
-            return JSON.stringify(criterion)
+        return JSON.stringify(criterion)
     }
 
   @Get()
@@ -54,10 +46,36 @@ export class CriteriaController {
     return this.criteriaService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCriterionDto: UpdateCriterionDto) {
-    return this.criteriaService.update(+id, updateCriterionDto);
-  }
+    @Patch(':id')
+    @UseInterceptors(FileInterceptor('image', {
+        storage: diskStorage({
+            destination: 'posters',
+            filename: (req, file, callback) => {
+                const uniqueName = uuidv4()
+                const extension = extname(file.originalname)
+                const filename = `${uniqueName}${extension}`
+
+                callback(null, filename)
+            }
+        })
+    }))
+    async update(
+        @Param('id') id: string,
+        @Body() updateCriterionDto: UpdateCriterionDto,
+        @UploadedFile() file: Express.Multer.File
+        ) {
+        // Check for empty body
+        if(!Object.keys(updateCriterionDto).length) {
+            throw new HttpException('Empty request body', HttpStatus.BAD_REQUEST);
+        }
+
+        let filename = "";
+        if(file) {
+            filename = file.filename;
+        }
+
+        return await this.criteriaService.update(+id, updateCriterionDto, filename);
+    }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
