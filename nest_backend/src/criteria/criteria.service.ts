@@ -37,8 +37,15 @@ export class CriteriaService {
     return `This action returns a #${id} criterion`;
   }
 
-  update(id: number, updateCriterionDto: UpdateCriterionDto) {
-    return `This action updates a #${id} criterion`;
+  async update(id: number, updateCriterionDto: UpdateCriterionDto): Promise<Criterion> {
+    let criterion = await this.criterionRepository.findOne({
+      where: {criteriaID: id}
+    });
+
+    Object.assign(criterion, updateCriterionDto);
+    await criterion.save();
+
+    return criterion;
   }
 
   remove(id: number) {

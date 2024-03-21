@@ -1,4 +1,7 @@
-import { PartialType } from '@nestjs/mapped-types';
+import { PartialType, OmitType } from '@nestjs/mapped-types';
 import { CreateCriterionDto } from './create-criterion.dto';
 
-export class UpdateCriterionDto extends PartialType(CreateCriterionDto) {}
+// Prevent changing a criterion's campaign on update
+export class UpdateCriterionDto extends PartialType(
+    OmitType(CreateCriterionDto, ['campaignID'] as const),
+    ) {}
