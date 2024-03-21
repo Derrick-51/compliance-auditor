@@ -2,24 +2,44 @@
   <app-auditor-navbar></app-auditor-navbar>
   <div class="flex items-center p-4">
     <div class="w-full">
-      <mat-card class="p-4 mb-4 sm:h-14">
-        <h3 class="text-lg font-semibold">How the audit submission guidelines appear on the Make an Audit Page is below.</h3>
-      </mat-card>
-      <!-- Markdown preview-->
-      <mat-card class="p-4 mb-4 sm:h-40">
-        <div class="overflow-hidden">
-          <markdown [data]="guidelines"></markdown>
+      <!-- Criteria Cards -->
+      <ng-container *ngFor="let criterion of criteria">
+        <mat-card class="p-4 mb-4">
+          <div *ngIf="!criterion.editMode">
+            <!-- Preview Mode -->
+            <h3 class="text-lg font-semibold">{{ criterion.name }}</h3>
+            <markdown [data]="criterion.guidelines"></markdown>
+            <img *ngIf="criterion.filename" [src]="criterion.filename" alt="Criterion Image" class="w-full h-auto object-contain" />
+            <div class="flex justify-end">
+              <button mat-icon-button (click)="editCriterion(criterion)">
+                <mat-icon>edit</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div *ngIf="criterion.editMode">
+            <!-- Edit Mode -->
+            <input type="text" class="w-full border rounded p-2 mb-4" [(ngModel)]="criterion.name" placeholder="Criteria Title" />
+            <textarea class="w-full border rounded p-2 mb-4" [(ngModel)]="criterion.guidelines" placeholder="Enter guidelines for criteria submission here. This will be displayed for the dealership submitting an audit."></textarea>
+            <button mat-raised-button color="primary" class="mr-2" (click)="selectImage(criterion)">Select Image</button>
+            <button mat-icon-button color="warn" (click)="cancelEdit(criterion)">
+              <mat-icon>cancel</mat-icon>
+            </button>
+            <button mat-raised-button color="primary" (click)="saveCriterion(criterion)">Save</button>
+          </div>
+        </mat-card>
+      </ng-container>
+
+      <!-- Add New Criterion -->
+      <mat-card class="p-4 mb-4">
+        <div class="border border-black p-4" (click)="addNewCriterion()">
+          <mat-icon class="text-6xl">add_box</mat-icon>
         </div>
       </mat-card>
-      <!-- Markdown editor -->
-      <mat-card class="p-4 sm:h-[295px]">
-        <h3 class="text-lg font-semibold">Enter the edits for the audit submission guidelines using Markdown format below.</h3>
-        <textarea [(ngModel)]="guidelines" class="w-full border rounded p-2 mb-4 sm:h-[165px]"></textarea>
-        <!-- Save Guidelines button-->
-        <div class="flex justify-end">
-          <button mat-raised-button color="primary" (click)="saveGuidelines()">Save Guidelines</button>
-        </div>
-      </mat-card>
+
+      <!-- Save All Button -->
+      <div class="flex justify-end">
+        <button mat-raised-button color="primary" (click)="saveAllCriteria()">Save All</button>
+      </div>
     </div>
   </div>
 </div>

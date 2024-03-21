@@ -1,45 +1,86 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { SaveGuidelinesService } from '../../services/save-guidelines.service';
 import { ReadGuidelinesService } from '../../services/read-guidelines.service';
+import { ToastrService } from 'ngx-toastr';
+import { Criterion } from '../../interfaces/criterion';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
+import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { MarkdownModule } from 'ngx-markdown';
-import { SaveGuidelinesService } from '../../services/save-guidelines.service';
 import { AuditorNavbarComponent } from '../auditor-navbar/auditor-navbar.component';
-import { ToastrService } from 'ngx-toastr';
-import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-edit-audit-submission-guidelines',
   standalone: true,
-  imports: [MatButtonModule, CommonModule, FormsModule, MarkdownModule, AuditorNavbarComponent, MatCardModule, AuditorNavbarComponent],
+  imports: [
+    MatIconModule,
+    MatCardModule,
+    CommonModule,
+    MatButtonModule,
+    FormsModule,
+    MarkdownModule,
+    AuditorNavbarComponent
+  ],
   templateUrl: './edit-audit-submission-guidelines.component.html',
-  styleUrl: './edit-audit-submission-guidelines.component.scss'
+  styleUrls: ['./edit-audit-submission-guidelines.component.scss']
 })
 export class EditAuditSubmissionGuidelinesComponent implements OnInit {
-  guidelines: string = '';
+  criteria: Criterion[] = [];
+  newCriterion: Criterion = {
+    name: 'Criteria Title',
+    filename: '',
+    guidelines: 'Enter guidelines for criteria submission here. This will be displayed for the dealership submitting an audit.'
+  };
 
-  // Inject guideline file services
-  constructor (
-    private readGuidelinesService: ReadGuidelinesService,
+  constructor(
     private saveGuidelinesService: SaveGuidelinesService,
-    private toastr: ToastrService, //create toast constructor
-) { }
+    private readGuidelinesService: ReadGuidelinesService,
+    private toastr: ToastrService
+  ) { }
 
   ngOnInit(): void {
-    this.readGuidelinesService.readGuidelines().subscribe((markdownContent: string) => {
-      this.guidelines = markdownContent;
-    });
+    this.loadCriteria();
   }
 
-  // Save Guidelines button click handler
-  saveGuidelines(): void {
-    this.saveGuidelinesService.save(this.guidelines).subscribe(() => {
-      this.toastr.success("The changes to the audit guidlines have been saved!", "Successfully Changed!")
-      console.log('Guidelines saved successfully.');
-    }, (error) => {
-      this.toastr.error('An error has occured trying to save the audit guidelines!', 'Change Unsuccessful!');
-      console.error('Error saving guidelines:', error);
-    });
+  loadCriteria(): void {
+    // Call a service method to fetch existing criteria with CampaignID equal to the CampaignID variable
+    // Assign the fetched criteria to this.criteria
+    // Example:
+    // this.criteriaService.getCriteriaByCampaignID(campaignID).subscribe(criteria => this.criteria = criteria);
+  }
+
+  saveCriterion(criterion: Criterion): void {
+    // Call a service method to save the criterion
+    // Example:
+    // this.criteriaService.saveCriterion(criterion).subscribe(() => {
+    //   this.toastr.success('Criterion saved successfully.');
+    // });
+  }
+
+  addNewCriterion(): void {
+    // Call a service method to create a new criterion with CampaignID equal to the CampaignID variable
+    // Example:
+    // this.criteriaService.createCriterion(this.newCriterion).subscribe(newCriterion => {
+    //   this.criteria.push(newCriterion);
+    //   this.toastr.success('New criterion added successfully.');
+    // });
+  }
+
+  cancelEdit(criterion: Criterion): void {
+    // Remove the criterion from the criteria array or reset its state
+    // Example:
+    // this.criteria = this.criteria.filter(c => c !== criterion);
+    // Or, reset its state back to preview mode
+    // criterion.editMode = false;
+  }
+
+  saveAllCriteria(): void {
+    // Call a service method to save all criteria
+    // Example:
+    // this.criteriaService.saveAllCriteria(this.criteria).subscribe(() => {
+    //   this.toastr.success('All criteria saved successfully.');
+    // });
   }
 }

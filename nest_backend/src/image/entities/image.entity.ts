@@ -19,8 +19,11 @@ export class Images extends BaseEntity {
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' }) //for mssql type: 'datetime' //for postgres  type: "timestamptz"
   update: Date;
 
-  @Column({ default: 'False' })
-  override: string;
+  @Column({ nullable: true })
+  appeal: string;
+
+  @Column({ default: '0' })
+  override: boolean;
 
   @Column({ default: 'Pending' })
   verdict: string;
