@@ -15,4 +15,8 @@ export class PasswordService {
   async create(body: any) {
     return this.passwordRepository.save(body);
   }
+
+  async findOne(data: any){
+    return this.passwordRepository.findOne(data);
+  }
 }

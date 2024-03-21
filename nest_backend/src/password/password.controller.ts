@@ -1,8 +1,8 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
 import { PasswordService } from './password.service';
 import { MailerService } from '@nestjs-modules/mailer';
 
-@Controller('password')
+@Controller('auth')
 export class PasswordController {
 
   constructor(
@@ -11,7 +11,7 @@ export class PasswordController {
   ) {
 
   }
-  
+
   @Post('forgot')
   async forget(
     @Body('email') email: string
@@ -35,5 +35,19 @@ export class PasswordController {
       message: 'Email sent!'
     }
   }
+
+  @Post('reset')
+  async reset(
+    @Body('token') token: string,
+    @Body('password') password: string,
+    @Body('passwordConfirm') passwordConfirm: string,
+
+  ) {
+    if (password !== passwordConfirm) {
+      throw new BadRequestException('Passwords do not match');
+    }
+
+    const passwordReset = await this.passwordService;
+   }
 
 }
