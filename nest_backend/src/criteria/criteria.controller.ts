@@ -31,7 +31,7 @@ export class CriteriaController {
             }
         })
     }))
-    async createCriteria(
+    async create(
         @UploadedFile() file: Express.Multer.File,
         @Body() createCriteriaDto: CreateCriterionDto) {
 
