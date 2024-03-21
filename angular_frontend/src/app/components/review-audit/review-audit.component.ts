@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { navbarComponent } from '../navbar/navbar.component';
+import { Component, OnInit, importProvidersFrom } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MessageService } from '../../messages/message.service';
 import { Audit } from './audit-list';
@@ -14,7 +13,7 @@ import { AuditorNavbarComponent } from '../auditor-navbar/auditor-navbar.compone
   selector: 'app-review-audit',
   standalone: true,
   imports: [
-    navbarComponent,
+    AuditorNavbarComponent,
     NgFor,
     FormsModule,
     NgIf,

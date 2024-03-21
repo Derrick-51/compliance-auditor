@@ -14,7 +14,6 @@ export class UploadController {
         private uploadService: UploadService
     ) {}
 
-    // Files will be named with dealer id with sequential numbering
     @Post('upload')
     @UseInterceptors(FilesInterceptor('images', undefined, {
         storage: diskStorage({
@@ -36,6 +35,6 @@ export class UploadController {
             fileNames.push(files[idx].filename);
         }
 
-        return this.uploadService.uploadFiles(request, fileNames) // PLACEHOLDER ID
+        return this.uploadService.uploadFiles(request, fileNames)
     }
 }
