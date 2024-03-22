@@ -17,7 +17,7 @@ export class PasswordService {
   }
 
   async findOne(data: any){
-    return this.passwordRepository.find(data);
+    return this.passwordRepository.findOne({where: data});
   }
 
 }
