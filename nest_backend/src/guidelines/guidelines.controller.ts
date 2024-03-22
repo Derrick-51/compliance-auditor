@@ -1,12 +1,22 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Put, Param } from '@nestjs/common';
 import { GuidelinesService } from './guidelines.service';
 
-@Controller('api')
+@Controller('api/guidelines')
 export class GuidelinesController {
   constructor(private readonly guidelinesService: GuidelinesService) {}
 
-  @Post('save-guidelines')
-  saveGuidelines(@Body() guidelines: string): void {
-    this.guidelinesService.saveGuidelines(guidelines);
+  @Get()
+  getCriteria(): any[] {
+    return this.guidelinesService.getCriteria();
+  }
+
+  @Put(':id')
+  updateCriterion(@Param('id') id: number, @Body() criterion: any): any {
+    return this.guidelinesService.updateCriterion(id, criterion);
+  }
+
+  @Put()
+  updateAllCriteria(@Body() criteria: any[]): any {
+    return this.guidelinesService.updateAllCriteria(criteria);
   }
 }

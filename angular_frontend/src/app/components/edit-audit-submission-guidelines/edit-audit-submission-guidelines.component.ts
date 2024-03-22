@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SaveGuidelinesService } from '../../services/save-guidelines.service';
-import { ReadGuidelinesService } from '../../services/read-guidelines.service';
 import { ToastrService } from 'ngx-toastr';
-import { Criterion } from '../../interfaces/criterion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
@@ -10,6 +7,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { MarkdownModule } from 'ngx-markdown';
 import { AuditorNavbarComponent } from '../auditor-navbar/auditor-navbar.component';
+import { CriteriaService } from '../../services/criteria.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { Criterion } from '../../interfaces/criterion';
 
 @Component({
   selector: 'app-edit-audit-submission-guidelines',
@@ -21,22 +21,18 @@ import { AuditorNavbarComponent } from '../auditor-navbar/auditor-navbar.compone
     MatButtonModule,
     FormsModule,
     MarkdownModule,
-    AuditorNavbarComponent
+    AuditorNavbarComponent,
+    MatTooltipModule,
   ],
   templateUrl: './edit-audit-submission-guidelines.component.html',
   styleUrls: ['./edit-audit-submission-guidelines.component.scss']
 })
 export class EditAuditSubmissionGuidelinesComponent implements OnInit {
   criteria: Criterion[] = [];
-  newCriterion: Criterion = {
-    name: 'Criteria Title',
-    filename: '',
-    guidelines: 'Enter guidelines for criteria submission here. This will be displayed for the dealership submitting an audit.'
-  };
+  campaignID = 1;
 
   constructor(
-    private saveGuidelinesService: SaveGuidelinesService,
-    private readGuidelinesService: ReadGuidelinesService,
+    private criteriaService: CriteriaService,
     private toastr: ToastrService
   ) { }
 
@@ -45,42 +41,55 @@ export class EditAuditSubmissionGuidelinesComponent implements OnInit {
   }
 
   loadCriteria(): void {
-    // Call a service method to fetch existing criteria with CampaignID equal to the CampaignID variable
-    // Assign the fetched criteria to this.criteria
-    // Example:
-    // this.criteriaService.getCriteriaByCampaignID(campaignID).subscribe(criteria => this.criteria = criteria);
-  }
-
-  saveCriterion(criterion: Criterion): void {
-    // Call a service method to save the criterion
-    // Example:
-    // this.criteriaService.saveCriterion(criterion).subscribe(() => {
-    //   this.toastr.success('Criterion saved successfully.');
-    // });
+    this.criteriaService.getCriteriaByCampaignID(this.campaignID).subscribe(
+      (data: Criterion[]) => { // Expect data to be an array of Criterion objects
+        this.criteria = data;
+      },
+      (error) => {
+        console.error('Error loading criteria:', error);
+      }
+    );
   }
 
   addNewCriterion(): void {
-    // Call a service method to create a new criterion with CampaignID equal to the CampaignID variable
-    // Example:
-    // this.criteriaService.createCriterion(this.newCriterion).subscribe(newCriterion => {
-    //   this.criteria.push(newCriterion);
-    //   this.toastr.success('New criterion added successfully.');
-    // });
+    const newCriterion: Criterion = { id: 0, name: 'New Criterion', guidelines: '', filename: '', editMode: true };
+    this.criteria.push(newCriterion);
+  }
+
+  editCriterion(criterion: Criterion): void {
+    criterion.editMode = true;
   }
 
   cancelEdit(criterion: Criterion): void {
-    // Remove the criterion from the criteria array or reset its state
-    // Example:
-    // this.criteria = this.criteria.filter(c => c !== criterion);
-    // Or, reset its state back to preview mode
-    // criterion.editMode = false;
+    criterion.editMode = false;
+  }
+
+  saveCriterion(criterion: Criterion): void {
+    this.criteriaService.updateCriterion(criterion).subscribe(
+      () => {
+        criterion.editMode = false;
+        this.toastr.success('Criterion saved successfully!', 'Success');
+      },
+      (error) => {
+        console.error('Error saving criterion:', error);
+        this.toastr.error('Failed to save criterion!', 'Error');
+      }
+    );
   }
 
   saveAllCriteria(): void {
-    // Call a service method to save all criteria
-    // Example:
-    // this.criteriaService.saveAllCriteria(this.criteria).subscribe(() => {
-    //   this.toastr.success('All criteria saved successfully.');
-    // });
+    this.criteriaService.updateAllCriteria(this.criteria).subscribe(
+      () => {
+        this.toastr.success('All criteria saved successfully!', 'Success');
+      },
+      (error) => {
+        console.error('Error saving all criteria:', error);
+        this.toastr.error('Failed to save all criteria!', 'Error');
+      }
+    );
+  }
+  
+  selectImage(criterion: any): void {
+    // Implement image selection logic here
   }
 }

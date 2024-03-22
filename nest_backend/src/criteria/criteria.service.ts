@@ -25,8 +25,8 @@ export class CriteriaService {
     return newCriterion;
   }
 
-  findAll() {
-    return `This action returns all criteria`;
+  async findAll(): Promise<Criterion[]> {
+    return await this.criterionRepository.find();
   }
 
   findOne(id: number) {

@@ -1,7 +1,7 @@
 export interface Criterion {
-    criteriaID?: number;
-    name: string;
-    filename: string;
-    guidelines: string;
-  }
-  
+  id: number;
+  name: string;
+  guidelines: string;
+  filename: string;
+  editMode: boolean;
+}
