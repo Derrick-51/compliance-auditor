@@ -76,14 +76,25 @@
             </button>
           </mat-card-actions>
           <mat-card-actions>
-            <div>
-              Not a member? Click
-              <a
-                class="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
-                routerLink="/register"
-                >here</a
-              >
-              to register!
+            <div class="flex-col">
+              <div class="">
+                Not a member? Click
+                <a
+                  class="underline text-blue-600 hover:text-blue-800 visited:text-purple-600 w-full"
+                  routerLink="/register"
+                  >here</a
+                >
+                to register!
+              </div>
+              <div>
+                Forgot password? Click
+                <a
+                  class="underline text-blue-600 hover:text-blue-800 visited:text-purple-600 w-full"
+                  routerLink="/forgot"
+                  >here</a
+                >
+                to reset it!
+              </div>
             </div>
           </mat-card-actions>
         </mat-card>
