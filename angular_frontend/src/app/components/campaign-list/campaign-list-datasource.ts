@@ -98,7 +98,7 @@ export class CampaignListDataSource extends DataSource<CampaignListItem> {
     return data.sort((a, b) => {
       const isAsc = this.sort?.direction === 'asc';
       switch (this.sort?.active) {
-        case 'id': return compare(a.campaignID, b.campaignID, isAsc);
+        case 'campaignID': return compare(a.campaignID, b.campaignID, isAsc);
         case 'startDate': return compare(+a.startDate, +b.startDate, isAsc);
         case 'endDate': return compare(+a.endDate, +b.endDate, isAsc);
         default: return 0;
