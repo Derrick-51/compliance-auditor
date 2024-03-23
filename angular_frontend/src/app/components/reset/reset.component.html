@@ -1,0 +1,104 @@
+<div class="flex justify-center items-center w-full h-full bg-[#f2f2f2]">
+  <div class="w-[500px] mr-20">
+    <img
+      class="mb-2"
+      src="/assets/UrbanScienceHomepage.png"
+      alt="Urban Science Logo"
+    />
+    <p class="text-xl">
+      Please create an account to access our automated auditing system.
+    </p>
+  </div>
+  <div class="ml-4 shadow-lg">
+    <div>
+      <form [formGroup]="resetPassForm" (ngSubmit)="submitDetails()">
+        <mat-card class="w-[350px] p-2">
+          <mat-card-header class="text-3xl flex justify-center mb-3 -mt-3">
+            <mat-card-header>Reset Password</mat-card-header>
+          </mat-card-header>
+          <mat-card-content>
+            <label for="password" class="ml-2">Password</label>
+            <div class="password-container">
+              <mat-form-field hideRequiredMarker class="w-full">
+                <mat-label>Enter your password</mat-label>
+                <input
+                  [type]="passwordFieldHide ? 'password' : 'text'"
+                  matInput
+                  formControlName="password"
+                  name="password"
+                  placeholder="Type your password"
+                />
+                <button
+                  mat-icon-button
+                  matSuffix
+                  (click)="passwordFieldHide = !passwordFieldHide"
+                  [attr.aria-label]="'Hide password'"
+                  [attr.aria-pressed]="passwordFieldHide"
+                  type="button"
+                >
+                  <mat-icon class="mr-4">{{
+                    passwordFieldHide ? "visibility_off" : "visibility"
+                  }}</mat-icon>
+                </button>
+                @if (password.invalid && password.dirty || password.touched) {
+                <mat-error>{{ getPassErrorMessage() }}</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <label for="confirmPassword" class="ml-2">Confirm Password</label>
+            <div class="confirm-password-container">
+              <mat-form-field hideRequiredMarker class="w-full">
+                <mat-label>Confirm password</mat-label>
+                <input
+                  [type]="confirmFieldHide ? 'password' : 'text'"
+                  matInput
+                  formControlName="confirmPassword"
+                  name="confirmPassword"
+                  placeholder="Confirm password"
+                />
+                <button
+                  mat-icon-button
+                  matSuffix
+                  (click)="confirmFieldHide = !confirmFieldHide"
+                  [attr.aria-label]="'Hide password'"
+                  [attr.aria-pressed]="confirmFieldHide"
+                  type="button"
+                >
+                  <mat-icon class="mr-4">{{
+                    confirmFieldHide ? "visibility_off" : "visibility"
+                  }}</mat-icon>
+                </button>
+                @if (confirmPassword.invalid && confirmPassword.dirty || confirmPassword.touched) {
+                <mat-error>{{ getConfirmPassErrorMessage() }}</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </mat-card-content>
+          <mat-card-actions>
+            <button
+              label="resetPasswordButton"
+              mat-flat-button
+              class="w-1/2 mx-auto"
+              color="primary"
+              [disabled]="resetPassForm.invalid"
+              type="submit"
+            >
+              Reset Password
+            </button>
+          </mat-card-actions>
+          <mat-card-actions>
+            <div>
+              Already have an account? Click
+              <a
+                class="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
+                routerLink="/login"
+                >here</a
+              >
+              to login!
+            </div>
+          </mat-card-actions>
+        </mat-card>
+      </form>
+    </div>
+  </div>
+</div>
