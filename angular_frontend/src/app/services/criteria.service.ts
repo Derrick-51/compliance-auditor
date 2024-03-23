@@ -16,10 +16,18 @@ export class CriteriaService {
   }
 
   updateCriterion(criterion: any) {
-    return this.http.patch<any>(`${this.apiUrl}/${criterion.id}`, criterion);
+    return this.http.patch<any>(`${this.apiUrl}/${criterion.criteriaID}`, criterion);
   }
 
   updateAllCriteria(criteria: any[]) {
     return this.http.put<any[]>(this.apiUrl, criteria);
+  }
+
+  createCriterion(createCriteriaDto: any): Observable<Criterion> {
+    return this.http.post<Criterion>(`${this.apiUrl}/create`, createCriteriaDto);
+  }
+
+  deleteCriterion(criteriaID: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${criteriaID}`);
   }
 }

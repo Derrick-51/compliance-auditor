@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UploadedFile, UseInterceptors, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UploadedFile, UseInterceptors, HttpException, HttpStatus, Put } from '@nestjs/common';
 import { CriteriaService } from './criteria.service';
 import { CampaignService } from '../campaign/campaign.service';
 import { CreateCriterionDto } from './dto/create-criterion.dto';
@@ -33,7 +33,7 @@ export class CriteriaController {
 
         const criterion = await this.criteriaService.create(campaign);
 
-        return JSON.stringify(criterion)
+        return criterion;
     }
 
   @Get()
@@ -76,9 +76,21 @@ export class CriteriaController {
 
         return await this.criteriaService.update(+id, updateCriterionDto, filename);
     }
+    
+  @Put()
+    updateAll(@Body() criteria: UpdateCriterionDto[]) {
+    // Implement logic to update all criteria
+    return this.criteriaService.updateAll(criteria);
+  }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.criteriaService.remove(+id);
+  async remove(@Param('id') id: string) {
+    try {
+      const criterionId = parseInt(id);
+      await this.criteriaService.deleteCriterion(criterionId);
+      return { message: 'Criterion deleted successfully' };
+    } catch (error) {
+      throw new HttpException(error.message || 'Failed to delete criterion', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 }

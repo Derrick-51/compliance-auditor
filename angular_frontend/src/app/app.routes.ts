@@ -20,6 +20,10 @@ export const routes: Routes = [
     path: 'edit-audit-submission-guidelines',
     component: EditAuditSubmissionGuidelinesComponent,
   },
+  { 
+    path: 'edit-audit-submission-guidelines/:id', 
+    component: EditAuditSubmissionGuidelinesComponent
+  }, // Dynamic route for criterion ID
   { path: 'status', component: StatusComponent },
   { path: 'make-an-audit', component: MakeAnAuditComponent, canActivate: [pendingAuditGuard] },
   { path: 'profile', component: ProfilePageComponent },

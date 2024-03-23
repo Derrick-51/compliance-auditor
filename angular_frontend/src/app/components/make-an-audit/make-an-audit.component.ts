@@ -5,7 +5,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { FileUploadService } from '../../services/file-upload.service';
 import { MatIconModule } from '@angular/material/icon';
-import { ReadGuidelinesService } from '../../services/read-guidelines.service';
 import { navbarComponent } from '../navbar/navbar.component';
 import { MarkdownModule } from 'ngx-markdown';
 import { ImageModalComponent } from '../image-modal/image-modal.component';
@@ -39,16 +38,11 @@ export class MakeAnAuditComponent implements OnInit {
   // Inject file upload and markdown file services
   constructor(
     private uploadService: FileUploadService,
-    private readGuidelinesService: ReadGuidelinesService
   ) {}
 
   // Read Markdown file and set guidelines to its content when page is loaded
   ngOnInit(): void {
-    this.readGuidelinesService
-      .readGuidelines()
-      .subscribe((markdownContent: string) => {
-        this.guidelines = markdownContent;
-      });
+      
   }
 
   // Helper function to convert array of files into a FileList

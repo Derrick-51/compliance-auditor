@@ -1,10 +1,22 @@
 <div class="min-h-screen bg-[#f2f2f2]">
   <app-auditor-navbar></app-auditor-navbar>
-  <div class="flex items-center p-4">
-    <div class="w-full">
+  <div class="flex p-4">
+    <!-- Sidebar -->
+    <div class="w-1/8 bg-gray-200 h-full overflow-y-auto flex">
+      <mat-nav-list class="mr-4">
+        <mat-list-item *ngFor="let criterion of criteria">
+          <!-- Update the routerLink to navigate to the anchor name -->
+          <a matLine [routerLink]="['/edit-audit-submission-guidelines']" [fragment]="'criterion-' + criterion.criteriaID.toString()">{{ criterion.name }}</a>
+        </mat-list-item>
+      </mat-nav-list>
+    </div>
+    <!-- Main Content -->
+    <div class="w-full items-center">
       <div class="border border-black p-4">
         <!-- Criteria Cards -->
         <ng-container *ngFor="let criterion of criteria">
+          <!-- Add unique ID to each matcard -->
+          <div id="criterion-{{ criterion.criteriaID }}" class="anchor"></div>
           <mat-card class="p-4 mb-4">
             <div *ngIf="!criterion.editMode">
               <!-- Preview Mode -->
@@ -12,6 +24,11 @@
               <markdown [data]="criterion.guidelines"></markdown>
               <img *ngIf="criterion.filename" [src]="criterion.filename" alt="Criterion Image" class="w-full h-auto object-contain" />
               <div class="flex justify-end">
+                <!-- Delete Icon -->
+                <button mat-icon-button (click)="deleteCriterion(criterion)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+                <!-- Edit Icon -->
                 <button mat-icon-button (click)="editCriterion(criterion)">
                   <mat-icon>edit</mat-icon>
                 </button>
@@ -35,7 +52,7 @@
           </div>
         </ng-container>
         <!-- Add New Criterion -->
-        <mat-card class="p-4 mb-4 flex justify-center items-center cursor-pointer" (click)="addNewCriterion()">
+        <mat-card class="p-4 mb-4 flex justify-center items-center cursor-pointer" (click)="createNewCriterion()">
           <mat-icon>add_box</mat-icon>
         </mat-card>
       </div>
@@ -45,4 +62,3 @@
       </div>
     </div>
   </div>
-</div>

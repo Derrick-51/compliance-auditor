@@ -1,5 +1,5 @@
 export interface Criterion {
-  id: number;
+  criteriaID: number;
   name: string;
   guidelines: string;
   filename: string;

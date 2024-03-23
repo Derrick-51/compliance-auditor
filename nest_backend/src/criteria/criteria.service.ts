@@ -17,7 +17,6 @@ export class CriteriaService {
   async create(campaign: Campaign): Promise<Criterion> {
 
     const newCriterion = await this.criterionRepository.save({});
-
     // Attach campaign to criterion
     campaign.criteria = [...campaign.criteria, newCriterion];
     await campaign.save();
@@ -29,8 +28,10 @@ export class CriteriaService {
     return await this.criterionRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} criterion`;
+  async findOne(id: number): Promise<Criterion> {
+    return await this.criterionRepository.findOne({
+      where: {criteriaID: id}
+    });
   }
 
   async update(
@@ -57,7 +58,22 @@ export class CriteriaService {
     return criterion;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} criterion`;
+  async updateAll(criteria: UpdateCriterionDto[]): Promise<Criterion[]> {
+  const updatedCriteria = await Promise.all(criteria.map(async criterion => {
+    // Update each criterion
+    const updatedCriterion = await this.update(criterion.criteriaID, criterion, criterion.filename);
+    return updatedCriterion;
+  }));
+  return updatedCriteria;
+  }
+  
+  async deleteCriterion(id: number): Promise<void> {
+    let criterion = await this.criterionRepository.findOne({
+      where: {criteriaID: id}
+    });
+    if (!criterion) {
+      throw new HttpException('Criterion not found', HttpStatus.NOT_FOUND);
+    }
+    await this.criterionRepository.remove(criterion);
   }
 }

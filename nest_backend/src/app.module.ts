@@ -17,7 +17,6 @@ import { LatestAuditModule } from './latest-audit/latest-audit.module';
 import { FailedImagesModule } from './failed-images/failed-images.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
-import { GuidelinesModule } from './guidelines/guidelines.module';
 import { DataSource } from 'typeorm';
 import { CampaignModule } from './campaign/campaign.module';
 import { CriteriaModule } from './criteria/criteria.module';
@@ -55,7 +54,6 @@ import { Criterion } from './criteria/entities/criterion.entity';
     ImageModule,
     LatestAuditModule,
     FailedImagesModule,
-    GuidelinesModule,
     CampaignModule,
     CriteriaModule,
   ],
