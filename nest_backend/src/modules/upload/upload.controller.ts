@@ -14,7 +14,7 @@ export class UploadController {
         private uploadService: UploadService
     ) {}
 
-    @Post('upload')
+    @Post('upload/images')
     @UseInterceptors(FilesInterceptor('images', undefined, {
         storage: diskStorage({
             destination: 'images',
@@ -27,7 +27,7 @@ export class UploadController {
             }
         })
     }))
-    uploadFiles(@Req() request: Request, @UploadedFiles() files: Array<Express.Multer.File>) {
+    uploadImages(@Req() request: Request, @UploadedFiles() files: Array<Express.Multer.File>) {
 
         // Extract file names
         let fileNames: string[] = [];
@@ -35,6 +35,34 @@ export class UploadController {
             fileNames.push(files[idx].filename);
         }
 
-        return this.uploadService.uploadFiles(request, fileNames)
+        console.log('Files uploaded:', fileNames); // Log the uploaded file names
+        
+        return this.uploadService.uploadImages(request, fileNames)
+    }
+
+    @Post('upload/posters')
+    @UseInterceptors(FilesInterceptor('posters', undefined, {
+        storage: diskStorage({
+            destination: 'posters',
+            filename: (req, file, callback) => {
+                const uniqueName = uuidv4()
+                const extension = extname(file.originalname)
+                const filename = `${uniqueName}${extension}`
+
+                callback(null, filename)
+            }
+        })
+    }))
+    uploadPosters(@Req() request: Request, @UploadedFiles() files: Array<Express.Multer.File>) {
+
+        // Extract file names
+        let fileNames: string[] = [];
+        for(let idx = 0; idx < files.length; ++idx) {
+            fileNames.push(files[idx].filename);
+        }
+
+        console.log('Files uploaded:', fileNames); // Log the uploaded file names
+        
+        return this.uploadService.uploadPosters(request, fileNames)
     }
 }

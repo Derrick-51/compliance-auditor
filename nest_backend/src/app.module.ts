@@ -36,11 +36,6 @@ import { Criterion } from './criteria/entities/criterion.entity';
       entities: [Users, Audit, Images, Campaign, Criterion],
       options: { encrypt: false }, //Make sure to comment this out when working with postgres //bypasses self-signed certificate, may need to change this later since this can be exploited in a cyber attack
     }),
-    // Serve files from the 'guidelines' folder
-    ServeStaticModule.forRoot({
-      serveRoot: '/guidelines',
-      rootPath: join(__dirname, '..', 'guidelines'),
-    }),
     // Serve files from the 'images' folder
     ServeStaticModule.forRoot({
       serveRoot: '/images',

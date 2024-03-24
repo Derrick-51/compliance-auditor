@@ -20,7 +20,7 @@ export class UploadService {
   ) {}
 
 
-  async uploadFiles(@Req() request: Request, fileNames: string[]) {
+  async uploadImages(@Req() request: Request, fileNames: string[]) {
 
     let auditId: number;
     try {
@@ -54,6 +54,10 @@ export class UploadService {
 
     await this.imageService.analyzeImages(fileNames, auditId);
 
+    return 'Upload success';
+  }
+
+  async uploadPosters(@Req() request: Request, fileNames: string[]) {
     return 'Upload success';
   }
 }

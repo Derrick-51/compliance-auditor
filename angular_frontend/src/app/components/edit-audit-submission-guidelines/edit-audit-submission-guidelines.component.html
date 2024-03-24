@@ -5,7 +5,6 @@
     <div class="w-1/8 bg-gray-200 h-full overflow-y-auto flex">
       <mat-nav-list class="mr-4">
         <mat-list-item *ngFor="let criterion of criteria">
-          <!-- Update the routerLink to navigate to the anchor name -->
           <a matLine [routerLink]="['/edit-audit-submission-guidelines']" [fragment]="'criterion-' + criterion.criteriaID.toString()">{{ criterion.name }}</a>
         </mat-list-item>
       </mat-nav-list>
@@ -15,20 +14,17 @@
       <div class="border border-black p-4">
         <!-- Criteria Cards -->
         <ng-container *ngFor="let criterion of criteria">
-          <!-- Add unique ID to each matcard -->
           <div id="criterion-{{ criterion.criteriaID }}" class="anchor"></div>
           <mat-card class="p-4 mb-4">
-            <div *ngIf="!criterion.editMode">
+            <div>
               <!-- Preview Mode -->
               <h3 class="text-lg font-semibold">{{ criterion.name }}</h3>
               <markdown [data]="criterion.guidelines"></markdown>
               <img *ngIf="criterion.filename" [src]="criterion.filename" alt="Criterion Image" class="w-full h-auto object-contain" />
-              <div class="flex justify-end">
-                <!-- Delete Icon -->
+              <div class="flex justify-end" *ngIf="!criterion.editMode">
                 <button mat-icon-button (click)="deleteCriterion(criterion)">
                   <mat-icon>delete</mat-icon>
                 </button>
-                <!-- Edit Icon -->
                 <button mat-icon-button (click)="editCriterion(criterion)">
                   <mat-icon>edit</mat-icon>
                 </button>
@@ -42,7 +38,11 @@
               </div>
               <div class="flex items-center mb-4">
                 <textarea class="flex-grow border rounded p-2 mr-2" [(ngModel)]="criterion.guidelines" placeholder="Enter guidelines for criteria submission here. This will be displayed for the dealership submitting an audit."></textarea>
-                <button mat-raised-button color="primary" class="mr-2" (click)="selectImage(criterion)">Select Image</button>
+                <input type="file" (change)="onFileSelected($event, criterion)" accept="image/*" id="fileInput" style="display: none;">
+                <label for="fileInput" class="cursor-pointer">
+                  <button mat-raised-button color="primary" class="mr-2" (click)="openFileInput()">Select Image</button>
+                </label>
+                <img *ngIf="criterion.filename" [src]="criterion.filename" alt="Selected Image" class="w-32 h-auto object-contain mr-2">
               </div>
             </div>
           </mat-card>
@@ -62,3 +62,4 @@
       </div>
     </div>
   </div>
+</div>

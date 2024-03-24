@@ -13,6 +13,9 @@ import { Criterion } from '../../interfaces/criterion';
 import { MatListModule } from '@angular/material/list';
 import { RouterModule } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
+import { FormGroup, FormBuilder } from '@angular/forms'
+import { FileUploadService } from '../../services/file-upload.service';
+import { HttpEventType } from '@angular/common/http';
 
 @Component({
   selector: 'app-edit-audit-submission-guidelines',
@@ -36,27 +39,28 @@ export class EditAuditSubmissionGuidelinesComponent implements OnInit {
   criteria: Criterion[] = [];
   campaignID = 1;
   backupCriteria: { [id: number]: Criterion } = {};
-  criterionId: number | undefined;
+  criteriaForm: FormGroup;
+  selectedFile: File | null = null;
 
   constructor(
     private criteriaService: CriteriaService,
     private toastr: ToastrService,
-    private route: ActivatedRoute,
-  ) { }
+    private fb: FormBuilder,
+    private uploadService: FileUploadService,
+  ) {
+    this.criteriaForm = this.fb.group({
+      image: ['']
+    });
+  }
 
   ngOnInit(): void {
     this.loadCriteria();
-    this.route.params.subscribe(params => {
-      this.criterionId = params['id']; // Retrieve criterion ID from route parameters
-      // Load matcard based on criterion ID
-    });
   }
 
   loadCriteria(): void {
     this.criteriaService.getCriteriaByCampaignID(this.campaignID).subscribe(
-      (data: Criterion[]) => { // Expect data to be an array of Criterion objects
+      (data: Criterion[]) => {
         this.criteria = data;
-        console.log('Criteria loaded:', this.criteria); // Log loaded criteria
       },
       (error) => {
         console.error('Error loading criteria:', error);
@@ -71,7 +75,6 @@ export class EditAuditSubmissionGuidelinesComponent implements OnInit {
 
     this.criteriaService.createCriterion(createCriteriaDto).subscribe(
       (newCriterion: Criterion) => {
-        // Handle the newly created criterion
         this.criteria.push(newCriterion);
         this.toastr.success('Criterion created successfully!', 'Success');
       },
@@ -83,42 +86,59 @@ export class EditAuditSubmissionGuidelinesComponent implements OnInit {
   }
 
   editCriterion(criterion: Criterion): void {
-    console.log('Criterion ID:', criterion.criteriaID);
-    this.backupCriteria[criterion.criteriaID] = { ...criterion }; // Store backup state for the criterion
+    this.backupCriteria[criterion.criteriaID] = { ...criterion };
     criterion.editMode = true;
   }
 
   cancelEdit(criterion: Criterion): void {
     const backupCriterion = this.backupCriteria[criterion.criteriaID];
     if (backupCriterion) {
-      Object.assign(criterion, backupCriterion); // Restore the criterion to its backup state
-      delete this.backupCriteria[criterion.criteriaID]; // Remove the backup state entry
+      Object.assign(criterion, backupCriterion);
+      delete this.backupCriteria[criterion.criteriaID];
     }
     criterion.editMode = false;
   }
 
   saveCriterion(criterion: Criterion): void {
-    console.log('Criterion to be saved:', criterion); // Log criterion to be saved
-      this.criteriaService.updateCriterion(criterion).subscribe(
-        (updatedCriterion: Criterion) => {
-          // Update the criterion in the criteria array
-          const index = this.criteria.findIndex(c => c.criteriaID === updatedCriterion.criteriaID);
-          if (index !== -1) {
-            this.criteria[index] = updatedCriterion;
-            this.criteria[index].editMode = false;
-            this.toastr.success('Criterion saved successfully!', 'Success');
+    if (this.selectedFile) {
+      this.uploadService.upload(this.selectedFile, 'posters').subscribe({
+        next: (event) => {
+          if (event.type === HttpEventType.UploadProgress) {
+            // Handle progress event
+          } else if (event.type === HttpEventType.Response) {
+            criterion.filename = event.body.filename;
+            this.updateCriterion(criterion);
           }
         },
-        (error) => {
-          console.error('Error saving criterion:', error);
-          this.toastr.error('Failed to save criterion!', 'Error');
+        error: (error) => {
+          console.error('Error uploading image:', error);
+          this.toastr.error('Failed to upload image!', 'Error');
         }
-      );
+      });
+    } else {
+      this.updateCriterion(criterion);
+    }
+  }
+
+  private updateCriterion(criterion: Criterion): void {
+    this.criteriaService.updateCriterion(criterion).subscribe(
+      () => {
+        const index = this.criteria.findIndex(c => c.criteriaID === criterion.criteriaID);
+        if (index !== -1) {
+          this.criteria[index] = criterion;
+          this.criteria[index].editMode = false;
+          this.toastr.success('Criterion saved successfully!', 'Success');
+        }
+      },
+      (error) => {
+        console.error('Error saving criterion:', error);
+        this.toastr.error('Failed to save criterion!', 'Error');
+      }
+    );
   }
 
   saveAllCriteria(): void {
     const criteriaToUpdate = this.criteria.map(criterion => {
-      // Extract only the necessary fields for updating
       return {
         criteriaID: criterion.criteriaID,
         name: criterion.name,
@@ -155,7 +175,21 @@ export class EditAuditSubmissionGuidelinesComponent implements OnInit {
     );
   }
   
-  selectImage(criterion: any): void {
-    // Implement image selection logic here
+  openFileInput(): void {
+    const fileInput = document.getElementById('fileInput');
+    if (fileInput) {
+      fileInput.click();
+    }
+  }
+  
+  onFileSelected(event: any, criterion: Criterion): void {
+    const file: File = event.target.files[0];
+    this.selectedFile = file;
+  
+    const reader = new FileReader();
+    reader.onload = () => {
+      criterion.filename = reader.result as string; // Update filename with the selected image
+    };
+    reader.readAsDataURL(file);
   }
 }
