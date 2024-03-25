@@ -58,9 +58,14 @@ export class CampaignListComponent implements AfterViewInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
-        console.log('Confirm')
+        this.deleteCampaign(result);
       }
     })
+  }
+
+
+  deleteCampaign(id: number) {
+    this.dataSource.deleteCampaign(id)
   }
 }
 
@@ -85,9 +90,5 @@ export class CampaignDeleteDialog {
 
   onNoClick(): void {
     this.dialogRef.close();
-  }
-
-  deleteCampaign() {
-    console.log('Send delete request');
   }
 }

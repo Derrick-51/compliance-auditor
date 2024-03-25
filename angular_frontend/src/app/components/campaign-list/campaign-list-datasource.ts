@@ -2,7 +2,7 @@ import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { map } from 'rxjs/operators';
-import { Observable, of as observableOf, merge } from 'rxjs';
+import { Observable, of as observableOf, merge, BehaviorSubject } from 'rxjs';
 
 // TODO: Replace this with your own data model type
 export interface CampaignListItem {
@@ -45,8 +45,15 @@ export class CampaignListDataSource extends DataSource<CampaignListItem> {
   paginator: MatPaginator | undefined;
   sort: MatSort | undefined;
 
-  constructor() {
+  deletingCampaign$ = new BehaviorSubject<boolean>(false);
+
+  constructor(data?: any) {
     super();
+    console.log('constructor')
+    if(data) {
+      console.log('data present')
+      this.data = data
+    }
   }
 
   /**
@@ -58,8 +65,12 @@ export class CampaignListDataSource extends DataSource<CampaignListItem> {
     if (this.paginator && this.sort) {
       // Combine everything that affects the rendered data into one update
       // stream for the data-table to consume.
-      return merge(observableOf(this.data), this.paginator.page, this.sort.sortChange)
-        .pipe(map(() => {
+      return merge(
+        observableOf(this.data),
+        this.paginator.page,
+        this.sort.sortChange,
+        this.deletingCampaign$
+        ).pipe(map(() => {
           return this.getPagedData(this.getSortedData([...this.data ]));
         }));
     } else {
@@ -71,7 +82,9 @@ export class CampaignListDataSource extends DataSource<CampaignListItem> {
    *  Called when the table is being destroyed. Use this function, to clean up
    * any open connections or free any held resources that were set up during connect.
    */
-  disconnect(): void {}
+  disconnect(): void {
+    this.deletingCampaign$.complete();
+  }
 
   /**
    * Paginate the data (client-side). If you're using server-side pagination,
@@ -99,12 +112,25 @@ export class CampaignListDataSource extends DataSource<CampaignListItem> {
       const isAsc = this.sort?.direction === 'asc';
       switch (this.sort?.active) {
         case 'campaignID': return compare(a.campaignID, b.campaignID, isAsc);
-        case 'startDate': return compare(+a.startDate, +b.startDate, isAsc);
-        case 'endDate': return compare(+a.endDate, +b.endDate, isAsc);
+        case 'startDate': return compare(+a.startDate, +b.startDate, !isAsc);
+        case 'endDate': return compare(+a.endDate, +b.endDate, !isAsc);
         default: return 0;
       }
     });
   }
+
+  deleteCampaign(id: number) {
+    // Delete campaign in database using service
+
+    // Update local data instead of requesting data again
+    let index = this.data.findIndex((item) => item.campaignID === id);
+    this.data.splice((index), 1);
+    this.deletingCampaign$.next(true);
+  }
+
+  // getCampaignData(): CampaignListItem[] {
+
+  // }
 }
 
 /** Simple sort comparator for example ID/Name columns (for client-side sorting). */
