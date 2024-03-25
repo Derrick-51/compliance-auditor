@@ -1,7 +1,8 @@
 <mat-dialog-content>
-  <p>Are you sure you want to delete campaign {{data.campaignID}}?</p>
+  <h2>Delete Campaign {{data.campaignID}}?</h2>
+  <p>This cannot be undone! </p>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-button color="basic" [mat-dialog-close]="false" cdkFocusInitial>Cancel</button>
-  <button mat-button color="warn" [mat-dialog-close]="true">Delete</button>
+  <button mat-raised-button color="basic" cdkFocusInitial>Cancel</button>
+  <button mat-raised-button color="warn" [mat-dialog-close]="data.campaignID">Delete</button>
 </mat-dialog-actions>
