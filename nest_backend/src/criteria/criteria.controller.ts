@@ -1,11 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, HttpException, HttpStatus, Put, UploadedFiles, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UploadedFile, UseInterceptors, HttpException, HttpStatus } from '@nestjs/common';
 import { CriteriaService } from './criteria.service';
 import { CampaignService } from '../campaign/campaign.service';
 import { CreateCriterionDto } from './dto/create-criterion.dto';
 import { UpdateCriterionDto } from './dto/update-criterion.dto';
-import { FilesInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Req } from '@nestjs/common';
+import { Request } from 'express'
+import { diskStorage } from 'multer';
+import { extname } from 'path';
+import {v4 as uuidv4} from "uuid";
 import { Campaign } from 'src/campaign/entities/campaign.entity';
-import { UpdateAllCriterionDto } from './dto/update-all-criterion';
+import { isEmpty, validate } from 'class-validator';
 
 @Controller('api/criteria')
 export class CriteriaController {
@@ -42,44 +47,39 @@ export class CriteriaController {
   }
 
   @Patch(':id')
-  @UseInterceptors(FilesInterceptor('files'))
+  @UseInterceptors(FileInterceptor('image', {
+      storage: diskStorage({
+          destination: 'posters',
+          filename: (req, file, callback) => {
+              const uniqueName = uuidv4()
+              const extension = extname(file.originalname)
+              const filename = `${uniqueName}${extension}`
+
+              callback(null, filename)
+          }
+      })
+  }))
+
   async update(
-    @Param('id') id: string,
-    @Body() updateCriterionDto: UpdateCriterionDto,
-    @UploadedFiles() files: Array<Express.Multer.File>
-  ) {
-    if (!Object.keys(updateCriterionDto).length) {
-      throw new HttpException('Empty request body', HttpStatus.BAD_REQUEST);
-    }
+      @Param('id') id: string,
+      @Body() updateCriterionDto: UpdateCriterionDto,
+      @UploadedFile() file: Express.Multer.File
+      ) {
+      // Check for empty body
+      if(!Object.keys(updateCriterionDto).length) {
+          throw new HttpException('Empty request body', HttpStatus.BAD_REQUEST);
+      }
 
-    return await this.criteriaService.update(+id, updateCriterionDto, files); // Pass files to service method
+      let filename = "";
+      if(file) {
+          filename = file.filename;
+      }
+
+      return await this.criteriaService.update(+id, updateCriterionDto, filename);
   }
-    
-  @Put('updateAll')
-  @UseInterceptors(FilesInterceptor('files', 20))
-  async updateAll(
-    @Body() formData: any, // Parse FormData from the request body
-    @UploadedFiles() files: Array<Express.Multer.File>
-  ) {
-    const criteria = formData.criteria; // Extract criteria array from FormData
-
-    if (!criteria || !files || criteria.length !== files.length) {
-      throw new HttpException('Invalid request data', HttpStatus.BAD_REQUEST);
-    }
-
-    const updatedCriteria = await this.criteriaService.updateAll(criteria, files);
-    return updatedCriteria;
-  }
-
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
-    try {
-      const criterionId = parseInt(id);
-      await this.criteriaService.deleteCriterion(criterionId);
-      return { message: 'Criterion deleted successfully' };
-    } catch (error) {
-      throw new HttpException(error.message || 'Failed to delete criterion', HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+  remove(@Param('id') id: string) {
+    return this.criteriaService.remove(+id);
   }
 }

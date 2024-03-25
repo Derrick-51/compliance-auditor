@@ -5,11 +5,6 @@ import { CreateCriterionDto } from './dto/create-criterion.dto';
 import { UpdateCriterionDto } from './dto/update-criterion.dto';
 import { Criterion } from './entities/criterion.entity';
 import { Campaign } from '../campaign/entities/campaign.entity';
-import { diskStorage, StorageEngine } from 'multer';
-import { extname, join } from 'path';
-import {v4 as uuidv4} from "uuid";
-import { Request } from 'express';
-import { writeFileSync } from 'fs';
 
 
 @Injectable()
@@ -23,6 +18,7 @@ export class CriteriaService {
   async create(campaign: Campaign): Promise<Criterion> {
 
     const newCriterion = await this.criterionRepository.save({});
+
     // Attach campaign to criterion
     campaign.criteria = [...campaign.criteria, newCriterion];
     await campaign.save();
@@ -39,55 +35,32 @@ export class CriteriaService {
       where: {criteriaID: id}
     });
   }
+  
+  async update(
+    id: number,
+    updateCriterionDto: UpdateCriterionDto,
+    filename: string
+    ): Promise<Criterion> {
 
-  async update(id: number, updateCriterionDto: UpdateCriterionDto, @UploadedFiles() files: Array<Express.Multer.File>): Promise<Criterion> {    let criterion = await this.criterionRepository.findOne({
-      where: { criteriaID: id },
+    let criterion = await this.criterionRepository.findOne({
+      where: {criteriaID: id}
     });
-    if (!criterion) {
+    if(!criterion) {
       throw new HttpException('Criterion not found', HttpStatus.NOT_FOUND);
     }
-  
-    // Update the criterion properties
-    Object.assign(criterion, updateCriterionDto);
-  
-    if (files && files.length > 0) {
-      for (const file of files) {
-        // Save each file to the "posters" folder
-        const savedFilename = await this.saveFile(file);
-        // Update the filename property in the criterion
-        criterion.filename = savedFilename;
-      }
+
+    // Don't replace filename if no file uploaded
+    if(filename.length > 0) {
+      Object.assign(criterion, {filename: filename});
     }
-  
-    // Save the updated criterion to the database
+
+    Object.assign(criterion, updateCriterionDto);
     await criterion.save();
-  
+
     return criterion;
   }
   
-  async saveFile(file: Express.Multer.File): Promise<string> {
-    const uniqueName = uuidv4();
-    const extension = extname(file.originalname);
-    const filename = `${uniqueName}${extension}`;
-    const filePath = join('posters', filename);
-
-    try {
-      writeFileSync(filePath, file.buffer);
-      return filename;
-    } catch (error) {
-      throw new HttpException('Failed to save file', HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-  }
-
-  async updateAll(criteria: UpdateCriterionDto[], files: any[]): Promise<Criterion[]> {
-    const updatedCriteria = await Promise.all(criteria.map(async (criterion, index) => {
-      const updatedCriterion = await this.update(criterion.criteriaID, criterion, files[index]);
-      return updatedCriterion;
-    }));
-    return updatedCriteria;
-  }
-  
-  async deleteCriterion(id: number): Promise<void> {
+  async remove(id: number): Promise<void> {
     let criterion = await this.criterionRepository.findOne({
       where: {criteriaID: id}
     });

@@ -7,50 +7,34 @@ import { Criterion } from '../interfaces/criterion';
   providedIn: 'root'
 })
 export class CriteriaService {
-  private readonly apiUrl = 'http://localhost:3000/api/criteria';
+  private readonly databaseUrl = 'http://localhost:3000/api/criteria';
 
   constructor(private http: HttpClient) { }
 
   getCriteriaByCampaignID(campaignID: number): Observable<Criterion[]> {
-    return this.http.get<Criterion[]>(`${this.apiUrl}?campaignID=${campaignID}`);
+    return this.http.get<Criterion[]>(`${this.databaseUrl}?campaignID=${campaignID}`);
   }
 
-  updateCriterion(criterion: any, files: File[] | null) {
-    const formData: FormData = new FormData();
-    formData.append('name', criterion.name);
-    formData.append('guidelines', criterion.guidelines);
-    formData.append('filename', criterion.filename);
-    if (files && files.length > 0) {
-      for (const file of files) {
-        formData.append('files', file, file.name);
-      }
-    }
-    return this.http.patch<any>(`${this.apiUrl}/${criterion.criteriaID}`, formData);
+  getCriteriaByID(id: number): Observable<Criterion[]> {
+    const url = `${this.databaseUrl}/criteria/${id}`;
+    return this.http.get<Criterion[]>(url);
   }
 
-  updateAllCriteria(criteria: any[]) {
+  updateCriterion(id: number, updatedCriterion: Criterion, files: File[]): Observable<any> {
     const formData = new FormData();
-  
-    criteria.forEach((criterion: any, index: number) => {
-      formData.append(`criteria[${index}][name]`, criterion.name);
-      formData.append(`criteria[${index}][guidelines]`, criterion.guidelines);
-      formData.append(`criteria[${index}][filename]`, criterion.filename);
-  
-      if (criterion.files && criterion.files.length > 0) {
-        criterion.files.forEach((file: File, fileIndex: number) => { // Specify types for file and fileIndex
-          formData.append(`criteria[${index}][files][${fileIndex}]`, file, file.name);
-        });
-      }
-    });
-  
-    return this.http.put<any[]>(`${this.apiUrl}/updateAll`, formData);
+    formData.append('name', updatedCriterion.name);
+    formData.append('guidelines', updatedCriterion.guidelines);
+    formData.append('image', files[0]); // Assuming you're updating a single image
+
+    // Send PATCH request to update criterion
+    return this.http.patch<any>(`${this.databaseUrl}/${id}`, formData);
   }
 
   createCriterion(createCriteriaDto: any): Observable<Criterion> {
-    return this.http.post<Criterion>(`${this.apiUrl}/create`, createCriteriaDto);
+    return this.http.post<Criterion>(`${this.databaseUrl}/create`, createCriteriaDto);
   }
 
   deleteCriterion(criteriaID: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${criteriaID}`);
+    return this.http.delete<void>(`${this.databaseUrl}/${criteriaID}`);
   }
 }

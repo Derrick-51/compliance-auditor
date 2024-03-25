@@ -41,6 +41,11 @@ import { Criterion } from './criteria/entities/criterion.entity';
       serveRoot: '/images',
       rootPath: join(__dirname, '..', 'images'),
     }),
+    // Serve files from the 'posters' folder
+    ServeStaticModule.forRoot({
+      serveRoot: '/posters',
+      rootPath: join(__dirname, '..', 'posters'),
+    }),
     UploadModule,
     AuthModule,
     PassportModule,

@@ -16,20 +16,20 @@
         <ng-container *ngFor="let criterion of criteria">
           <div id="criterion-{{ criterion.criteriaID }}" class="anchor"></div>
           <mat-card class="p-4 mb-4">
-            <div>
               <!-- Preview Mode -->
-              <h3 class="text-lg font-semibold">{{ criterion.name }}</h3>
-              <markdown [data]="criterion.guidelines"></markdown>
-              <img *ngIf="criterion.filename" [src]="criterion.filename" alt="Criterion Image" class="w-full h-auto object-contain" />
-              <div class="flex justify-end" *ngIf="!criterion.editMode">
-                <button mat-icon-button (click)="deleteCriterion(criterion)">
-                  <mat-icon>delete</mat-icon>
-                </button>
-                <button mat-icon-button (click)="editCriterion(criterion)">
-                  <mat-icon>edit</mat-icon>
-                </button>
+              <div *ngIf="!criterion.editMode">
+                <h3 class="text-lg font-semibold">{{ criterion.name }}</h3>
+                <markdown [data]="criterion.guidelines"></markdown>
+                <img *ngIf="criterion.filename" [src]="'http://localhost:3000/posters/' + criterion.filename" alt="Criterion Image" class="w-32 h-auto object-contain mr-2 cursor-pointer" (click)="openModal('http://localhost:3000/posters/' + criterion.filename)">
+                <div class="flex justify-end">
+                  <button mat-icon-button (click)="deleteCriterion(criterion)" class="cursor-pointer" matTooltip="Delete">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                  <button mat-icon-button (click)="editCriterion(criterion)" class="cursor-pointer" matTooltip="Edit">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                </div>
               </div>
-            </div>
             <div *ngIf="criterion.editMode">
               <!-- Edit Mode -->
               <div class="flex items-center mb-4">
@@ -38,11 +38,20 @@
               </div>
               <div class="flex items-center mb-4">
                 <textarea class="flex-grow border rounded p-2 mr-2" [(ngModel)]="criterion.guidelines" placeholder="Enter guidelines for criteria submission here. This will be displayed for the dealership submitting an audit."></textarea>
-                <input type="file" (change)="onFileSelected($event, criterion)" accept="image/*" [id]="'fileInput-' + criterion.criteriaID" style="display: none;" multiple>
-                <label [for]="'fileInput-' + criterion.criteriaID" class="cursor-pointer">
-                  <button mat-raised-button color="primary" class="mr-2" (click)="openFileInput(criterion)">Select Image</button>
-                </label>                
-                <img *ngIf="criterion.filename" [src]="criterion.filename" alt="Selected Image" class="w-32 h-auto object-contain mr-2">
+                <input type="file" (change)="onFileSelected($event, criterion)" accept=".jpg, .jpeg, .png" [id]="'fileInput-' + criterion.criteriaID" style="display: none;" multiple>
+                <div *ngIf="criterion.filename || selectedFiles[criterion.criteriaID]?.length">
+                  <img *ngFor="let selectedFileUrl of selectedFileUrls[criterion.criteriaID]" [src]="selectedFileUrl" alt="Selected Image" class="w-32 h-auto object-contain mr-2 cursor-pointer" (click)="openModal(selectedFileUrl)">
+                  <button
+                  class="absolute top-12 right-8 text-red-500 hover:text-red-700 bg-white border border-gray-300 rounded-full p-1 shadow-md active:bg-gray-200 active:border-gray-400"
+                  matTooltip="Delete"
+                  (click)="deleteImage(criterion)"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+                <label *ngIf="!criterion.filename && !selectedFiles[criterion.criteriaID]?.length" [for]="'fileInput-' + criterion.criteriaID" class="cursor-pointer">
+                  <button mat-raised-button color="primary" class="mr-2 cursor-pointer" (click)="openFileInput(criterion)">Select Image</button>
+                </label>
               </div>
             </div>
           </mat-card>
@@ -62,4 +71,11 @@
       </div>
     </div>
   </div>
+  <!-- Modal for Enlarged Image -->
+  <ng-container *ngIf="modalImageUrl">
+    <app-image-modal
+      [imageUrl]="modalImageUrl"
+      (close)="closeModal()"
+    ></app-image-modal>
+  </ng-container>
 </div>
