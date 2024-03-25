@@ -22,7 +22,11 @@ export class ProfilePageComponent implements OnInit {
   firstName!: string;
   lastName!: string;
 
-  constructor(private userService: UserService, private http: HttpClient) {}
+  constructor (
+    private userService: UserService, 
+    private http: HttpClient
+    
+    ) { }
 
   ngOnInit(): void {
     this.http

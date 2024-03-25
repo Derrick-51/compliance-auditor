@@ -37,7 +37,6 @@ import { ToastrService } from 'ngx-toastr'
 })
 export class ForgotPasswordComponent {
 
-
   passwordFieldHide = true; // initially password is hidden
   confirmFieldHide = true; // initially confirm password is hidden
 
