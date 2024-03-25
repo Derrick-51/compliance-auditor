@@ -15,12 +15,35 @@ export class CriteriaService {
     return this.http.get<Criterion[]>(`${this.apiUrl}?campaignID=${campaignID}`);
   }
 
-  updateCriterion(criterion: any) {
-    return this.http.patch<any>(`${this.apiUrl}/${criterion.criteriaID}`, criterion);
+  updateCriterion(criterion: any, files: File[] | null) {
+    const formData: FormData = new FormData();
+    formData.append('name', criterion.name);
+    formData.append('guidelines', criterion.guidelines);
+    formData.append('filename', criterion.filename);
+    if (files && files.length > 0) {
+      for (const file of files) {
+        formData.append('files', file, file.name);
+      }
+    }
+    return this.http.patch<any>(`${this.apiUrl}/${criterion.criteriaID}`, formData);
   }
 
   updateAllCriteria(criteria: any[]) {
-    return this.http.put<any[]>(this.apiUrl, criteria);
+    const formData = new FormData();
+  
+    criteria.forEach((criterion: any, index: number) => {
+      formData.append(`criteria[${index}][name]`, criterion.name);
+      formData.append(`criteria[${index}][guidelines]`, criterion.guidelines);
+      formData.append(`criteria[${index}][filename]`, criterion.filename);
+  
+      if (criterion.files && criterion.files.length > 0) {
+        criterion.files.forEach((file: File, fileIndex: number) => { // Specify types for file and fileIndex
+          formData.append(`criteria[${index}][files][${fileIndex}]`, file, file.name);
+        });
+      }
+    });
+  
+    return this.http.put<any[]>(`${this.apiUrl}/updateAll`, formData);
   }
 
   createCriterion(createCriteriaDto: any): Observable<Criterion> {

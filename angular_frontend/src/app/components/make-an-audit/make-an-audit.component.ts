@@ -91,7 +91,7 @@ export class MakeAnAuditComponent implements OnInit {
   // Upload individual images of submitted audit
   upload(file: File): void {
     if (!file) return;
-    this.uploadService.upload(file,'images').subscribe({
+    this.uploadService.upload(file).subscribe({
       error: (err: any) => {
         this.message = 'Could not submit audit. Please run nest backend.';
       },

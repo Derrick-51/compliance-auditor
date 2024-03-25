@@ -14,8 +14,6 @@ import { MatListModule } from '@angular/material/list';
 import { RouterModule } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms'
-import { FileUploadService } from '../../services/file-upload.service';
-import { HttpEventType } from '@angular/common/http';
 
 @Component({
   selector: 'app-edit-audit-submission-guidelines',
@@ -40,13 +38,12 @@ export class EditAuditSubmissionGuidelinesComponent implements OnInit {
   campaignID = 1;
   backupCriteria: { [id: number]: Criterion } = {};
   criteriaForm: FormGroup;
-  selectedFile: File | null = null;
+  selectedFiles: { [id: number]: File[] } = {};
 
   constructor(
     private criteriaService: CriteriaService,
     private toastr: ToastrService,
-    private fb: FormBuilder,
-    private uploadService: FileUploadService,
+    private fb: FormBuilder
   ) {
     this.criteriaForm = this.fb.group({
       image: ['']
@@ -88,6 +85,10 @@ export class EditAuditSubmissionGuidelinesComponent implements OnInit {
   editCriterion(criterion: Criterion): void {
     this.backupCriteria[criterion.criteriaID] = { ...criterion };
     criterion.editMode = true;
+    // Initialize selected files array for the criterion if not already selected
+    if (!this.selectedFiles[criterion.criteriaID]) {
+      this.selectedFiles[criterion.criteriaID] = [];
+    }
   }
 
   cancelEdit(criterion: Criterion): void {
@@ -97,35 +98,16 @@ export class EditAuditSubmissionGuidelinesComponent implements OnInit {
       delete this.backupCriteria[criterion.criteriaID];
     }
     criterion.editMode = false;
+    // Reset selected files for the criterion
+    this.selectedFiles[criterion.criteriaID] = [];
   }
 
   saveCriterion(criterion: Criterion): void {
-    if (this.selectedFile) {
-      this.uploadService.upload(this.selectedFile, 'posters').subscribe({
-        next: (event) => {
-          if (event.type === HttpEventType.UploadProgress) {
-            // Handle progress event
-          } else if (event.type === HttpEventType.Response) {
-            criterion.filename = event.body.filename;
-            this.updateCriterion(criterion);
-          }
-        },
-        error: (error) => {
-          console.error('Error uploading image:', error);
-          this.toastr.error('Failed to upload image!', 'Error');
-        }
-      });
-    } else {
-      this.updateCriterion(criterion);
-    }
-  }
-
-  private updateCriterion(criterion: Criterion): void {
-    this.criteriaService.updateCriterion(criterion).subscribe(
+    const selectedFiles = this.selectedFiles[criterion.criteriaID];
+    this.criteriaService.updateCriterion(criterion, selectedFiles).subscribe(
       () => {
         const index = this.criteria.findIndex(c => c.criteriaID === criterion.criteriaID);
         if (index !== -1) {
-          this.criteria[index] = criterion;
           this.criteria[index].editMode = false;
           this.toastr.success('Criterion saved successfully!', 'Success');
         }
@@ -175,21 +157,21 @@ export class EditAuditSubmissionGuidelinesComponent implements OnInit {
     );
   }
   
-  openFileInput(): void {
-    const fileInput = document.getElementById('fileInput');
+  openFileInput(criterion: Criterion): void {
+    const fileInput = document.getElementById(`fileInput-${criterion.criteriaID}`) as HTMLInputElement;
     if (fileInput) {
       fileInput.click();
     }
   }
   
   onFileSelected(event: any, criterion: Criterion): void {
-    const file: File = event.target.files[0];
-    this.selectedFile = file;
-  
-    const reader = new FileReader();
-    reader.onload = () => {
-      criterion.filename = reader.result as string; // Update filename with the selected image
-    };
-    reader.readAsDataURL(file);
+    const files: FileList = event.target.files;
+    if (files) {
+      const selectedFiles = [];
+      for (let i = 0; i < files.length; i++) {
+        selectedFiles.push(files[i]);
+      }
+      this.selectedFiles[criterion.criteriaID] = selectedFiles;
+    }
   }
 }

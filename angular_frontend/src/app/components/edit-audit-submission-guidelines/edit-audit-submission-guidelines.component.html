@@ -38,10 +38,10 @@
               </div>
               <div class="flex items-center mb-4">
                 <textarea class="flex-grow border rounded p-2 mr-2" [(ngModel)]="criterion.guidelines" placeholder="Enter guidelines for criteria submission here. This will be displayed for the dealership submitting an audit."></textarea>
-                <input type="file" (change)="onFileSelected($event, criterion)" accept="image/*" id="fileInput" style="display: none;">
-                <label for="fileInput" class="cursor-pointer">
-                  <button mat-raised-button color="primary" class="mr-2" (click)="openFileInput()">Select Image</button>
-                </label>
+                <input type="file" (change)="onFileSelected($event, criterion)" accept="image/*" [id]="'fileInput-' + criterion.criteriaID" style="display: none;" multiple>
+                <label [for]="'fileInput-' + criterion.criteriaID" class="cursor-pointer">
+                  <button mat-raised-button color="primary" class="mr-2" (click)="openFileInput(criterion)">Select Image</button>
+                </label>                
                 <img *ngIf="criterion.filename" [src]="criterion.filename" alt="Selected Image" class="w-32 h-auto object-contain mr-2">
               </div>
             </div>
