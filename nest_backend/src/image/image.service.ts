@@ -10,6 +10,7 @@ import { spawn } from "child_process";
 import  * as fs from 'fs'
 import * as path from 'path';
 import { AuditService } from 'src/audit/audit.service';
+import { Criterion } from 'src/criteria/entities/criterion.entity';
 
 @Injectable()
 export class ImageService {
@@ -19,8 +20,13 @@ export class ImageService {
     private dataSource: DataSource
   ) {}
 
-  create(createImageDto: CreateImageDto) {
-    return 'This action adds a new image';
+  async create(
+    fileName: string,
+    criterion: Criterion,
+    audit: Audit
+    ): Promise<Images> {
+
+    return await this.imageRepository.save({fileName, criterion, audit});
   }
 
   async createOne(imageName: string, update: Date, audit: Audit): Promise<Images> {
