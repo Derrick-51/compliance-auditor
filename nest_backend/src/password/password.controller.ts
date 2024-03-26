@@ -43,10 +43,10 @@ export class PasswordController {
   async reset(
     @Body('token') token: string,
     @Body('password') password: string,
-    @Body('passwordConfirm') passwordConfirm: string,
+    @Body('confirmPassword') confirmPassword: string,
 
   ) {
-    if (password !== passwordConfirm) {
+    if (password !== confirmPassword) {
       throw new BadRequestException('Passwords do not match');
     }
 
