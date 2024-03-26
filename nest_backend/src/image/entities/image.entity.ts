@@ -4,6 +4,7 @@ import {
   PrimaryGeneratedColumn,
   ManyToOne,
   BaseEntity,
+  JoinColumn,
 } from 'typeorm';
 import { Audit } from 'src/audit/entities/audit.entity';
 import { Criterion } from 'src/criteria/entities/criterion.entity';
@@ -29,6 +30,7 @@ export class Images extends BaseEntity {
   verdict: string;
 
   @ManyToOne((type) => Audit, (audit) => audit.images)
+  @JoinColumn({ name: 'auditID' }) //Specifies column that is being used as the foreign key
   audit: Audit;
 
   @ManyToOne((type) => Criterion, (criterion) => criterion.images)

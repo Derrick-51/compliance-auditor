@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ImageService } from './image.service';
 import { CreateImageDto } from './dto/create-image.dto';
 import { UpdateImageDto } from './dto/update-image.dto';
@@ -11,6 +19,11 @@ export class ImageController {
   create(@Body() createImageDto: CreateImageDto) {
     return this.imageService.create(createImageDto);
   }
+
+  // @Get(':auditID')
+  // findAudit(@Param('auditID') auditID: any) {
+  //   return this.imageService.findAudit(auditID);
+  // }
 
   @Get()
   findAll() {
