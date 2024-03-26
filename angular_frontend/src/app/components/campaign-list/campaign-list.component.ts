@@ -15,6 +15,7 @@ import {
   MatDialogActions,
   MatDialogClose,
 } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 export interface DialogData {
   campaignID: number;
@@ -40,7 +41,10 @@ export class CampaignListComponent implements AfterViewInit {
   dataSource = new CampaignListDataSource();
   campaignForDeleteID!: number;
 
-  constructor(public dialog: MatDialog) {}
+  constructor(
+    public dialog: MatDialog,
+    private router: Router
+    ) {}
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['campaignID', 'startDate', 'endDate', 'actions'];
@@ -66,6 +70,20 @@ export class CampaignListComponent implements AfterViewInit {
 
   deleteCampaign(id: number) {
     this.dataSource.deleteCampaign(id)
+  }
+
+  goToCampaign(id: string): void {
+    const navigationDetails: string[] = ['campaign'];
+
+    // Function call always sends number instead of string
+    id = `${id}`;
+
+    // Only add parameter if it exists
+    if(id.length) {
+      navigationDetails.push(`${id}`);
+    }
+
+    this.router.navigate(navigationDetails);
   }
 }
 
