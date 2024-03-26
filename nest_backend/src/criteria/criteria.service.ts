@@ -1,7 +1,6 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateCriterionDto } from './dto/create-criterion.dto';
 import { UpdateCriterionDto } from './dto/update-criterion.dto';
 import { Criterion } from './entities/criterion.entity';
 import { Campaign } from '../campaign/entities/campaign.entity';
@@ -15,14 +14,7 @@ export class CriteriaService {
   ) {}
 
   async create(campaign: Campaign): Promise<Criterion> {
-
-    const newCriterion = await this.criteriaRepository.save({});
-
-    // Attach campaign to criterion
-    campaign.criteria = [...campaign.criteria, newCriterion];
-    await campaign.save();
-
-    return newCriterion;
+    return this.criteriaRepository.save({campaign})
   }
 
   findAll() {
