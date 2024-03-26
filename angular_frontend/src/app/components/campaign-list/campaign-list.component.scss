@@ -24,6 +24,13 @@
   align-items: center;
 }
 
+.table-upper-controls {
+  width: 100%;
+  margin-bottom:16px;
+  display: flex;
+  justify-content: space-between;
+}
+
 .table {
   width: 100%;
   display: flex;

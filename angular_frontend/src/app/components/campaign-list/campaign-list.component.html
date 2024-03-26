@@ -8,10 +8,14 @@
   <div class="table-wrapper">
     <div class="table-container">
       
+      <div class="table-upper-controls">
+        <div></div> 
+        <button mat-fab extended color="primary" (click)="openCreateDialog()">Create Campaign</button>
+      </div>
+
       <div class="mat-elevation-z8 table">
-        <!-- Filter and create new campaign -->
-        <div class="table-controls">
-        </div>
+
+        
 
         <table mat-table class="full-width-table table-rows" matSort aria-label="Elements">
           <!-- Id Column -->

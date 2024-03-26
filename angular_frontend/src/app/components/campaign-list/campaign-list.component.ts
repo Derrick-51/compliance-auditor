@@ -6,6 +6,7 @@ import { MatSortModule, MatSort } from '@angular/material/sort';
 import { CampaignListDataSource, CampaignListItem } from './campaign-list-datasource';
 import { AuditorNavbarComponent } from '../auditor-navbar/auditor-navbar.component';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker'
 import {
   MatDialog,
   MAT_DIALOG_DATA,
@@ -16,8 +17,14 @@ import {
   MatDialogClose,
 } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { CampaignService } from '../../services/campaign.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormGroup, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { JsonPipe } from '@angular/common';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { firstValueFrom, timeout } from 'rxjs';
 
-export interface DialogData {
+export interface DeleteDialogData {
   campaignID: number;
 }
 
@@ -43,7 +50,8 @@ export class CampaignListComponent implements AfterViewInit {
 
   constructor(
     public dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private campaignService: CampaignService,
     ) {}
 
   /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
@@ -67,6 +75,19 @@ export class CampaignListComponent implements AfterViewInit {
     })
   }
 
+  openCreateDialog() {
+    const dialogRef = this.dialog.open(CampaignCreateDialog, {
+      data: {},
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        const campaignID = this.createCampaign(result.start, result.end);
+
+        this.goToCampaign(`${campaignID}`)
+      }
+    })
+  }
 
   deleteCampaign(id: number) {
     this.dataSource.deleteCampaign(id)
@@ -85,8 +106,20 @@ export class CampaignListComponent implements AfterViewInit {
 
     this.router.navigate(navigationDetails);
   }
+
+  async createCampaign(startDate: string, endDate: string): Promise<number> {
+    // Wait for campaign creation to redirect to edit page
+    const response = await firstValueFrom(this.campaignService.createCampaign({startDate, endDate}).pipe(timeout(10000)));
+
+    if(!response) {
+      throw new Error('Campaign creation failed');
+    }
+
+    return response.campaignID;
+  }
 }
 
+// Delete Campaign Dialog
 @Component({
   selector: 'campaign-delete-dialog',
   templateUrl: 'campaign-delete-dialog.html',
@@ -103,7 +136,42 @@ export class CampaignListComponent implements AfterViewInit {
 export class CampaignDeleteDialog {
   constructor(
     public dialogRef: MatDialogRef<CampaignDeleteDialog>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    @Inject(MAT_DIALOG_DATA) public data: DeleteDialogData,
+  ) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+}
+
+// Create Campaign Dialog
+@Component({
+  selector: 'campaign-create-dialog',
+  templateUrl: 'campaign-create-dialog.html',
+  styleUrl: 'campaign-create-dialog.scss',
+  standalone: true,
+  providers: [provideNativeDateAdapter()],
+  imports: [
+    MatButtonModule,
+    MatDialogTitle,
+    MatDialogContent,
+    MatDialogActions,
+    MatDialogClose,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    FormsModule,
+    ReactiveFormsModule,
+    JsonPipe
+  ],
+})
+export class CampaignCreateDialog {
+  range = new FormGroup({
+    start: new FormControl<Date | null>(null),
+    end: new FormControl<Date | null>(null)
+  })
+
+  constructor(
+    public dialogRef: MatDialogRef<CampaignCreateDialog>,
   ) {}
 
   onNoClick(): void {
