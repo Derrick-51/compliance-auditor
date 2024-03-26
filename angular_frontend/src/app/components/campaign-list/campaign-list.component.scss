@@ -1,12 +1,18 @@
-.full-width-table {
-  width: 100%;
-}
-
 .page-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
+}
+
+.title-container {
+  margin-top: 32px;
+  
+}
+
+#title {
+  font-size: 48px;
+  font-weight: 600;
 }
 
 .table-wrapper {
