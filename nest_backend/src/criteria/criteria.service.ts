@@ -29,8 +29,10 @@ export class CriteriaService {
     return `This action returns all criteria`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} criterion`;
+  async findOne(id: number): Promise<Criterion> {
+    return await this.criterionRepository.findOne({
+      where: {criteriaID: id}
+    });
   }
 
   async update(
