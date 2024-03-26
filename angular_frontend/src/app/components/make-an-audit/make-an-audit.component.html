@@ -1,71 +1,49 @@
 <div class="min-h-screen bg-[#f2f2f2]">
   <app-navbar></app-navbar>
-  <div class="flex items-center p-4">
-    <div class="w-full">
-      <!--Audit Submission Guidelines-->
-      <mat-card class="p-4 mb-4 sm:h-40">
-        <div class="overflow-hidden">
-          <markdown [data]="guidelines"></markdown>
-        </div>
-      </mat-card>
-      <!--Audit Submission-->
-      <mat-card class="p-2 pb-16 sm:h-[365px]">
-        <!--Previews-->
-        <div class="overflow-hidden sm:overflow-y-auto h-auto">
-          <div class="flex flex-wrap justify-center">
-            <div
-              *ngFor="let preview of previews; let i = index"
-              class="relative p-2 w-full sm:w-1/5"
-            >
-              <img
-                [src]="preview"
-                (error)="displayImageUrl($event, i)"
-                alt="Preview of Submitted Image"
-                (click)="openModal(preview)"
-                class="w-full h-auto object-contain cursor-pointer"
-              />
-              <button
-              class="absolute top-2 right-2 text-red-500 hover:text-red-700 bg-white border border-gray-300 rounded-full p-1 shadow-md active:bg-gray-200 active:border-gray-400" matTooltip="Delete"
-                (click)="deleteImage(i)"
-              >
-                <mat-icon>delete</mat-icon>
-              </button>
+  <div class="flex p-4">
+    <!-- Main Content -->
+    <div class="w-full items-center">
+      <div class="border border-black p-4">
+        <ng-container *ngFor="let criterion of criteria">
+          <mat-card class="p-4 mb-4">
+            <div class="flex items-center mb-4 justify-between">
+              <h3 class="text-lg font-semibold">{{ criterion.name }}</h3>
+              <div class="flex items-center">
+                <h3 class="text-lg font-semibold">Evidence Reference Image</h3>
+                <mat-icon class="cursor-pointer" matTooltip="This image will be used as a reference of the evidence for the dealership submitting an audit and the AI reviewing that audit.">help_outline</mat-icon>
+              </div>
+              <div class="flex items-center">
+                <h3 class="text-lg font-semibold">Image Submission</h3>
+                <mat-icon class="cursor-pointer" matTooltip="This image will be submitted with the audit for review.">help_outline</mat-icon>
+              </div>
             </div>
-          </div>
-        </div>
-        <div class="absolute bottom-0 left-0 w-full p-4">
-          <div class="flex justify-between">
-            <!--Browse button and file explorer-->
-            <div>
-              <label for="images">Choose images to upload (PNG or JPG)</label>
-              <input
-                type="file"
-                id="images"
-                accept=".jpg, .jpeg, .png"
-                multiple=""
-                (change)="selectImages($event)"
-                class="cursor-pointer"
-              />
+            <div class="flex items-center justify-between">
+              <markdown [data]="criterion.guidelines"></markdown>
+              <img *ngIf="criterion.filename" [src]="'http://localhost:3000/posters/' + criterion.filename" alt="Criterion Image" class="w-32 h-auto object-contain mr-2 cursor-pointer" (click)="openModal('http://localhost:3000/posters/' + criterion.filename)">
             </div>
-            <!--Submit button-->
-            <button
-              mat-raised-button
-              color="primary"
-              routerLink="/status"
-              [disabled]="!previews.length"
-              (click)="submitAudit()"
-            >
-              Submit
-            </button>
-          </div>
-          <!-- Error message -->
-          <div class="flex absolute bottom-0 left-0 w-full px-4 pb-2">
-            <div class="flex justify-between">
-              <span *ngIf="message" class="text-red-500">{{ message }}</span>
+            /*<div>
+              <input type="file" (change)="onFileSelected($event, criterion)" accept=".jpg, .jpeg, .png" [id]="'fileInput-' + criterion.criteriaID" style="display: none;" multiple>
+              <div *ngIf="criterion.filename || selectedFiles[criterion.criteriaID]?.length">
+                <img *ngFor="let selectedFileUrl of selectedFileUrls[criterion.criteriaID]" [src]="selectedFileUrl" alt="Selected Image" class="w-32 h-auto object-contain mr-2 cursor-pointer" (click)="openModal(selectedFileUrl)">
+                <button
+                class="absolute top-30 right-6 text-red-500 hover:text-red-700 bg-white border border-gray-300 rounded-full p-1 shadow-md active:bg-gray-200 active:border-gray-400"
+                matTooltip="Delete"
+                (click)="deleteImage(criterion)"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </div>
+              <label *ngIf="!criterion.filename && !selectedFiles[criterion.criteriaID]?.length" [for]="'fileInput-' + criterion.criteriaID" class="cursor-pointer">
+                <button mat-raised-button color="primary" class="mr-2 cursor-pointer" (click)="openFileInput(criterion)">Select Image</button>
+              </label>
             </div>
-          </div>
-        </div>
-      </mat-card>
+          </mat-card>
+        </ng-container>
+      </div>
+      <!-- Save All Button -->
+      <div class="flex justify-end mt-4">
+        <button mat-raised-button color="primary" (click)="submitAudit()">Submit</button>
+      </div>
     </div>
   </div>
 

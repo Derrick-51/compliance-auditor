@@ -9,6 +9,9 @@ import { navbarComponent } from '../navbar/navbar.component';
 import { MarkdownModule } from 'ngx-markdown';
 import { ImageModalComponent } from '../image-modal/image-modal.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { CriteriaService } from '../../services/criteria.service';
+import { ToastrService } from 'ngx-toastr';
+import { Criterion } from '../../interfaces/criterion';
 
 @Component({
   selector: 'app-make-an-audit',
@@ -34,15 +37,29 @@ export class MakeAnAuditComponent implements OnInit {
   hasInvalidFiles = false;
   guidelines: string = '';
   modalImageUrl: string | null = null;
+  criteria: Criterion[] = [];
+  campaignID = 1;
 
   // Inject file upload and markdown file services
   constructor(
+    private criteriaService: CriteriaService,
+    private toastr: ToastrService,
     private uploadService: FileUploadService,
   ) {}
 
-  // Read Markdown file and set guidelines to its content when page is loaded
   ngOnInit(): void {
-      
+    this.loadCriteria();
+  }
+
+  loadCriteria(): void {
+    this.criteriaService.getCriteriaByCampaignID(this.campaignID).subscribe(
+      (criteria: Criterion[]) => {
+        this.criteria = criteria;
+      },
+      (error) => {
+        console.error('Error loading criteria:', error);
+      }
+    );
   }
 
   // Helper function to convert array of files into a FileList
@@ -128,6 +145,13 @@ export class MakeAnAuditComponent implements OnInit {
     const img = event.target;
     const url = img.src;
     this.previews[index] = url;
+  }
+
+    openFileInput(criterion: Criterion): void {
+    const fileInput = document.getElementById(`fileInput-${criterion.criteriaID}`) as HTMLInputElement;
+    if (fileInput) {
+      fileInput.click();
+    }
   }
 
   openModal(imageUrl: string): void {

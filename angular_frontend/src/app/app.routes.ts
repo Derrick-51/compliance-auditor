@@ -25,7 +25,7 @@ export const routes: Routes = [
     component: EditAuditSubmissionGuidelinesComponent
   }, // Dynamic route for criterion ID
   { path: 'status', component: StatusComponent },
-  { path: 'make-an-audit', component: MakeAnAuditComponent, canActivate: [pendingAuditGuard] },
+  { path: 'make-an-audit', component: MakeAnAuditComponent},
   { path: 'profile', component: ProfilePageComponent },
   { path: 'audit-navbar', component: AuditorNavbarComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' },

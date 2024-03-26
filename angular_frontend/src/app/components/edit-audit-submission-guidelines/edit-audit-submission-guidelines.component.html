@@ -18,9 +18,6 @@
           <mat-card class="p-4 mb-4">
               <!-- Preview Mode -->
               <div *ngIf="!criterion.editMode">
-                <h3 class="text-lg font-semibold">{{ criterion.name }}</h3>
-                <markdown [data]="criterion.guidelines"></markdown>
-                <img *ngIf="criterion.filename" [src]="'http://localhost:3000/posters/' + criterion.filename" alt="Criterion Image" class="w-32 h-auto object-contain mr-2 cursor-pointer" (click)="openModal('http://localhost:3000/posters/' + criterion.filename)">
                 <div class="flex justify-end">
                   <button mat-icon-button (click)="deleteCriterion(criterion)" class="cursor-pointer" matTooltip="Delete">
                     <mat-icon>delete</mat-icon>
@@ -29,20 +26,34 @@
                     <mat-icon>edit</mat-icon>
                   </button>
                 </div>
+                <div class="flex items-center mb-4 justify-between">
+                  <h3 class="text-lg font-semibold">{{ criterion.name }}</h3>
+                  <div class="flex items-center">
+                    <h3 class="text-lg font-semibold">Evidence Reference Image</h3>
+                    <mat-icon class="cursor-pointer" matTooltip="This image will be used as a reference of the evidence for the dealership submitting an audit and the AI reviewing that audit.">help_outline</mat-icon>
+                  </div>
+                </div>
+                <div class="flex items-center justify-between">
+                  <markdown [data]="criterion.guidelines"></markdown>
+                  <img *ngIf="criterion.filename" [src]="'http://localhost:3000/posters/' + criterion.filename" alt="Criterion Image" class="w-32 h-auto object-contain mr-2 cursor-pointer" (click)="openModal('http://localhost:3000/posters/' + criterion.filename)">
+                </div>
               </div>
             <div *ngIf="criterion.editMode">
               <!-- Edit Mode -->
-              <div class="flex items-center mb-4">
+              <div class="flex items-center mb-4 justify-between">
                 <input type="text" class="w-full border rounded p-2 mr-2" [(ngModel)]="criterion.name" placeholder="Criteria Title" />
-                <mat-icon class="cursor-pointer" matTooltip="This image will be used as a reference of the evidence for the dealership submitting an audit and the AI reviewing that audit.">help_outline</mat-icon>
+                <div>
+                  <h3 class="text-lg font-semibold">Evidence Reference Image</h3>
+                  <mat-icon class="cursor-pointer" matTooltip="This image will be used as a reference of the evidence for the dealership submitting an audit and the AI reviewing that audit.">help_outline</mat-icon>
+                </div>
               </div>
-              <div class="flex items-center mb-4">
+              <div class="flex items-center justify-between">
                 <textarea class="flex-grow border rounded p-2 mr-2" [(ngModel)]="criterion.guidelines" placeholder="Enter guidelines for criteria submission here. This will be displayed for the dealership submitting an audit."></textarea>
                 <input type="file" (change)="onFileSelected($event, criterion)" accept=".jpg, .jpeg, .png" [id]="'fileInput-' + criterion.criteriaID" style="display: none;" multiple>
                 <div *ngIf="criterion.filename || selectedFiles[criterion.criteriaID]?.length">
                   <img *ngFor="let selectedFileUrl of selectedFileUrls[criterion.criteriaID]" [src]="selectedFileUrl" alt="Selected Image" class="w-32 h-auto object-contain mr-2 cursor-pointer" (click)="openModal(selectedFileUrl)">
                   <button
-                  class="absolute top-12 right-8 text-red-500 hover:text-red-700 bg-white border border-gray-300 rounded-full p-1 shadow-md active:bg-gray-200 active:border-gray-400"
+                  class="absolute top-30 right-6 text-red-500 hover:text-red-700 bg-white border border-gray-300 rounded-full p-1 shadow-md active:bg-gray-200 active:border-gray-400"
                   matTooltip="Delete"
                   (click)="deleteImage(criterion)"
                   >
