@@ -47,13 +47,8 @@ export class CampaignListDataSource extends DataSource<CampaignListItem> {
 
   deletingCampaign$ = new BehaviorSubject<boolean>(false);
 
-  constructor(data?: any) {
+  constructor() {
     super();
-    console.log('constructor')
-    if(data) {
-      console.log('data present')
-      this.data = data
-    }
   }
 
   /**
