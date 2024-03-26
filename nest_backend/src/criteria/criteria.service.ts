@@ -36,17 +36,12 @@ export class CriteriaService {
   }
 
   async update(
-    id: number,
     updateCriterionDto: UpdateCriterionDto,
-    filename: string
+    filename: string,
+    criterion: Criterion,
     ): Promise<Criterion> {
 
-    let criterion = await this.criterionRepository.findOne({
-      where: {criteriaID: id}
-    });
-    if(!criterion) {
-      throw new HttpException('Criterion not found', HttpStatus.NOT_FOUND);
-    }
+    
 
     // Don't replace filename if no file uploaded
     if(filename.length > 0) {
