@@ -11,12 +11,12 @@ export class CriteriaService {
   constructor(
     @InjectRepository(Criterion)
     @InjectRepository(Campaign)
-    private criterionRepository: Repository<Criterion>,
+    private criteriaRepository: Repository<Criterion>,
   ) {}
 
   async create(campaign: Campaign): Promise<Criterion> {
 
-    const newCriterion = await this.criterionRepository.save({});
+    const newCriterion = await this.criteriaRepository.save({});
 
     // Attach campaign to criterion
     campaign.criteria = [...campaign.criteria, newCriterion];
@@ -30,7 +30,7 @@ export class CriteriaService {
   }
 
   async findOne(id: number): Promise<Criterion> {
-    return await this.criterionRepository.findOne({
+    return await this.criteriaRepository.findOne({
       where: {criteriaID: id}
     });
   }
