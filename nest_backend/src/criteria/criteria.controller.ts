@@ -19,7 +19,7 @@ export class CriteriaController {
     private readonly campaignService: CampaignService
     ) {}
   
-    @Post('create')
+    @Post()
     async create(@Body() createCriteriaDto: CreateCriterionDto) {
         // Criteria will attach to first campaign in database if no ID given
         if(!createCriteriaDto.campaignID) {
