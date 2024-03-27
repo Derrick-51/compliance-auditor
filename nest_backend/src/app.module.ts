@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UploadModule } from './modules/upload/upload.module';
 import { PassportModule } from '@nestjs/passport';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -47,7 +46,6 @@ import { Criterion } from './criteria/entities/criterion.entity';
       serveRoot: '/images',
       rootPath: join(__dirname, '..', 'images'),
     }),
-    UploadModule,
     AuthModule,
     PassportModule,
     UserModule,
