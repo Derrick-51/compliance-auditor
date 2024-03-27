@@ -9,7 +9,7 @@ import {v4 as uuidv4} from "uuid";
 import { CriteriaService } from 'src/criteria/criteria.service';
 import { AuditService } from 'src/audit/audit.service';
 
-@Controller('image')
+@Controller('api/image')
 export class ImageController {
   constructor(
     private readonly imageService: ImageService,
