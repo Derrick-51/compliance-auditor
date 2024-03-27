@@ -3,6 +3,6 @@
   <p>This cannot be undone! </p>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-raised-button color="basic" cdkFocusInitial>Cancel</button>
+  <button mat-raised-button color="basic" (click)="onNoClick()" cdkFocusInitial>Cancel</button>
   <button mat-raised-button color="warn" [mat-dialog-close]="data.campaignID">Delete</button>
 </mat-dialog-actions>
