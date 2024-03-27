@@ -8,6 +8,7 @@ import {
   CreateDateColumn,
   ManyToOne,
   BaseEntity,
+  JoinColumn,
 } from 'typeorm';
 
 @Entity()
@@ -25,6 +26,7 @@ export class Criterion {
   guidelines: string;
 
   @ManyToOne((type) => Campaign, (campaign) => campaign.criterion)
+  @JoinColumn({ name: 'campaignID' })
   campaign: Campaign;
 
   @OneToMany((type) => Images, (image) => image.criterion)

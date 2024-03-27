@@ -6,6 +6,7 @@ import {
   CreateDateColumn,
   ManyToOne,
   BaseEntity,
+  JoinColumn,
 } from 'typeorm';
 import { Users } from 'src/user/entities/user.entity';
 import { Images } from 'src/image/entities/image.entity';
@@ -29,6 +30,7 @@ export class Audit extends BaseEntity {
   user: Users;
 
   @ManyToOne((type) => Campaign, (campaign) => campaign.audits)
+  @JoinColumn({ name: 'campaignID' })
   campaign: Campaign;
 
   @OneToMany((type) => Images, (image) => image.audit)

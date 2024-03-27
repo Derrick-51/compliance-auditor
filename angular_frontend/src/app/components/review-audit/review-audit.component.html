@@ -38,28 +38,19 @@
         </h2>
       </mat-card-header>
       <mat-card-content>
-        <div>id: {{ selectedAudit.id }}</div>
-        <!-- <div
-          *ngIf="selectedAudit.imageUrl && selectedAudit.imageUrl.length > 0"
-        >
-          <h4>Images</h4>
-          <div
-            class="flex flex-wrap justify-content align-items overflow-y-auto max-h-80"
-          >
-            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 w-full">
-              <!-- <img
-                *ngFor="let imageUrls of selectedAudit.imageUrl"
-                src="{{ imageUrls }}"
-                alt="Image for {{ selectedAudit.userID }}"
-                class="object-cover h-full"
-              />
-            </div>
-          </div>
-        </div> -->
         <div>
           <label for="audit-name"
             >Audit name: {{ selectedAudit.user.dealershipName }}
           </label>
+        </div>
+        <div>
+          <label for="audit-submitDate"
+            >Date Submitted: {{ selectedAudit.submitDate }}
+          </label>
+        </div>
+        <div>
+          <button mat-raised-button>Begin Review</button
+          ><!--Just starting the frontend connection (I'm a very slow worker) -->
         </div>
       </mat-card-content>
     </mat-card>

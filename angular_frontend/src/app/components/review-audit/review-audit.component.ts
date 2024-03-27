@@ -37,12 +37,6 @@ export class ReviewAuditComponent implements OnInit {
   selectedAudit?: Audit;
 
   getAudits() {
-    // this.http
-    // .get('http://localhost:3000/audit/listall')
-    // .subscribe((data: any) => {
-    //   console.log(data);
-    //   this.audits = data;
-    // });
     this.auditlistService.getAudits().subscribe((audits) => {
       this.audits = audits;
     });

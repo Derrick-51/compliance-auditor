@@ -34,5 +34,6 @@ export class Images extends BaseEntity {
   audit: Audit;
 
   @ManyToOne((type) => Criterion, (criterion) => criterion.images)
+  @JoinColumn({ name: 'criterionID' })
   criterion: Criterion;
 }

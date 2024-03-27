@@ -6,10 +6,12 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ImageService } from './image.service';
 import { CreateImageDto } from './dto/create-image.dto';
 import { UpdateImageDto } from './dto/update-image.dto';
+import { Images } from './entities/image.entity';
 
 @Controller('image')
 export class ImageController {
@@ -20,10 +22,10 @@ export class ImageController {
     return this.imageService.create(createImageDto);
   }
 
-  // @Get(':auditID')
-  // findAudit(@Param('auditID') auditID: any) {
-  //   return this.imageService.findAudit(auditID);
-  // }
+  @Get(':auditID')
+  findAudit(auditID: number): Promise<Images[]> {
+    return this.imageService.findAudit(auditID);
+  }
 
   @Get()
   findAll() {

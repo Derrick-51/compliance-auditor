@@ -1,7 +1,6 @@
 export interface Audit {
   id: number;
-  auditDate: Date;
-  dueDate: Date;
+  submitDate: Date;
   finalVerdict: string;
   user: {
     dealershipName: string;
