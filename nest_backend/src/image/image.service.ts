@@ -78,7 +78,7 @@ export class ImageService {
   async findAudit(auditID: number): Promise<Images[]> {
     return this.imageRepository.find({
       where: { audit: { auditID: auditID } },
-      select: ['id', 'verdict', 'override', 'criterion'],
+      select: ['id', 'verdict', 'override'],
     });
   }
 

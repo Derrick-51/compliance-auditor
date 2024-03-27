@@ -50,6 +50,10 @@ export class ReviewAuditComponent implements OnInit {
     this.selectedAudit = audit;
   }
 
+  startReview(): void {
+    //go to override page
+  }
+
   private log(message: string) {
     this.messageService.add('AuditService: ${message}');
   }

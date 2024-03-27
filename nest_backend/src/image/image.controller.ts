@@ -22,8 +22,8 @@ export class ImageController {
     return this.imageService.create(createImageDto);
   }
 
-  @Get(':auditID')
-  findAudit(auditID: number): Promise<Images[]> {
+  @Get('2')
+  findAudit(@Param('auditID') auditID: any): Promise<Images[]> {
     return this.imageService.findAudit(auditID);
   }
 
