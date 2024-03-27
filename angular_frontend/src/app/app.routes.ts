@@ -9,6 +9,7 @@ import { navbarComponent } from './components/navbar/navbar.component';
 import { ProfilePageComponent } from './components/profile-page/profile-page.component';
 import { AuditorNavbarComponent } from './components/auditor-navbar/auditor-navbar.component';
 import { submitAuditGuard } from './guards/submit-audit.guard';
+import { CampaignListComponent } from './components/campaign-list/campaign-list.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -23,6 +24,7 @@ export const routes: Routes = [
   { path: 'make-an-audit', component: MakeAnAuditComponent },
   { path: 'profile', component: ProfilePageComponent },
   { path: 'audit-navbar', component: AuditorNavbarComponent },
+  { path: 'campaigns', component: CampaignListComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '**', redirectTo: 'login', pathMatch: 'full' }, //this will be a 404 page, when the user tries to go to a page that doesnt exist }
 ];

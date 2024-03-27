@@ -19,7 +19,7 @@ export class CriteriaController {
     private readonly campaignService: CampaignService
     ) {}
   
-    @Post('create')
+    @Post()
     async create(@Body() createCriteriaDto: CreateCriterionDto) {
         // Criteria will attach to first campaign in database if no ID given
         if(!createCriteriaDto.campaignID) {
@@ -74,7 +74,12 @@ export class CriteriaController {
             filename = file.filename;
         }
 
-        return await this.criteriaService.update(+id, updateCriterionDto, filename);
+        const criterion = await this.criteriaService.findOne(+id);
+        if(!criterion) {
+          throw new HttpException('Criterion not found', HttpStatus.NOT_FOUND);
+        }
+
+        return await this.criteriaService.update(updateCriterionDto, filename, criterion);
     }
 
   @Delete(':id')

@@ -25,7 +25,7 @@ export class AuditService {
     return await this.auditRepository.findOne({
       where: { auditID: id },
       select: ['auditID', 'finalVerdict', 'submitDate', 'update'],
-      relations: ['user']
+      relations: {user: true, images: true}
     });
   }
 

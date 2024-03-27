@@ -21,8 +21,11 @@ export class CampaignService {
     return `This action returns all campaign`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} campaign`;
+  async findOne(id: number) {
+    return await this.campaignRepository.findOne({
+      where: {campaignID: id},
+      relations: {criteria: true}
+    });
   }
 
   async findOneWithCriteria(id: number) {

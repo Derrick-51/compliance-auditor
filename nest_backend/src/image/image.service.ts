@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateImageDto } from './dto/create-image.dto';
@@ -10,6 +10,7 @@ import { spawn } from "child_process";
 import  * as fs from 'fs'
 import * as path from 'path';
 import { AuditService } from 'src/audit/audit.service';
+import { Criterion } from 'src/criteria/entities/criterion.entity';
 
 @Injectable()
 export class ImageService {
@@ -19,8 +20,22 @@ export class ImageService {
     private dataSource: DataSource
   ) {}
 
-  create(createImageDto: CreateImageDto) {
-    return 'This action adds a new image';
+  async create(
+    fileName: string,
+    criterion: Criterion,
+    audit: Audit
+    ): Promise<Images> {
+
+    // Temporary random verdict
+    let verdict: string;
+    if(Math.round(Math.random())) {
+      verdict = 'Passed';
+    }
+    else {
+      verdict = 'Failed';
+    }
+    
+    return await this.imageRepository.save({fileName, criterion, audit, verdict});
   }
 
   async createOne(imageName: string, update: Date, audit: Audit): Promise<Images> {
@@ -70,46 +85,71 @@ export class ImageService {
     });
   }
 
-  update(id: number, updateImageDto: UpdateImageDto) {
-    return `This action updates a #${id} image`;
+  async update(id: number, fileName: string): Promise<Images> {
+    const image = await this.imageRepository.findOne({
+      where: {id: id}
+    })
+    if(!image) {
+      throw new HttpException('Evidence image not found', HttpStatus.NOT_FOUND);
+    }
+
+    const oldFileName = image.fileName;
+    image.fileName = fileName;
+    await image.save();
+
+    fs.unlink(path.resolve(__dirname, `../../images/${oldFileName}`), (err) => {
+      if(err) {
+        console.log('Could not delete previous image: ' + err);
+      };
+    });
+
+    return image;
   }
 
   remove(id: number) {
     return `This action removes a #${id} image`;
   }
 
-  async analyzeImages(fileNames: string[], auditId: number) {
+  async analyzeImage(evidenceName: string, criterionName: string): Promise<string> {
+    let result: string;
     try {
-      // Call audit script with image names list
-      const auditScript = spawn("py", ["-3.11", "../object_detection/audit_image.py", JSON.stringify(fileNames), auditId.toString()]);
+      // Call audit script with evidence and criterion image names
+      const auditScript = spawn("py", ["-3.11", "../object_detection/audit_image.py", evidenceName, criterionName]);
       
+      // Script error event listener
+      auditScript.on("error", (err) => {
+        console.log("Audit Script Error: " + err);
+      })
+
       // Script exit event listener
-      auditScript.on("close", (code) =>{
+      auditScript.on("close", (code) => {
         
-        console.log(`Audit exited with code: ${code}`);
+        console.log(`Audit Script exited with code: ${code}`);
 
-        if(code === 1) throw new Error("audit_image.py exited with error");
-        
-        const results = fs.readFileSync(
-          path.resolve(__dirname, `../../analysis_results/Audit_${auditId}.json`), 'utf-8');
+        if(code === 1) {
+          throw new Error("audit_image.py exited with error");
+        }
+
+        // Read analysis results
+        const evidenceBaseName = path.posix.basename(evidenceName, path.extname(evidenceName));
+        const resultPath = path.resolve(__dirname, `../../../object_detection/${evidenceBaseName}.json`);
+        result = fs.readFileSync(resultPath, 'utf-8');
           
-        if(!results) {
-          throw new Error("Error reading audit results file")
+        if(!result) {
+          throw new Error("Error reading audit results file");
         }
-
-        let resultsObj = JSON.parse(results)
-
-        // Update individual image verdicts
-        for(let idx = 0; idx < fileNames.length; ++idx) {
-          let verdict = resultsObj[fileNames[idx]];
-          this.updateVerdict(fileNames[idx], verdict);
-        }
+        
+        fs.unlink(resultPath, (err) => {
+          if (err) throw err;
+        });
       });
-
-    } catch (err) {
+    }
+    catch (err) {
       console.log(err.message);
       throw err;
     }
+
+    return result;
   }
 
   async updateVerdict(imageName: string, verdict: string) {
