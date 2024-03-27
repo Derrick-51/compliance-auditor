@@ -84,38 +84,46 @@ export class ImageService {
     return `This action removes a #${id} image`;
   }
 
-  async analyzeImages(fileNames: string[], auditId: number) {
+  async analyzeImage(evidenceName: string, criterionName: string): Promise<string> {
+    let result: string;
     try {
-      // Call audit script with image names list
-      const auditScript = spawn("py", ["-3.11", "../object_detection/audit_image.py", JSON.stringify(fileNames), auditId.toString()]);
+      // Call audit script with evidence and criterion image names
+      const auditScript = spawn("py", ["-3.11", "../object_detection/audit_image.py", evidenceName, criterionName]);
       
+      // Script error event listener
+      auditScript.on("error", (err) => {
+        console.log("Audit Script Error: " + err);
+      })
+
       // Script exit event listener
-      auditScript.on("close", (code) =>{
+      auditScript.on("close", (code) => {
         
-        console.log(`Audit exited with code: ${code}`);
+        console.log(`Audit Script exited with code: ${code}`);
 
-        if(code === 1) throw new Error("audit_image.py exited with error");
-        
-        const results = fs.readFileSync(
-          path.resolve(__dirname, `../../analysis_results/Audit_${auditId}.json`), 'utf-8');
+        if(code === 1) {
+          throw new Error("audit_image.py exited with error");
+        }
+
+        // Read analysis results
+        const evidenceBaseName = path.posix.basename(evidenceName, path.extname(evidenceName));
+        const resultPath = path.resolve(__dirname, `../../../object_detection/${evidenceBaseName}.json`);
+        result = fs.readFileSync(resultPath, 'utf-8');
           
-        if(!results) {
-          throw new Error("Error reading audit results file")
+        if(!result) {
+          throw new Error("Error reading audit results file");
         }
-
-        let resultsObj = JSON.parse(results)
-
-        // Update individual image verdicts
-        for(let idx = 0; idx < fileNames.length; ++idx) {
-          let verdict = resultsObj[fileNames[idx]];
-          this.updateVerdict(fileNames[idx], verdict);
-        }
+        
+        fs.unlink(resultPath, (err) => {
+          if (err) throw err;
+        });
       });
-
-    } catch (err) {
+    }
+    catch (err) {
       console.log(err.message);
       throw err;
     }
+
+    return result;
   }
 
   async updateVerdict(imageName: string, verdict: string) {
