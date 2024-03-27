@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateImageDto } from './dto/create-image.dto';
@@ -85,8 +85,25 @@ export class ImageService {
     });
   }
 
-  update(id: number, updateImageDto: UpdateImageDto) {
-    return `This action updates a #${id} image`;
+  async update(id: number, fileName: string): Promise<Images> {
+    const image = await this.imageRepository.findOne({
+      where: {id: id}
+    })
+    if(!image) {
+      throw new HttpException('Evidence image not found', HttpStatus.NOT_FOUND);
+    }
+
+    const oldFileName = image.fileName;
+    image.fileName = fileName;
+    await image.save();
+
+    fs.unlink(path.resolve(__dirname, `../../images/${oldFileName}`), (err) => {
+      if(err) {
+        console.log('Could not delete previous image: ' + err);
+      };
+    });
+
+    return image;
   }
 
   remove(id: number) {

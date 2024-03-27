@@ -68,8 +68,24 @@ export class ImageController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateImageDto: UpdateImageDto) {
-    return this.imageService.update(+id, updateImageDto);
+  @UseInterceptors(FileInterceptor('image', {
+    storage: diskStorage({
+      destination: 'images',
+      filename: (req, file, callback) => {
+        const uniqueName = uuidv4()
+        const extension = extname(file.originalname)
+        const filename = `${uniqueName}${extension}`
+
+        callback(null, filename)
+      }
+    })
+  }))
+  update(@Param('id') id: string, @UploadedFile() file: Express.Multer.File) {
+    if(!file) {
+      throw new HttpException('No file uploaded', HttpStatus.BAD_REQUEST);
+    }
+
+    return this.imageService.update(+id, file.filename);
   }
 
   @Delete(':id')
