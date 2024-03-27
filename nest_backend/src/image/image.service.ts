@@ -26,7 +26,16 @@ export class ImageService {
     audit: Audit
     ): Promise<Images> {
 
-    return await this.imageRepository.save({fileName, criterion, audit});
+    // Temporary random verdict
+    let verdict: string;
+    if(Math.round(Math.random())) {
+      verdict = 'Passed';
+    }
+    else {
+      verdict = 'Failed';
+    }
+    
+    return await this.imageRepository.save({fileName, criterion, audit, verdict});
   }
 
   async createOne(imageName: string, update: Date, audit: Audit): Promise<Images> {
