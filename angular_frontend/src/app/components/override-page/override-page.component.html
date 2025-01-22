@@ -1,0 +1,141 @@
+<button mat-raised-button type="button" (click)="goBack()">Return</button>
+<div *ngIf="auditID" class="border border-black p-4">
+  <ng-container *ngFor="let image of images">
+    <mat-card
+      [ngClass]="{
+        'border-green': image.verdict === 'Passed',
+        'border-red': image.verdict === 'Failed'
+      }"
+      class="p-4 mb-4 h-80"
+    >
+      <div class="flex justify-left items-center">
+        <!-- Display mat icon based on verdict -->
+        <mat-icon *ngIf="image.verdict === 'Passed'" class="text-[#66CC33]"
+          >done</mat-icon
+        >
+        <mat-icon *ngIf="image.verdict === 'Failed'" class="text-[#F43d00]"
+          >clear</mat-icon
+        >
+        <!-- Display Image Verdict -->
+        <h3
+          [class]="
+            image.verdict === 'Passed' ? 'text-[#66CC33]' : 'text-[#F43d00]'
+          "
+          class="pt-4"
+        >
+          {{ image.verdict }}
+        </h3>
+      </div>
+      <div class="flex justify-between">
+        <div class="w-1/2 mr-4">
+          <div class="overflow-hidden">
+            <h3 class="text-lg font-semibold whitespace-nowrap">
+              {{ image.criterion.name }}
+            </h3>
+          </div>
+          <div class="overflow-hidden">
+            <div class="overflow-hidden h-44">
+              <markdown [data]="image.criterion.guidelines"></markdown>
+              <div class="mt-12">
+                <button
+                  mat-flat-button
+                  color="primary"
+                  (click)="toggleOverrideButtons()"
+                >
+                  Override Verdict
+                </button>
+                <div *ngIf="showRadioButtons">
+                  <label class="radio-label">
+                    <h4>Override:</h4>
+                    <input
+                      type="radio"
+                      [checked]="image.verdict === 'Passed'"
+                      [(ngModel)]="image.verdict"
+                      value="Passed"
+                      name="verdict_{{ image.id }}"
+                    />
+                    Pass
+                  </label>
+                  <label class="radio-label">
+                    <input
+                      type="radio"
+                      [checked]="image.verdict === 'Failed'"
+                      [(ngModel)]="image.verdict"
+                      value="Failed"
+                      name="verdict_{{ image.id }}"
+                    />
+                    Fail
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="w-1/4 mr-2">
+          <div class="flex items-center">
+            <h3 class="hidden lg:block">Evidence Reference Image</h3>
+            <h5 class="block lg:hidden">Reference</h5>
+          </div>
+          <img
+            *ngIf="image.criterion.filename"
+            [src]="'http://localhost:3000/posters/' + image.criterion.filename"
+            alt="Criterion Image"
+            class="max-w-64 max-h-44 w-full h-auto object-contain mr-2 cursor-pointer"
+            (click)="
+              openModal(
+                'http://localhost:3000/posters/' + image.criterion.filename
+              )
+            "
+          />
+        </div>
+        <div class="w-1/4 mr-2">
+          <div class="flex items-center">
+            <h3 class="hidden lg:block">Dealership Image</h3>
+            <h5 class="block lg:hidden">Dealership</h5>
+          </div>
+          <img
+            *ngIf="image.fileName"
+            [src]="'http://localhost:3000/images/' + image.fileName"
+            alt="Dealership Image"
+            class="max-w-64 max-h-44 w-full h-auto object-contain mr-2 cursor-pointer"
+            (click)="
+              openModal('http://localhost:3000/images/' + image.fileName)
+            "
+          />
+        </div>
+        <div class="w-1/4 mr-2">
+          <div class="flex items-center">
+            <h3 class="hidden lg:block">Extracted Poster</h3>
+            <h5 class="block lg:hidden">Extracted</h5>
+          </div>
+          <img
+            *ngIf="image.fileName"
+            [src]="'http://localhost:3000/extracted_posters/' + image.fileName"
+            alt="Extracted Image"
+            class="max-w-64 max-h-44 w-full h-auto object-contain mr-2 cursor-pointer"
+            (click)="
+              openModal(
+                'http://localhost:3000/extracted_posters/' + image.fileName
+              )
+            "
+          />
+        </div>
+      </div>
+    </mat-card>
+  </ng-container>
+  <div>
+    <form (ngSubmit)="startOverride()">
+      <button mat-flat-button color="primary" type="submit">
+        Submit Review
+      </button>
+    </form>
+  </div>
+
+  <!-- Modal for Enlarged Image -->
+  <ng-container *ngIf="modalImageUrl">
+    <app-image-modal
+      [imageUrl]="modalImageUrl"
+      (close)="closeModal()"
+    ></app-image-modal>
+  </ng-container>
+</div>

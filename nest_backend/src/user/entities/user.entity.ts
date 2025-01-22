@@ -1,0 +1,38 @@
+import { Audit } from 'src/audit/entities/audit.entity';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+
+@Entity()
+export class Users {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column({ unique: true })
+  dealershipName: string;
+
+  @Column({ unique: true })
+  email: string;
+
+  @Column()
+  password: string;
+
+  @Column({ default: 'Dealership' })
+  usertype: string;
+
+  @Column({ nullable: true })
+  firstName: string;
+
+  @Column({ nullable: true })
+  lastName: string;
+
+  @Column({ nullable: true })
+  state: string;
+
+  @Column({ nullable: true })
+  city: string;
+
+  @Column({ nullable: true })
+  address: string;
+
+  @OneToMany((type) => Audit, (audit) => audit.user)
+  audits: Audit[];
+}

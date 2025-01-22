@@ -1,0 +1,6 @@
+.active {
+  color: black;
+  /* Optional styling for emphasis */
+    pointer-events: none; /* Prevent the element from being clickable */
+    cursor: default; /* Prevent the cursor from changing to a pointer */
+}

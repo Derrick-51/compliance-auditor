@@ -1,0 +1,157 @@
+<div class="w-full h-full bg-[#f2f2f2] overflow-hidden">
+  <!-- Navbar component -->
+  <app-navbar></app-navbar>
+  <!-- Profile Page -->
+  <div class="flex justify-center items-center h-full w-full">
+    <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
+      <div class="bg-white rounded-r-md w-[550px] h-3/5 -mt-10">
+        <div class="px-8 py-2">
+          <!-- User information section -->
+          <div class="text-xl border-b-2">User Information</div>
+          <div class="grid grid-cols-2 pt-4 gap-2">
+            <!-- Email and dealership name -->
+            <div class="text-lg font-bold">Email</div>
+            <div class="text-lg font-bold">Dealership Name</div>
+            <div class="text-lg">{{ dealershipEmail }}</div>
+            <div class="text-lg">{{ dealershipName }}</div>
+          </div>
+          <!-- Dealership information section -->
+          <div class="text-xl border-b-2 pt-8">Dealership Information</div>
+          <div class="grid grid-cols-2 pt-4 gap-2">
+            <!-- Labels for first name and last name -->
+            <div class="text-lg font-bold">First Name</div>
+            <div class="text-lg font-bold">Last Name</div>
+            <!-- Input field for first name -->
+            <div class="text-lg pb-4">
+              <mat-form-field hideRequiredMarker>
+                <mat-label>First Name</mat-label>
+                <input
+                  type="text"
+                  id="firstName"
+                  matInput
+                  formControlName="firstName"
+                  placeholder="First Name"
+                />
+              </mat-form-field>
+            </div>
+            <!-- Input field for last name -->
+            <div class="text-lg pb-4">
+              <mat-form-field hideRequiredMarker>
+                <mat-label>Last Name</mat-label>
+                <input
+                  type="text"
+                  id="lastName"
+                  matInput
+                  formControlName="lastName"
+                  placeholder="Last Name"
+                />
+              </mat-form-field>
+            </div>
+            <!-- Labels for address and city -->
+            <div class="text-lg font-bold">Address</div>
+            <div class="text-lg font-bold">City</div>
+            <!-- Input field for address -->
+            <div class="text-lg pb-4">
+              <mat-form-field hideRequiredMarker>
+                <mat-label>Address</mat-label>
+                <input
+                  type="text"
+                  id="address"
+                  matInput
+                  formControlName="address"
+                  placeholder="Address"
+                />
+              </mat-form-field>
+            </div>
+            <!-- Input field for city -->
+            <div class="text-lg pb-4">
+              <mat-form-field hideRequiredMarker>
+                <mat-label>City</mat-label>
+                <input
+                  type="text"
+                  id="city"
+                  matInput
+                  formControlName="city"
+                  placeholder="City"
+                />
+              </mat-form-field>
+            </div>
+            <!-- Label for state -->
+            <div class="text-lg font-bold">State</div>
+            <div></div>
+            <div class="text-lg pb-4">
+              <mat-form-field hideRequiredMarker>
+                <mat-label>State</mat-label>
+                <!-- Dropdown menu for selecting state -->
+                <mat-select matInput id="state" formControlName="state">
+                  <!-- Options for different states -->
+                  <mat-option value="AL">Alabama</mat-option>
+                  <mat-option value="AL">Alabama</mat-option>
+                  <mat-option value="AK">Alaska</mat-option>
+                  <mat-option value="AZ">Arizona</mat-option>
+                  <mat-option value="AR">Arkansas</mat-option>
+                  <mat-option value="CA">California</mat-option>
+                  <mat-option value="CO">Colorado</mat-option>
+                  <mat-option value="CT">Connecticut</mat-option>
+                  <mat-option value="DE">Delaware</mat-option>
+                  <mat-option value="DC">District Of Columbia</mat-option>
+                  <mat-option value="FL">Florida</mat-option>
+                  <mat-option value="GA">Georgia</mat-option>
+                  <mat-option value="HI">Hawaii</mat-option>
+                  <mat-option value="ID">Idaho</mat-option>
+                  <mat-option value="IL">Illinois</mat-option>
+                  <mat-option value="IN">Indiana</mat-option>
+                  <mat-option value="IA">Iowa</mat-option>
+                  <mat-option value="KS">Kansas</mat-option>
+                  <mat-option value="KY">Kentucky</mat-option>
+                  <mat-option value="LA">Louisiana</mat-option>
+                  <mat-option value="ME">Maine</mat-option>
+                  <mat-option value="MD">Maryland</mat-option>
+                  <mat-option value="MA">Massachusetts</mat-option>
+                  <mat-option value="MI">Michigan</mat-option>
+                  <mat-option value="MN">Minnesota</mat-option>
+                  <mat-option value="MS">Mississippi</mat-option>
+                  <mat-option value="MO">Missouri</mat-option>
+                  <mat-option value="MT">Montana</mat-option>
+                  <mat-option value="NE">Nebraska</mat-option>
+                  <mat-option value="NV">Nevada</mat-option>
+                  <mat-option value="NH">New Hampshire</mat-option>
+                  <mat-option value="NJ">New Jersey</mat-option>
+                  <mat-option value="NM">New Mexico</mat-option>
+                  <mat-option value="NY">New York</mat-option>
+                  <mat-option value="NC">North Carolina</mat-option>
+                  <mat-option value="ND">North Dakota</mat-option>
+                  <mat-option value="OH">Ohio</mat-option>
+                  <mat-option value="OK">Oklahoma</mat-option>
+                  <mat-option value="OR">Oregon</mat-option>
+                  <mat-option value="PA">Pennsylvania</mat-option>
+                  <mat-option value="RI">Rhode Island</mat-option>
+                  <mat-option value="SC">South Carolina</mat-option>
+                  <mat-option value="SD">South Dakota</mat-option>
+                  <mat-option value="TN">Tennessee</mat-option>
+                  <mat-option value="TX">Texas</mat-option>
+                  <mat-option value="UT">Utah</mat-option>
+                  <mat-option value="VT">Vermont</mat-option>
+                  <mat-option value="VA">Virginia</mat-option>
+                  <mat-option value="WA">Washington</mat-option>
+                  <mat-option value="WV">West Virginia</mat-option>
+                  <mat-option value="WI">Wisconsin</mat-option>
+                  <mat-option value="WY">Wyoming</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <!-- Update Profile button -->
+        <button
+          mat-flat-button
+          color="primary"
+          [disabled]="!profileForm.valid"
+          type="submit"
+        >
+          Update Profile
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

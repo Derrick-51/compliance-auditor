@@ -1,0 +1,6 @@
+.active {
+  color: black; /* Set the text color to black */
+  /* When a user is on the page... */
+  pointer-events: none; /* the navbar link for said page is disabled */
+  cursor: default; /* Prevent the cursor from changing to a pointer hovering over the navbar link */
+}

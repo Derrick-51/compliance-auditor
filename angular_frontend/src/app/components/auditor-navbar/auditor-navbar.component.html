@@ -1,0 +1,76 @@
+<header>
+  <mat-toolbar class="flex justify-between items-center">
+    <!-- Left side/logo section -->
+    <div>
+      <img
+        class="w-64"
+        src="/assets/Logo Original.png"
+        alt="Company Logo"
+      />
+    </div>
+    <!-- Main navbar links section -->
+    <div
+      class="lg:static absolute lg:min-h-fit min-h-[30vh] left-0 top-[-100%] lg:w-auto w-full flex items-center px-5"
+    >
+      <ul class="flex lg:flex-row flex-col lg:items-center lg:gap-[3vw] gap-6">
+        <!-- Campaigns link -->
+        <li>
+          <a
+            class="text-[#66CC33] hover:text-[#414551]"
+            routerLink="/campaigns"
+            routerLinkActive="active"
+            >Campaigns</a
+          >
+        </li>
+        <!-- Audit Review link -->
+        <li>
+          <a
+            class="text-[#66CC33] hover:text-[#414551]"
+            routerLink="/review-audit"
+            routerLinkActive="active"
+            >Audit Review</a
+          >
+        </li>
+      </ul>
+    </div>
+    <!-- Right side/user buttons section -->
+    <div>
+      <!-- Logout button for large viewports -->
+      <div class="hidden lg:block">
+        <button class="ml-2" mat-flat-button (click)="logout()">Logout</button>
+      </div>
+      <!-- Menu button for smaller viewports -->
+      <div class="lg:hidden">
+        <button
+          mat-icon-button
+          [matMenuTriggerFor]="menu"
+          aria-label="menu button"
+        >
+          <mat-icon>menu</mat-icon>
+        </button>
+        <!-- Hamburger dropdown menu for smaller viewports -->
+        <mat-menu #menu="matMenu">
+          <!-- Campaign button in the dropdown menu -->
+          <a routerLink="/campaigns">
+            <button mat-menu-item>
+              <mat-icon>folder</mat-icon>
+              <span>Campaigns</span>
+            </button>
+          </a>
+          <!-- Audit Review button in the dropdown menu -->
+          <a routerLink="/review-audit">
+            <button mat-menu-item>
+              <mat-icon>check_circle</mat-icon>
+              <span>Audit Review</span>
+            </button>
+          </a>
+          <!-- Logout button in the dropdown menu -->
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>exit_to_app</mat-icon>
+            <span>Logout</span>
+          </button>
+        </mat-menu>
+      </div>
+    </div>
+  </mat-toolbar>
+</header>

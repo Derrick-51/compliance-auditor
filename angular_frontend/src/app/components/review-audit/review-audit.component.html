@@ -1,0 +1,74 @@
+<div class="flex flex-col h-screen">
+  <!-- Auditor Navbar -->
+  <app-auditor-navbar></app-auditor-navbar>
+  <div class="flex justify-center items-center flex-grow px-4 bg-[#f2f2f2]">
+    <div class="min-w-full md:min-w-96 fixed top-24 bottom-0 z-10 overflow-y-auto">
+      <!-- Title for Audit List -->
+      <div class="flex justify-center items-center text-xl font-bold">
+        Audit List
+      </div>
+      <!-- List of Audits -->
+      <div class="min-w-full md:min-w-[500px]">
+        <ul class="mat-list w-full">
+          <!-- Loop through displayedAudits -->
+          <li *ngFor="let audit of displayedAudits">
+            <div class="relative">
+              <!-- Button for each audit -->
+              <button
+                class="w-full flex px-4 py-2 bg-gray-400 border rounded-md text-base font-medium text-white hover:bg-gray-700"
+                [class.rounded-b-none]="selectedAudit === audit"
+                type="button"
+                (click)="toggleDetails(audit)"
+                [class.bg-green-500]="audit.finalVerdict === 'Passed'"
+                [class.bg-red-500]="audit.finalVerdict === 'Failed'"
+                [class.bg-yellow-600]="audit.finalVerdict === 'Pending'"
+              >
+                <!-- Grid layout for audit information -->
+                <div class="grid grid-cols-4 gap-4 items-center">
+                  <div class="col-span-1 text-lg font-medium">Dealership:</div>
+                  <div class="col-span-3 text-base">{{ audit.user.dealershipName }}</div>
+                  <div class="col-span-1 text-lg font-medium">Verdict:</div>
+                  <div class="col-span-3 text-base">{{ audit.finalVerdict }}</div>
+                </div>
+              </button>
+              <!-- Details section for each audit -->
+              <div *ngIf="isDetailsVisible(audit)" class="mat-card-container rounded-t-none">
+                <mat-card class="h-full">
+                  <mat-card-header>
+                    <!-- Title for details -->
+                    <h2 class="flex justify-center items-center w-full border-b-2">Details</h2>
+                  </mat-card-header>
+                  <mat-card-content>
+                    <!-- Details card -->
+                    <div class="flex justify-center items-center">
+                      <label for="audit-name">Audit name: {{ audit.user.dealershipName }}</label>
+                    </div>
+                    <div class="flex justify-center items-center">
+                      <label for="audit-submitDate">Date Submitted: {{ audit.submitDate }}</label>
+                    </div>
+                    <div class="flex justify-center items-center">
+                      <!-- Start review button -->
+                      <button mat-raised-button type="button" (click)="startReview(audit.auditID)">
+                        Begin Review
+                      </button>
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <!-- pagination -->
+      <mat-paginator
+        [length]="totalItems"
+        [pageSizeOptions]="[5, 10, 20]"
+        [showFirstLastButtons]="true"
+        [pageIndex]="currentPage"
+        (page)="handlePageEvent($event)"
+        aria-label="Select page"
+      >
+      </mat-paginator>
+    </div>
+  </div>
+</div>

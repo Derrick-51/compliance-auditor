@@ -1,0 +1,26 @@
+<div 
+  class="flex justify-center items-center min-h-screen flex-col lg:flex-row lg:gap-3 bg-[#f2f2f2]"
+>
+  <!-- Left section containing the Company Logo and a message -->
+  <div class="w-[500px] lg:mr-20 mb-2">
+    <img
+      class="lg:mb-2"
+      src="/assets/LogoHomepage.png"
+      alt="Company Logo"
+    />
+    <p class="lg:text-xl flex justify-center text-lg">
+      Welcome to the Dealership Compliance Auditor!
+      Please log in to access our automated auditing system.
+    </p>
+  </div>
+
+  <!-- Login Form -->
+  <div *ngIf="showLoginForm">
+    <app-login (toggleFormsEvent)="toggleForms()"></app-login>
+  </div>
+
+  <!-- Registration Form -->
+  <div *ngIf="!showLoginForm">
+    <app-register (toggleFormsEvent)="toggleForms()"></app-register>
+  </div>
+</div>

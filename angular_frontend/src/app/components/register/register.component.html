@@ -1,0 +1,141 @@
+<form [formGroup]="registerForm" (ngSubmit)="submitDetails()">
+  <mat-card class="w-[350px] p-2">
+    <!-- Card header for registration -->
+    <mat-card-header class="text-3xl flex justify-center mb-3 -mt-3">
+      <mat-card-header>Register</mat-card-header>
+    </mat-card-header>
+    <mat-card-content>
+      <!-- Dealership name input field -->
+      <label for="dealership" class="ml-2">Dealership name</label>
+      <div class="email-container">
+        <mat-form-field hideRequiredMarker class="w-full">
+          <mat-label>Enter your Dealership</mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="dealership"
+            name="dealership"
+            placeholder="Dealership A"
+          />
+          <!-- Displaying error message if dealership input is invalid -->
+          @if (dealership.invalid && dealership.dirty || dealership.touched) {
+          <mat-error>{{ getDealerErrorMessage() }}</mat-error>
+          }
+        </mat-form-field>
+      </div>
+      <!-- Email input field -->
+      <label for="email" class="ml-2">Email</label>
+      <div class="email-container">
+        <mat-form-field hideRequiredMarker class="w-full">
+          <mat-label>Enter your email</mat-label>
+          <input
+            type="text"
+            matInput
+            formControlName="email"
+            name="email"
+            placeholder="example@email.com"
+          />
+          <!-- Displaying error message if email input is invalid -->
+          @if (email.invalid && email.dirty || email.touched) {
+          <mat-error>{{ getEmailErrorMessage() }}</mat-error>
+          }
+        </mat-form-field>
+      </div>
+      <!-- Password input field -->
+      <label for="password" class="ml-2">Password</label>
+      <div
+        class="password-container"
+        [ngClass]="{ 'error-margin': password.hasError('strongPassword') }"
+      >
+        <mat-form-field hideRequiredMarker class="w-full">
+          <mat-label>Enter your password</mat-label>
+          <input
+            [type]="passwordFieldHide ? 'password' : 'text'"
+            matInput
+            formControlName="password"
+            name="password"
+            placeholder="Type your password"
+            (input)="password.markAsDirty()"
+          />
+          <!-- Toggle button to show/hide password -->
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="passwordFieldHide = !passwordFieldHide"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="passwordFieldHide"
+            type="button"
+          >
+            <mat-icon class="mr-4">{{
+              passwordFieldHide ? "visibility_off" : "visibility"
+            }}</mat-icon>
+          </button>
+          <!-- Displaying error message if password input is invalid -->
+          @if (password.invalid && password.dirty || password.touched) {
+          <mat-error>{{ getPassErrorMessage() }}</mat-error>
+          }
+        </mat-form-field>
+      </div>
+      <!-- Confirm Password input field -->
+      <label for="confirmPassword" class="ml-2 -mt-20">Confirm Password</label>
+      <div class="confirm-password-container">
+        <mat-form-field hideRequiredMarker class="w-full">
+          <mat-label>Confirm password</mat-label>
+          <input
+            [type]="confirmFieldHide ? 'password' : 'text'"
+            matInput
+            formControlName="confirmPassword"
+            name="confirmPassword"
+            placeholder="Confirm password"
+          />
+          <!-- Toggle button to show/hide password -->
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="confirmFieldHide = !confirmFieldHide"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="confirmFieldHide"
+            type="button"
+          >
+            <mat-icon class="mr-4">{{
+              confirmFieldHide ? "visibility_off" : "visibility"
+            }}</mat-icon>
+          </button>
+          <!-- Displaying error message if confirm password input is invalid -->
+          @if (confirmPassword.invalid && confirmPassword.dirty ||
+          confirmPassword.touched) {
+          <mat-error>{{ getConfirmPassErrorMessage() }}</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+    <!-- Create Account button -->
+    <mat-card-actions>
+      <button
+        label="register"
+        mat-flat-button
+        class="w-1/2 mx-auto"
+        color="primary"
+        [disabled]="registerForm.invalid"
+        type="submit"
+      >
+        Create Account
+      </button>
+    </mat-card-actions>
+    <!-- Section for links -->
+    <mat-card-actions>
+      <!-- Link to login page -->
+      <div>
+        Already have an account? Click
+        <a
+          class="underline text-blue-600 hover:text-blue-800 visited:text-purple-600 w-full"
+          href="#"
+          (click)="toggleForms($event)"
+          >here</a
+        >
+
+        to sign in!
+      </div>
+    </mat-card-actions>
+  </mat-card>
+</form>

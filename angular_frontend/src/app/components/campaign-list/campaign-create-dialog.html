@@ -1,0 +1,34 @@
+<h2 mat-dialog-title>New Campaign</h2>
+<mat-dialog-content>
+  <p>Select start and end dates for the campaign.</p>
+  <mat-form-field>
+    <mat-label>Enter a date range</mat-label>
+    <mat-date-range-input [formGroup]="range" [rangePicker]="picker" >
+        <input matStartDate formControlName="start" placeholder="Start date" cdkFocusInitial>
+        <input matEndDate formControlName="end" placeholder="End date">
+    </mat-date-range-input>
+    <mat-hint>MM/DD/YYYY - MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+
+    @if (range.controls.start.hasError('matStartDateInvalid')) {
+        <mat-error>Invalid start date</mat-error>
+    }
+
+    @if (range.controls.end.hasError('matEndDateInvalid')) {
+        <mat-error>Invalid end date</mat-error>
+    }
+
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-raised-button (click)="onNoClick()">Cancel</button>
+    @if(range.controls.start.hasError('matStartDateInvalid') ||
+         range.controls.end.hasError('matEndDateInvalid') ||
+        !range.value.start || !range.value.end) {
+        <button mat-raised-button disabled>Create</button>
+    }
+    @else {
+        <button mat-raised-button color="primary" [mat-dialog-close]="{start: range.value.start, end: range.value.end}">Create</button>
+    }
+</mat-dialog-actions>

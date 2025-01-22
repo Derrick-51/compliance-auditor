@@ -1,0 +1,95 @@
+<form [formGroup]="loginForm" (ngSubmit)="submitLogin()">
+  <div>
+    <mat-card class="lg:w-[350px] w-[250px] p-2">
+      <!-- Card header for login -->
+      <mat-card-header class="text-3xl flex justify-center mb-3 -mt-3">
+        <mat-card-header>Login</mat-card-header>
+      </mat-card-header>
+      <mat-card-content>
+        <!-- Email input field -->
+        <label for="email" class="ml-2">Email</label>
+        <div class="email-container">
+          <mat-form-field hideRequiredMarker class="w-full">
+            <mat-label>{{ emailLabel }}</mat-label>
+            <input
+              type="text"
+              matInput
+              formControlName="username"
+              name="email"
+              placeholder="example@email.com"
+            />
+            <!-- Displaying error message if email input is invalid -->
+            @if (email.invalid && email.dirty || email.touched) {
+            <mat-error>{{ getEmailErrorMessage() }}</mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <!-- Password input field -->
+        <label for="password" class="ml-2">Password</label>
+        <div class="password-container">
+          <mat-form-field hideRequiredMarker class="w-full">
+            <mat-label>{{ passwordLabel }}</mat-label>
+            <input
+              [type]="hide ? 'password' : 'text'"
+              matInput
+              formControlName="password"
+              name="password"
+              [placeholder]="passwordPlaceholder"
+            />
+            <!-- Toggle button to show/hide password -->
+            <button
+              mat-icon-button
+              matSuffix
+              (click)="hide = !hide"
+              [attr.aria-label]="'Hide password'"
+              [attr.aria-pressed]="hide"
+            >
+              <mat-icon class="mr-4">{{
+                hide ? "visibility_off" : "visibility"
+              }}</mat-icon>
+            </button>
+            <!-- Displaying error message if password input is invalid -->
+            @if (password.invalid && password.dirty || password.touched) {
+            <mat-error>{{ getPassErrorMessage() }}</mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+      <!-- Sign In button -->
+      <mat-card-actions>
+        <button
+          label="Sign in"
+          mat-flat-button
+          class="lg:w-1/3 mx-auto"
+          color="primary"
+          [disabled]="loginForm.invalid"
+          type="submit"
+        >
+          Sign In
+        </button>
+      </mat-card-actions>
+      <!-- Section for links -->
+      <mat-card-actions>
+        <div class="flex-col">
+          <div>
+            Not a member? Click
+            <!-- Link to the registration page -->
+            <a class="underline text-blue-600 hover:text-blue-800 visited:text-purple-600 w-full" href="#" (click)="toggleForms($event)">here</a>
+
+            to register!
+          </div>
+          <div>
+            Forgot password? Click
+            <!-- Link to the forgot password page -->
+            <a
+              class="underline text-blue-600 hover:text-blue-800 visited:text-purple-600 w-full"
+              routerLink="/forgot"
+              >here</a
+            >
+            to reset it!
+          </div>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</form>
